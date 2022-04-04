@@ -8,7 +8,7 @@ namespace El_Horno {
 	class StartScene : public Scene
 	{
 	public:
-		StartScene() : Scene() {};
+		//StartScene() : Scene() {};
 		virtual void init() override;
 	};
 }
