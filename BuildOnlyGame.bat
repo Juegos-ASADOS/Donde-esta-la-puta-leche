@@ -2,10 +2,6 @@
 cls
 set EXES=.\Engine\ElHorno\Exes
 
-::cd ./DondeEstaLaPutaLeche/Engine
-::call ElHorno.bat
-::cd ../..
-
 cd ./DondeEstaLaPutaLeche
 msbuild DondeEstaLaPutaLeche.sln /p:configuration=Debug
 msbuild DondeEstaLaPutaLeche.sln /p:configuration=Release
