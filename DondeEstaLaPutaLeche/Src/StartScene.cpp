@@ -15,9 +15,15 @@
 #include <HornoVector3.h>
 #include <FactoryCreator.h>
 #include <PlayerController.h>
+#include <EstanteryComponent.h>
 
 namespace El_Horno {
 	void StartScene::init()
+	{
+		testScene();
+	}
+
+	void StartScene::testScene()
 	{
 		Entity* light = addEntity("light", "prueba");
 		light->addComponent<Transform>("transform", HornoVector3(0, 200, 0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
@@ -46,6 +52,17 @@ namespace El_Horno {
 		b = addEntity("esmoque", "prueba");
 		b->addComponent<Transform>("transform", HornoVector3(250, 10, 0), HornoVector3(0, 0, 0), p);
 		b->addComponent<ParticleSystem>("particleSystem", "smoke", "Smoke", 10, true);
+
+		b = addEntity("estantery", "prueba");
+		b->addComponent<Transform>("transform", HornoVector3(50, 10, 0), HornoVector3(0, 0, 0), HornoVector3(0.5, 1, 0.25));
+		b->addComponent<Mesh>("mesh", "cube");
+		b->addComponent<RigidBody>("rigidbody", 0.0f, false, false, 0);
+		b->addComponent<EstanteryComponent>("estanterycomponent", estanteryType::TOMATES);
+
+		/*Entity* stanChild = addEntity("estanteryTrigger", "prueba", b);
+		stanChild->addComponent<Transform>("transform", HornoVector3(-50, 10, 0), HornoVector3(0, 0, 0), HornoVector3(3, 3, 3));
+		stanChild->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);*/
+
 		std::cout << "ESCENA CARGADA\n";
 	}
 }
