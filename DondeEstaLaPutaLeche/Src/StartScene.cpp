@@ -15,7 +15,8 @@
 #include <HornoVector3.h>
 #include <FactoryCreator.h>
 #include <PlayerController.h>
-#include <EstanteryComponent.h>
+#include <EntityId.h>
+#include <EstanteryEnter.h>
 
 namespace El_Horno {
 	void StartScene::init()
@@ -35,33 +36,34 @@ namespace El_Horno {
 		a->addComponent<CameraComponent>("camera", HornoVector3(0, 100, 450), HornoVector3(0, 0, 0), HornoVector3(0, 0.3, 0.5), 1, 5, 10000);
 		a->addComponent<AudioListenerComponent>("audioListener");
 
-		Entity* b = addEntity("object", "prueba");
-		b->addComponent<Transform>("transform", HornoVector3(0, 150, 0), HornoVector3(0, 0, 0), p);
+		Entity* b = addEntity("danlles", "prueba");
+		b->addComponent<Transform>("transform", HornoVector3(-50, 30, 0), HornoVector3(0, 0, 0), p);
 		b->addComponent<Mesh>("mesh", "Sinbad");
 		b->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
 		/*b->addComponent<AnimatorController>("animatorController");
 		b->addComponent<SinbadAnimTest>("sinbadAnimTest");*/
 		b->addComponent<AudioComponent>("audioComponent");
-		b->addComponent<PlayerController>("playercontroller", 1.0f);
+		b->addComponent<PlayerController>("playercontroller", 500.0f);
+		b->addComponent<EstanteryEnter>("estanteryenter");
 
-		b = addEntity("object2", "prueba");
+		b = addEntity("object", "prueba");
 		b->addComponent<Transform>("transform", HornoVector3(0, -15, 0), HornoVector3(0, 0, 0), HornoVector3(5, 0.1, 5));
 		b->addComponent<Mesh>("mesh", "cube");
 		b->addComponent<RigidBody>("rigidbody", 0.0f, false, false, 0);
 
-		b = addEntity("esmoque", "prueba");
-		b->addComponent<Transform>("transform", HornoVector3(250, 10, 0), HornoVector3(0, 0, 0), p);
-		b->addComponent<ParticleSystem>("particleSystem", "smoke", "Smoke", 10, true);
+		//b = addEntity("esmoque", "prueba");
+		//b->addComponent<Transform>("transform", HornoVector3(250, 10, 0), HornoVector3(0, 0, 0), p);
+		//b->addComponent<ParticleSystem>("particleSystem", "smoke", "Smoke", 10, true);
 
 		b = addEntity("estantery", "prueba");
 		b->addComponent<Transform>("transform", HornoVector3(50, 10, 0), HornoVector3(0, 0, 0), HornoVector3(0.5, 1, 0.25));
 		b->addComponent<Mesh>("mesh", "cube");
 		b->addComponent<RigidBody>("rigidbody", 0.0f, false, false, 0);
-		b->addComponent<EstanteryComponent>("estanterycomponent", estanteryType::TOMATES);
+		b->addComponent<EntityId>("entityid", "Agua", true);
 
-		/*Entity* stanChild = addEntity("estanteryTrigger", "prueba", b);
+		Entity* stanChild = addEntity("estanteryTrigger", "prueba", b);
 		stanChild->addComponent<Transform>("transform", HornoVector3(-50, 10, 0), HornoVector3(0, 0, 0), HornoVector3(3, 3, 3));
-		stanChild->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);*/
+		stanChild->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
 
 		std::cout << "ESCENA CARGADA\n";
 	}

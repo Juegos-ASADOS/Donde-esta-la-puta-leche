@@ -11,7 +11,8 @@ namespace El_Horno {
 			FactoryCreator* creator = ElHornoBase::getInstance()->getFactoryCreator();
 
 			creator->addFactory("playercontroller");
-			creator->addFactory("estanterycomponent");
+			creator->addFactory("estanteryenter");
+			creator->addFactory("entityid");
 		}
 	}
 }

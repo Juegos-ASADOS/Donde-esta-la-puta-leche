@@ -19,13 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Src\EstanteryComponent.cpp" />
+    <ClCompile Include="..\..\Src\EntityId.cpp" />
+    <ClCompile Include="..\..\Src\EstanteryEnter.cpp" />
     <ClCompile Include="..\..\Src\Main.cpp" />
     <ClCompile Include="..\..\Src\PlayerController.cpp" />
     <ClCompile Include="..\..\Src\StartScene.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Src\EstanteryComponent.h" />
+    <ClInclude Include="..\..\Src\EntityId.h" />
+    <ClInclude Include="..\..\Src\EstanteryEnter.h" />
     <ClInclude Include="..\..\Src\GameFactories.h" />
     <ClInclude Include="..\..\Src\PlayerController.h" />
     <ClInclude Include="..\..\Src\StartScene.h" />
