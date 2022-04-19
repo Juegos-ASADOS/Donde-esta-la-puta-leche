@@ -36,7 +36,7 @@ namespace El_Horno {
 		a->addComponent<CameraComponent>("camera", HornoVector3(0, 100, 450), HornoVector3(0, 0, 0), HornoVector3(0, 0.3, 0.5), 1, 5, 10000);
 		a->addComponent<AudioListenerComponent>("audioListener");
 
-		Entity* b = addEntity("danlles", "prueba");
+		Entity* b = addEntity("player", "prueba");
 		b->addComponent<Transform>("transform", HornoVector3(-50, 30, 0), HornoVector3(0, 0, 0), p);
 		b->addComponent<Mesh>("mesh", "Sinbad");
 		b->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);

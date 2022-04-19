@@ -16,9 +16,11 @@ namespace El_Horno {
 
 		inline const std::string getId() { return id_; };
 		inline const bool isEstantery() { return isEstantery_; };
+		inline const bool isCart() { return isCart_; }
 	protected:
 		std::string id_;
 		bool isEstantery_;
+		bool isCart_;
 	};
 }
 #endif 
