@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Src\EntityId.cpp" />
+    <ClCompile Include="..\..\Src\EstanteryEnter.cpp" />
     <ClCompile Include="..\..\Src\EstanteryComponent.cpp" />
     <ClCompile Include="..\..\Src\FoodCartComponent.cpp" />
     <ClCompile Include="..\..\Src\Main.cpp" />
@@ -28,6 +30,8 @@
   <ItemGroup>
     <ClInclude Include="..\..\Src\EstanteryComponent.h" />
     <ClInclude Include="..\..\Src\FoodCartComponent.h" />
+    <ClInclude Include="..\..\Src\EntityId.h" />
+    <ClInclude Include="..\..\Src\EstanteryEnter.h" />
     <ClInclude Include="..\..\Src\GameFactories.h" />
     <ClInclude Include="..\..\Src\PlayerController.h" />
     <ClInclude Include="..\..\Src\StartScene.h" />
