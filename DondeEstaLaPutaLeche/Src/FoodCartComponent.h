@@ -7,20 +7,26 @@
 
 namespace El_Horno {
 	class RigidBody;
-	enum estanteryType {TOMATES, COCACOLA};
-
+	enum amount {empty,half_Empty, half_Full, full};
 	class FoodCartComponent : public Component
 	{
 	public:
-		FoodCartComponent(estanteryType id) : id_(id) {};
+		FoodCartComponent();
 
 		void start() override;
-		//void update() override;
+		void update() override;
 
-		inline const estanteryType getId() { return id_; };
+		virtual bool recieveEvent(Event* ev);
+
 	protected:
 		//RigidBody* rb_;
-		estanteryType id_;
+		
+		//Valores de 0 a 10
+		int foodStored;
+		amount capacity;
+
+		InputManager* input;
+
 	};
 }
 #endif 
