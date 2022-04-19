@@ -22,11 +22,11 @@ void El_Horno::FoodCartComponent::update()
 
 bool El_Horno::FoodCartComponent::recieveEvent(Event* ev)
 {
-
 	if (ev->ty_ == EventType::CollisionStay) {
 
 		// Coge Id del carrito
 		Entity* cart = static_cast<rbTriggerStay*>(ev)->other_->getParent();
+
 		if (cart == nullptr)
 			return false;
 

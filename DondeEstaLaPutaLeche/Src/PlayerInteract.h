@@ -4,13 +4,14 @@
 
 #include <Component.h>
 
-//UNIFICAR Y CREAR UN SOLO PLAYER INTERACT PARA ESTANTERIAS Y CARRITO
 namespace El_Horno {
 	enum amountCart {empty,half_Empty, half_Full, full};
-	class FoodCartComponent : public Component
+
+	class PlayerInteract : public Component
 	{
 	public:
-		FoodCartComponent();
+		PlayerInteract();
+		~PlayerInteract() {};
 
 		void start() override;
 		void update() override;
@@ -20,7 +21,7 @@ namespace El_Horno {
 	protected:
 		
 		//Valores de 0 a 10
-		int foodStored;
+		int sizeCart;
 		amountCart capacity;
 
 		InputManager* input;

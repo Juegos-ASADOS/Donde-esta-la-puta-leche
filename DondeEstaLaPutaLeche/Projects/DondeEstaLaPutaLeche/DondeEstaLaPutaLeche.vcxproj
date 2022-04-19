@@ -24,6 +24,7 @@
     <ClCompile Include="..\..\Src\FoodCartComponent.cpp" />
     <ClCompile Include="..\..\Src\Main.cpp" />
     <ClCompile Include="..\..\Src\PlayerController.cpp" />
+    <ClCompile Include="..\..\Src\PlayerInteract.cpp" />
     <ClCompile Include="..\..\Src\StartScene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -32,6 +33,7 @@
     <ClInclude Include="..\..\Src\EstanteryEnter.h" />
     <ClInclude Include="..\..\Src\GameFactories.h" />
     <ClInclude Include="..\..\Src\PlayerController.h" />
+    <ClInclude Include="..\..\Src\PlayerInteract.h" />
     <ClInclude Include="..\..\Src\StartScene.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
