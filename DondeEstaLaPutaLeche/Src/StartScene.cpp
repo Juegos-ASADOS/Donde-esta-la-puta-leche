@@ -21,6 +21,7 @@
 namespace El_Horno {
 	void StartScene::init()
 	{
+		GameScene::init();
 		testScene();
 	}
 
@@ -37,7 +38,7 @@ namespace El_Horno {
 		a->addComponent<AudioListenerComponent>("audioListener");
 
 		Entity* b = addEntity("player", "prueba");
-		b->addComponent<Transform>("transform", HornoVector3(-50, 30, 0), HornoVector3(0, 0, 0), p);
+		b->addComponent<Transform>("transform", HornoVector3(-50, 70, 0), HornoVector3(0, 0, 0), p);
 		b->addComponent<Mesh>("mesh", "Sinbad");
 		b->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
 		/*b->addComponent<AnimatorController>("animatorController");
