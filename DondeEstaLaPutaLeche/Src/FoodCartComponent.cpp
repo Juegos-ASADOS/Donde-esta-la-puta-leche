@@ -2,17 +2,17 @@
 #include "Entity.h"
 #include "ElHornoBase.h"
 #include "FoodCartComponent.h"
-#include "Event.h"
-#include "InputManager.h"
 #include <EntityId.h>
 
-El_Horno::FoodCartComponent::FoodCartComponent() : foodStored(0)
+El_Horno::FoodCartComponent::FoodCartComponent()
 {
+
 }
 
 void El_Horno::FoodCartComponent::start()
 {
-
+	//Guardar de alguna manera todos los int del mapa para hacer relaciones de cuantos elementos de quedan
+	//AAAAAAAAAA TODO
 }
 
 void El_Horno::FoodCartComponent::update()
@@ -20,61 +20,39 @@ void El_Horno::FoodCartComponent::update()
 
 }
 
-bool El_Horno::FoodCartComponent::recieveEvent(Event* ev)
+bool El_Horno::FoodCartComponent::puedoMeterlo(foodType comida)
 {
-	if (ev->ty_ == EventType::CollisionStay) {
+	//Buscamos el alimento...
+	auto aux = infoList.find(comida);
 
-		// Coge Id del carrito
-		Entity* cart = static_cast<rbTriggerStay*>(ev)->other_->getParent();
+	//Si ha llegado al final...
+	if (aux == infoList.end())
+		//Es porque ni si quiera hay que comprarlo
+		return false;
+	//Si ha parado para buscarlo...
+	else {
 
-		if (cart == nullptr)
-			return false;
+		//Si los alimentos que tengo son menores a los que necesito...
+		if (actualList.at(aux->first) < aux->second) {
 
-		EntityId* estComp = cart->getComponent<EntityId>("entityid");
+		
 
-		//TODO SI TIENE ALGUN OBJETO EN LA MANO...
-
-		//Y es el carrito de la compra...
-		if (estComp != nullptr && estComp->isCart()) {
+			//Le sumamos el alimento
+			actualList.find(comida)->second++;
 
 
-			//Si pulsas la tecla E...
-			if (input->isKeyDown(SDL_SCANCODE_E)) {
+			//TODO VAINAS DEL FOODSTORED
 
-				//TODO ELIMINAMOS EL OBJETO QUE TENGA EN LA MANO
+			foodStored++;
 
-				//TODO COMPROBAR SI EL OBJETO QUE QUIERO METER SE PUEDE METER O LO TIRO AL SUELO
-				//Mientras no esté hecho siempre se añade y ale
-				foodStored++;
 
-				//TODO SWITCH
-				switch (foodStored)
-				{
-				case 10:
-					capacity = full;
-					//PROGRAMAR EL CAMBIO DE CARRITO
-					break;
-				case 7:
-					capacity = half_Full;
-					//PROGRAMAR EL CAMBIO DE CARRITO
-					break;
-				case 3:
-					capacity = half_Empty;
-					//PROGRAMAR EL CAMBIO DE CARRITO
-					break;
-				case 0:
-					capacity = empty;
-					//PROGRAMAR EL CAMBIO DE CARRITO
-					break;
-				default:
-					break;
-				}
-
-				//Meter algun return false en la comprobacion en caso de que no se pueda meter supongo
-				//O igual no pq tb ocurre un evento de tirar el objeto al suelo no c no soi 100tifiko
-				return true;
-			}
+			//Y se guarda
+			return true;
 		}
+		//Si ya he cogido el numero maximo de ese alimento...
+		else
+			//No puedo meter más
+			return false;
 	}
-	return false;
+
 }

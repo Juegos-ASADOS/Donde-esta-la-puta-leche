@@ -29,7 +29,7 @@ bool El_Horno::EstanteryEnter::recieveEvent(Event* ev)
 	if (entity_->getChildCount() != 0)
 		return false;
 
-	std::cout << ev->ty_ << "\n";
+	//std::cout << ev->ty_ << "\n";
 	if (ev->ty_ == EventType::CollisionStay) {
 
 		// Coge Id de la estanteria

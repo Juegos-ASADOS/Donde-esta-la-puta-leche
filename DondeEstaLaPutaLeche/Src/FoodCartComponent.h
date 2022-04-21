@@ -3,10 +3,14 @@
 #define _ESTANTERY_COMPONENT_H
 
 #include <Component.h>
+#include <map>
+//Componente propio del carrito que gestiona las cosas que tenga en la lista
 
-//UNIFICAR Y CREAR UN SOLO PLAYER INTERACT PARA ESTANTERIAS Y CARRITO
+using namespace std;
+
 namespace El_Horno {
-	enum amountCart {empty,half_Empty, half_Full, full};
+
+	enum foodType {Tomatico, platanito, pescao, carne};
 	class FoodCartComponent : public Component
 	{
 	public:
@@ -15,15 +19,19 @@ namespace El_Horno {
 		void start() override;
 		void update() override;
 
-		virtual bool recieveEvent(Event* ev);
+		bool puedoMeterlo(foodType comida);
+
 
 	protected:
-		
-		//Valores de 0 a 10
-		int foodStored;
-		amountCart capacity;
 
-		InputManager* input;
+		//TODO DEBE SER ESTE COMPONENTE EL QUE GESTIONE CUANDO COÑO CAMBIAR LA IMAGEN DEL CARRITO. QUITAR DEL PLAYER INTERACT
+		int foodStored;
+
+		//NO SE DONDE NI COMO CARGAR LA LISTA PERO OKAY
+		map<foodType, int> infoList;
+
+		map<foodType, int> actualList;
+		
 
 	};
 }
