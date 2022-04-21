@@ -11,6 +11,7 @@
 #include <Scene.h>
 #include <Mesh.h>
 #include <Rigibody.h>
+#include <FoodCartComponent.h>
 
 El_Horno::PlayerInteract::PlayerInteract() : sizeCart(0), capacity(empty)
 {
@@ -51,9 +52,8 @@ bool El_Horno::PlayerInteract::processCollisionStay(Event* ev)
 	if (idEntity != nullptr) {
 
 		//Y es el carrito de la compra...
-		if (idEntity->isCart()) {
-			manageCart();
-			return true;
+		if (idEntity->isCart()) {			
+			return manageCart(ev);
 		}
 		//Si es la estanteria...
 		else if (idEntity->isEstantery()) {
@@ -63,46 +63,43 @@ bool El_Horno::PlayerInteract::processCollisionStay(Event* ev)
 	return false;
 }
 
-void El_Horno::PlayerInteract::manageCart()
+bool El_Horno::PlayerInteract::manageCart(Event* ev)
 {
+	// Coge Id de la entidad
+	Entity* entity = static_cast<rbTriggerStay*>(ev)->other_->getParent();
+	
+	//TODO CREO QUE ESTÁ MAL ESTA MIERDA EL NOMBRE NO SE CUAL ES
+	FoodCartComponent* ay = entity->getComponent<FoodCartComponent>("FoodCartComponent");
 
 	//Si pulsas la tecla E...
 	if (input->isKeyDown(SDL_SCANCODE_E)) {
 
-		//TODO ELIMINAMOS EL OBJETO QUE TENGA EN LA MANO
+		//TODO ELIMINAR ESTA MIERDA
+		foodType joemacho = (foodType)1;
 
-		//TODO COMPROBAR SI EL OBJETO QUE QUIERO METER SE PUEDE METER O LO TIRO AL SUELO
-		//Mientras no esté hecho siempre se añade y ale
-		sizeCart++;
+		//Si puedo meterlo..
+		if (!ay->puedoMeterlo(joemacho)) {
+			//Elimino el objeto que tenga en la mano
 
-		//TODO SWITCH
-		switch (sizeCart)
-		{
-		case 10:
-			capacity = full;
-			//PROGRAMAR EL CAMBIO DE CARRITO
-			break;
-		case 7:
-			capacity = half_Full;
-			//PROGRAMAR EL CAMBIO DE CARRITO
-			break;
-		case 3:
-			capacity = half_Empty;
-			//PROGRAMAR EL CAMBIO DE CARRITO
-			break;
-		case 0:
-			capacity = empty;
-			//PROGRAMAR EL CAMBIO DE CARRITO
-			break;
-		default:
-			break;
+
+
+			return true;
+		}
+		//No puedes meterlo
+		else {
+			//Lo tiro a tomar por culo
+
+
+			//Igual aqui es otro return true creo
+			return false;
 		}
 
-		//Meter algun return false en la comprobacion en caso de que no se pueda meter supongo
-		//O igual no pq tb ocurre un evento de tirar el objeto al suelo no c no soi 100tifiko
+		
 	}
+
 	//TODO SI PULSAS OTRA TECLA COGES O SUELTAS EL CARRITO
 
+	return false;
 }
 
 bool El_Horno::PlayerInteract::manageEstantery(Entity* entity, EntityId* idEntity)

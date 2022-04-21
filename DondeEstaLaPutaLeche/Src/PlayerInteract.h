@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _ESTANTERY_COMPONENT_H
-#define _ESTANTERY_COMPONENT_H
+#ifndef _PLAYER_INTERACT_H
+#define _PLAYER_INTERACT_H
 
 #include <Component.h>
 
@@ -23,7 +23,7 @@ namespace El_Horno {
 	protected:
 		
 		bool processCollisionStay(Event* ev);
-		void manageCart();
+		bool manageCart(Event* ev);
 		bool manageEstantery(Entity* entity, EntityId* idEntity);
 		//void dropItem();
 		//Valores de 0 a 10

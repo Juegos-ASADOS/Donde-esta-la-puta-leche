@@ -4,6 +4,7 @@
 #include "FoodCartComponent.h"
 #include <EntityId.h>
 
+
 El_Horno::FoodCartComponent::FoodCartComponent()
 {
 
@@ -13,6 +14,12 @@ void El_Horno::FoodCartComponent::start()
 {
 	//Guardar de alguna manera todos los int del mapa para hacer relaciones de cuantos elementos de quedan
 	//AAAAAAAAAA TODO
+	for (auto it = infoList.begin(); it != infoList.end(); it++) {
+		//Sumamos toda la comida que tenga que meter
+		allFoodStored += it->second;
+
+	}
+
 }
 
 void El_Horno::FoodCartComponent::update()
@@ -35,7 +42,7 @@ bool El_Horno::FoodCartComponent::puedoMeterlo(foodType comida)
 		//Si los alimentos que tengo son menores a los que necesito...
 		if (actualList.at(aux->first) < aux->second) {
 
-		
+
 
 			//Le sumamos el alimento
 			actualList.find(comida)->second++;
