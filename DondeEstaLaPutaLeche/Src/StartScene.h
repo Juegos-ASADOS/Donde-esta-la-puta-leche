@@ -2,10 +2,10 @@
 #ifndef _START_SCENE_H
 #define _START_SCENE_H
 
-#include <Scene.h>
+#include <GameScene.h>
 
 namespace El_Horno {
-	class StartScene : public Scene
+	class StartScene : public GameScene
 	{
 	public:
 		//StartScene() : Scene() {};

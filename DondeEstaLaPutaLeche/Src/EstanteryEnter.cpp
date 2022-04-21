@@ -53,8 +53,8 @@ bool El_Horno::EstanteryEnter::recieveEvent(Event* ev)
 
 				/*product->addComponent<Transform>("transform", HornoVector3(playerTr->getHornoPosition().x_ + 4, playerTr->getHornoPosition().y_, playerTr->getHornoPosition().z_),
 					HornoVector3(0, 0, 0), HornoVector3(0.25, 0.25, 0.25));*/
-				product->addComponent<Transform>("transform", HornoVector3(-10, 10, 0),
-					HornoVector3(-90, 0, 0), HornoVector3(25, 25, 25));
+				product->addComponent<Transform>("transform", HornoVector3(-10, 0, 0),
+					HornoVector3(-90, 0, 0), HornoVector3(1, 1, 1));
 
 				product->addComponent<Mesh>("mesh", estComp->getId());
 				product->addComponent<RigidBody>("rigidbody", 2.0f, true, true, 0);

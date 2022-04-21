@@ -21,15 +21,21 @@
   <ItemGroup>
     <ClCompile Include="..\..\Src\EntityId.cpp" />
     <ClCompile Include="..\..\Src\EstanteryEnter.cpp" />
+    <ClCompile Include="..\..\Src\FoodCartComponent.cpp" />
+    <ClCompile Include="..\..\Src\GameScene.cpp" />
     <ClCompile Include="..\..\Src\Main.cpp" />
     <ClCompile Include="..\..\Src\PlayerController.cpp" />
+    <ClCompile Include="..\..\Src\PlayerInteract.cpp" />
     <ClCompile Include="..\..\Src\StartScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Src\FoodCartComponent.h" />
     <ClInclude Include="..\..\Src\EntityId.h" />
     <ClInclude Include="..\..\Src\EstanteryEnter.h" />
     <ClInclude Include="..\..\Src\GameFactories.h" />
+    <ClInclude Include="..\..\Src\GameScene.h" />
     <ClInclude Include="..\..\Src\PlayerController.h" />
+    <ClInclude Include="..\..\Src\PlayerInteract.h" />
     <ClInclude Include="..\..\Src\StartScene.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -148,7 +154,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Engine\ElHorno\Src\ElHornoBase;$(SolutionDir)Engine\ElHorno\dependencies\Ogre\Src\OgreMain\include;$(SolutionDir)Engine\ElHorno\dependencies\Ogre\Build\include;$(SolutionDir)Engine\ElHorno\Src\ElHornoBullet;$(SolutionDir)Src;$(SolutionDir)Engine\ElHorno\dependencies\Bullet\Src\src;$(SolutionDir)Engine\ElHorno\Src\ElHornoOgre;$(SolutionDir)Engine\ElHorno\dependencies\Ogre\Build\SDL2-2.0.20\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Engine\ElHorno\Src\ElHornoBase;$(SolutionDir)Engine\ElHorno\dependencies\Ogre\Src\OgreMain\include;$(SolutionDir)Engine\ElHorno\dependencies\Ogre\Build\include;$(SolutionDir)Engine\ElHorno\Src\ElHornoBullet;$(SolutionDir)Src;$(SolutionDir)Engine\ElHorno\dependencies\Bullet\Src\src;$(SolutionDir)Engine\ElHorno\Src\ElHornoOgre;$(SolutionDir)Engine\ElHorno\dependencies\Ogre\Build\SDL2-2.0.20\include;$(SolutionDir)Engine\ElHorno\Src\ElHornoLua;$(SolutionDir)Engine\ElHorno\dependencies\lua\Src;$(SolutionDir)Engine\ElHorno\dependencies\LuaBridge\Distribution</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -165,7 +171,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Engine\ElHorno\Src\ElHornoBase;$(SolutionDir)Engine\ElHorno\dependencies\Ogre\Src\OgreMain\include;$(SolutionDir)Engine\ElHorno\dependencies\Ogre\Build\include;$(SolutionDir)Engine\ElHorno\Src\ElHornoBullet;$(SolutionDir)Src;$(SolutionDir)Engine\ElHorno\dependencies\Bullet\Src\src;$(SolutionDir)Engine\ElHorno\Src\ElHornoOgre;$(SolutionDir)Engine\ElHorno\dependencies\Ogre\Build\SDL2-2.0.20\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Engine\ElHorno\Src\ElHornoBase;$(SolutionDir)Engine\ElHorno\dependencies\Ogre\Src\OgreMain\include;$(SolutionDir)Engine\ElHorno\dependencies\Ogre\Build\include;$(SolutionDir)Engine\ElHorno\Src\ElHornoBullet;$(SolutionDir)Src;$(SolutionDir)Engine\ElHorno\dependencies\Bullet\Src\src;$(SolutionDir)Engine\ElHorno\Src\ElHornoOgre;$(SolutionDir)Engine\ElHorno\dependencies\Ogre\Build\SDL2-2.0.20\include;$(SolutionDir)Engine\ElHorno\Src\ElHornoLua;$(SolutionDir)Engine\ElHorno\dependencies\lua\Src;$(SolutionDir)Engine\ElHorno\dependencies\LuaBridge\Distribution</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
