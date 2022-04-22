@@ -7,11 +7,9 @@
 
 //Componente propio del carrito que gestiona las cosas que tenga en la lista
 
-using namespace std;
 
 namespace El_Horno {
 
-	enum foodType {Tomatico, platanito, pescao, carne};
 	class FoodCartComponent : public Component
 	{
 	public:
@@ -20,7 +18,7 @@ namespace El_Horno {
 		void start() override;
 		void update() override;
 
-		bool puedoMeterlo(foodType comida);
+		bool puedoMeterlo(std::string comida);
 
 	protected:
 
@@ -29,9 +27,9 @@ namespace El_Horno {
 		int allFoodStored;
 
 		//NO SE DONDE NI COMO CARGAR LA LISTA PERO OKAY
-		map<foodType, int> infoList;
+		std::map<std::string, int> infoList;
 
-		map<foodType, int> actualList;
+		std::map<std::string, int> actualList;
 	};
 }
 #endif 

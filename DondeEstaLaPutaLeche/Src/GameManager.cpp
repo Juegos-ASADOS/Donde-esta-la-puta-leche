@@ -60,6 +60,7 @@ bool El_Horno::GameManager::checkObject(std::string objectId)
 {
 	auto it = list_.find(objectId);
 	if (it != list_.end() && it->second > 0) {
+		//Lo puedo meter
 		it->second -= 1;
 		return true;
 	}
