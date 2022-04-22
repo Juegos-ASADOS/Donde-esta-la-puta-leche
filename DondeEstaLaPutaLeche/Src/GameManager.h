@@ -29,8 +29,10 @@ namespace El_Horno {
 		
 		bool checkObject(std::string objectId);
 		void togglePaused();
+		void checkEnd();
 		inline const bool hasWon() { return win_; };
 		inline const int getWrongProductNumber() { return wrongProducts_; };
+		const float getProductCompletionPercentaje();
 	protected:
 		static GameManager* instance_;
 		std::map<std::string, int> list_;
@@ -42,6 +44,7 @@ namespace El_Horno {
 		float maxTime_;
 
 		int productNum_,
+			maxProducts_,
 			wrongProducts_;
 
 		bool win_;

@@ -35,7 +35,6 @@ void GameManager::erase()
 void El_Horno::GameManager::start()
 {
 	gameState_ = GameState::STARTSTATE;
-	win_ = false;
 }
 
 void El_Horno::GameManager::update()
@@ -43,8 +42,7 @@ void El_Horno::GameManager::update()
 	if (gameState_ == GameState::RUNNING && gameTimer_->getTime() >= maxTime_) {
 		//Game over
 	}
-	else if (gameState_ == GameState::RUNNING && productNum_ <= 0) {
-		win_ = true;
+	else if (gameState_ == GameState::RUNNING && win_) {
 		//Ganar
 	}
 }
@@ -56,6 +54,7 @@ void El_Horno::GameManager::setLevel(float maxTime, std::map<std::string, int> l
 	maxTime_ = maxTime;
 	list_ = list;
 	productNum_ = productNum;
+	maxProducts_ = productNum;
 	win_ = false;
 
 	gameTimer_->resetTimer();
@@ -98,4 +97,19 @@ void El_Horno::GameManager::togglePaused()
 
 		gameTimer_->resetTimer();
 	}
+}
+
+// Comprueba si están todos los objetos en el carro
+// para dar por valida la victoria
+void El_Horno::GameManager::checkEnd()
+{
+	if (productNum_ <= 0)
+		win_ = true;
+}
+
+// Comprueba el procentaje de productos en el carro para cambiar 
+// la cantidad mostrada en la mesh
+const float El_Horno::GameManager::getProductCompletionPercentaje()
+{
+	return 100 - (productNum_ / maxProducts_ * 100);
 }
