@@ -8,7 +8,7 @@
 #include <AudioComponent.h>
 #include <AudioListenerComponent.h>
 #include <ParticleSystem.h>
-#include <UIPushButton.h>
+//#include <UIPushButton.h>
 #include <Rigibody.h>
 #include <Mesh.h>
 #include <AnimatorController.h>
@@ -68,11 +68,9 @@ namespace El_Horno {
 		stanChild->addComponent<Transform>("transform", HornoVector3(-50, 10, 0), HornoVector3(0, 0, 0), HornoVector3(3, 3, 3));
 		stanChild->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
 		
-		b = addEntity("button1", "prueba");
+		//b = addEntity("button1", "prueba");
 		//b->addComponent<Transform>("transform", HornoVector3(0,0,0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
-		const char* look = "TaharezLook";
-		const char* name = "push1";
-		b->addComponent<UIPushButton>("pushbutton", look, 0.05f, 0.05f, 0.2f, 0.1f, name);
+		//b->addComponent<UIPushButton>("pushbutton", "TaharezLook", 0.05f, 0.05f, 0.2f, 0.1f, "push1");
 
 		std::cout << "ESCENA CARGADA\n";
 	}
