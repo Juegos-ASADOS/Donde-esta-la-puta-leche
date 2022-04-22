@@ -34,8 +34,8 @@ void GameManager::erase()
 
 void El_Horno::GameManager::start()
 {
-	gameState_ = GameState::MAINMENU;
-	listComplete_ = false;
+	gameState_ = GameState::STARTSTATE;
+	win_ = false;
 }
 
 void El_Horno::GameManager::update()
@@ -43,27 +43,43 @@ void El_Horno::GameManager::update()
 	if (gameState_ == GameState::RUNNING && gameTimer_->getTime() >= maxTime_) {
 		//Game over
 	}
+	else if (gameState_ == GameState::RUNNING && productNum_ <= 0) {
+		win_ = true;
+		//Ganar
+	}
 }
 
 // Establece los parametros iniciales de scene
-void El_Horno::GameManager::setLevel(float maxTime, std::map<std::string, int> list)
+void El_Horno::GameManager::setLevel(float maxTime, std::map<std::string, int> list, int productNum)
 {
+	wrongProducts_ = 0;
 	maxTime_ = maxTime;
 	list_ = list;
+	productNum_ = productNum;
+	win_ = false;
 
 	gameTimer_->resetTimer();
+
+	if (gameState_ == GameState::STARTSTATE)
+		gameState_ = GameState::MAINMENU;
+	else if (gameState_ == GameState::MAINMENU)
+		gameState_ = GameState::RUNNING;
+	else if (gameState_ == GameState::RUNNING)
+		gameState_ = GameState::MAINMENU;
 }
 
 // Busca la id en la lista, si está, resta uno a second. Si no está
-// o está a 0 devuelve false
+// o está a 0 devuelve false y añade un producto erroneo
 bool El_Horno::GameManager::checkObject(std::string objectId)
 {
 	auto it = list_.find(objectId);
 	if (it != list_.end() && it->second > 0) {
 		//Lo puedo meter
 		it->second -= 1;
+		productNum_--;
 		return true;
 	}
+	wrongProducts_++;
 	return false;
 }
 

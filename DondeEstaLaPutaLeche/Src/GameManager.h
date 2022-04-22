@@ -9,7 +9,7 @@
 namespace El_Horno {
 	class RigidBody;
 	class Timer;
-	enum GameState {RUNNING, PAUSED, MAINMENU};
+	enum GameState {RUNNING, PAUSED, MAINMENU, STARTSTATE};
 
 	class GameManager : public Component
 	{
@@ -25,10 +25,12 @@ namespace El_Horno {
 		void start() override;
 		void update() override;
 
-		void setLevel(float maxTime, std::map<std::string, int> list);
+		void setLevel(float maxTime, std::map<std::string, int> list, int proctNum);
 		
 		bool checkObject(std::string objectId);
 		void togglePaused();
+		inline const bool hasWon() { return win_; };
+		inline const int getWrongProductNumber() { return wrongProducts_; };
 	protected:
 		static GameManager* instance_;
 		std::map<std::string, int> list_;
@@ -39,7 +41,10 @@ namespace El_Horno {
 		Timer* gameTimer_;
 		float maxTime_;
 
-		bool listComplete_;
+		int productNum_,
+			wrongProducts_;
+
+		bool win_;
 	};
 }
 #endif 
