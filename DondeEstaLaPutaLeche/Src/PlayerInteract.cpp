@@ -12,6 +12,7 @@
 #include <Mesh.h>
 #include <Rigibody.h>
 #include <FoodCartComponent.h>
+#include <GameManager.h>
 
 El_Horno::PlayerInteract::PlayerInteract() : sizeCart(0), capacity(empty)
 {
@@ -25,15 +26,51 @@ void El_Horno::PlayerInteract::start()
 
 void El_Horno::PlayerInteract::update()
 {
+	//TODO SI PULSAS LA R TIRAS EL PUTO OBJETO AL SUELO Y A MAMARLA
+	if (input->isKeyDown(SDL_SCANCODE_R)) {
 
+		std::string idName = buscoIdHijo();
+
+		//Si tengo algún objeto cualquiera en la mano
+		if (idName != "") {
+	
+			//Lo tiro al puto suelo
+			//TODO
+
+		}
+
+	}
+}
+
+std::string El_Horno::PlayerInteract::buscoIdHijo()
+{
+	std::string idName = "";
+	//Recorro el vector hasta encontrar uno que tenga el componente entityId
+	auto it = entity_->getChildren().begin();
+	bool idFound = false;
+
+	while (it != entity_->getChildren().end() && !idFound) {
+
+		//Cogemos el posible id
+		auto id = (*it)->getComponent<EntityId>("entityId");
+		//
+		if (id != nullptr) {
+			idName = id->getId();
+			idFound = true;
+		}
+		it++;
+	}
+
+	return idName;
 }
 
 bool El_Horno::PlayerInteract::recieveEvent(Event* ev)
 {
 	//Comprobamos colisiones
-	if (ev->ty_ == EventType::CollisionStay) {
+	if (ev->ty_ == EventType::TriggerStay) {
 		return processCollisionStay(ev);
 	}
+
 	return false;
 }
 
@@ -52,8 +89,8 @@ bool El_Horno::PlayerInteract::processCollisionStay(Event* ev)
 	if (idEntity != nullptr) {
 
 		//Y es el carrito de la compra...
-		if (idEntity->isCart()) {			
-			return manageCart(ev);
+		if (idEntity->isCart()) {
+			return manageCart(ev, entity);
 		}
 		//Si es la estanteria...
 		else if (idEntity->isEstantery()) {
@@ -63,48 +100,51 @@ bool El_Horno::PlayerInteract::processCollisionStay(Event* ev)
 	return false;
 }
 
-bool El_Horno::PlayerInteract::manageCart(Event* ev)
+bool El_Horno::PlayerInteract::manageCart(Event* ev, Entity* entity)
 {
-	// Coge Id de la entidad
-	Entity* entity = static_cast<rbTriggerStay*>(ev)->other_->getParent();
-	
-	//TODO CREO QUE ESTÁ MAL ESTA MIERDA EL NOMBRE NO SE CUAL ES
-	FoodCartComponent* ay = entity->getComponent<FoodCartComponent>("FoodCartComponent");
-
 	//Si pulsas la tecla E...
 	if (input->isKeyDown(SDL_SCANCODE_E)) {
 
-		//TODO ELIMINAR ESTA MIERDA
-		foodType joemacho = (foodType)1;
-
-		//Si puedo meterlo..
-		if (!ay->puedoMeterlo(joemacho)) {
-			//Elimino el objeto que tenga en la mano
+		//Si no tiene nada en la mano (A parte del trigger)...
+		//TODO TENDRA QUE SER ==1 PQ EL TRIGGER YA ES UN HIJO
+		if (entity_->getChildCount() == 0) {
+			//Me agarro al puto carrito
 
 
 
 			return true;
 		}
-		//No puedes meterlo
 		else {
-			//Lo tiro a tomar por culo
 
+			std::string idName = buscoIdHijo();
 
-			//Igual aqui es otro return true creo
-			return false;
+			
+
+			//Si esta dentro de la lista...
+			if (!GameManager::getInstance()->checkObject(idName)) {
+				//No necesito añadirlo a la lista pq el metodo de antes del GM ya lo hace
+
+				//Elimino el objeto que tenga en la mano
+				//TODO
+
+				return true;
+			}
+			//Si te has equivocado...
+			else {
+				//La penalizacion está hecha en el GM
+
+				//Elimino el objeto que tenga en la mano
+				//TODO
+
+				return true;
+			}
 		}
-
-		
 	}
-
-	//TODO SI PULSAS OTRA TECLA COGES O SUELTAS EL CARRITO
-
 	return false;
 }
 
 bool El_Horno::PlayerInteract::manageEstantery(Entity* entity, EntityId* idEntity)
 {
-
 	//Si no tiene alimentos que coger...
 	if (entity_->getChildCount() != 0)
 		//No ocurre nada

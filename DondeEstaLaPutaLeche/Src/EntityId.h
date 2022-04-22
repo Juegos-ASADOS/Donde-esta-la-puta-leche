@@ -10,7 +10,7 @@ namespace El_Horno {
 	class EntityId : public Component
 	{
 	public:
-		EntityId(std::string id, bool est = false) : id_(id), isEstantery_(est) {};
+		EntityId(std::string id, bool est = false, bool isCart = false) : id_(id), isEstantery_(est), isCart_(isCart) {};
 
 		//void start() override;
 

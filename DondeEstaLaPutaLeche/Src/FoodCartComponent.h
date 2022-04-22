@@ -5,13 +5,12 @@
 #include <Component.h>
 #include <map>
 
-//Componente propio del carrito que gestiona las cosas que tenga en la lista
+//Componente propio del carrito que gestiona el cambio de imagen 
 
-using namespace std;
+//Para cambiar el carrito accedemos al componente MESH y lo cambio
 
 namespace El_Horno {
 
-	enum foodType {Tomatico, platanito, pescao, carne};
 	class FoodCartComponent : public Component
 	{
 	public:
@@ -20,18 +19,18 @@ namespace El_Horno {
 		void start() override;
 		void update() override;
 
-		bool puedoMeterlo(foodType comida);
+		bool puedoMeterlo(std::string comida);
 
 	protected:
 
-		//TODO DEBE SER ESTE COMPONENTE EL QUE GESTIONE CUANDO COÑO CAMBIAR LA IMAGEN DEL CARRITO. QUITAR DEL PLAYER INTERACT
+		//TODO DEBE SER ESTE COMPONENTE EL QUE GESTIONE CUANDO COï¿½O CAMBIAR LA IMAGEN DEL CARRITO. QUITAR DEL PLAYER INTERACT
 		int foodStored;
 		int allFoodStored;
 
 		//NO SE DONDE NI COMO CARGAR LA LISTA PERO OKAY
-		map<foodType, int> infoList;
+		std::map<std::string, int> infoList;
 
-		map<foodType, int> actualList;
+		std::map<std::string, int> actualList;
 	};
 }
 #endif 

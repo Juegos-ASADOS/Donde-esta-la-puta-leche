@@ -45,6 +45,9 @@
     <ClCompile Include="..\..\Src\GameScene.cpp">
       <Filter>Archivos de origen\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Src\GameManager.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Src\StartScene.h">
@@ -70,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Src\GameScene.h">
       <Filter>Archivos de encabezado\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\GameManager.h">
+      <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

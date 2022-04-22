@@ -17,13 +17,15 @@ namespace El_Horno {
 
 		void start() override;
 		void update() override;
+		//Metodo para hallar el ID del objeto que tengo en la mano
+		std::string buscoIdHijo();
 
 		virtual bool recieveEvent(Event* ev);
 
 	protected:
 		
 		bool processCollisionStay(Event* ev);
-		bool manageCart(Event* ev);
+		bool manageCart(Event* ev,Entity* entity);
 		bool manageEstantery(Entity* entity, EntityId* idEntity);
 		//void dropItem();
 		//Valores de 0 a 10
