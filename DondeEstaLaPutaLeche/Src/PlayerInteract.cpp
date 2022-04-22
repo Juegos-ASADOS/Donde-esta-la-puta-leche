@@ -13,8 +13,9 @@
 #include <Rigibody.h>
 #include <FoodCartComponent.h>
 #include <GameManager.h>
+#include <SceneManager.h>
 
-El_Horno::PlayerInteract::PlayerInteract() : sizeCart(0), capacity(empty)
+El_Horno::PlayerInteract::PlayerInteract() : sizeCart(0), capacity(empty), llevaCarrito(true)
 {
 }
 
@@ -33,7 +34,7 @@ void El_Horno::PlayerInteract::update()
 
 		//Si tengo algún objeto cualquiera en la mano
 		if (idName != "") {
-	
+
 			//Lo tiro al puto suelo
 			//TODO
 
@@ -62,6 +63,21 @@ std::string El_Horno::PlayerInteract::buscoIdHijo()
 	}
 
 	return idName;
+}
+
+//Eliminamos de la mano el objeto que tenga para añadirlo al carrito
+void El_Horno::PlayerInteract::eliminoAlimento()
+{
+	auto it = entity_->getChildren().begin();
+
+	//Avanza hasta encontrar al objeto
+	while ((*it)->getComponent<EntityId>("entityId") != nullptr) {
+		it++;
+	}
+
+	//Le digo al manager que me elimine la instancia
+	SceneManager::getInstance()->getCurrentScene()->deleteEntity((*it)->getName());
+
 }
 
 bool El_Horno::PlayerInteract::recieveEvent(Event* ev)
@@ -105,38 +121,54 @@ bool El_Horno::PlayerInteract::manageCart(Event* ev, Entity* entity)
 	//Si pulsas la tecla E...
 	if (input->isKeyDown(SDL_SCANCODE_E)) {
 
-		//Si no tiene nada en la mano (A parte del trigger)...
-		//TODO TENDRA QUE SER ==1 PQ EL TRIGGER YA ES UN HIJO
-		if (entity_->getChildCount() == 0) {
-			//Me agarro al puto carrito
-
-
+		//Si estoy moviendome con el carrito
+		if (llevaCarrito) {
+			//Dejo el carrito suelto
+			entity->setParent(nullptr);
+			llevaCarrito = false;
 
 			return true;
 		}
 		else {
+			//Si no tiene nada en la mano (A parte del trigger) y no tienes carrito...
+			//TODO TENDRA QUE SER ==1 PQ EL TRIGGER YA ES UN HIJO
+			if (entity_->getChildCount() == 0) {
 
-			std::string idName = buscoIdHijo();
+				//Hago hijo al carrito para que se mueva junto con el player
+				entity->setParent(entity_);
 
-			
+				//Habrá que ajustar esto para posicionar al carro justo agarrado de la mano del player
 
-			//Si esta dentro de la lista...
-			if (!GameManager::getInstance()->checkObject(idName)) {
-				//No necesito añadirlo a la lista pq el metodo de antes del GM ya lo hace
-
-				//Elimino el objeto que tenga en la mano
-				//TODO
+				llevaCarrito = true;
 
 				return true;
 			}
-			//Si te has equivocado...
+			//Si lo que quiero es meter un objeto...
 			else {
-				//La penalizacion está hecha en el GM
 
-				//Elimino el objeto que tenga en la mano
-				//TODO
+				//Busco el id del objeto
+				std::string idName = buscoIdHijo();
 
-				return true;
+				//Si esta dentro de la lista...
+				if (GameManager::getInstance()->checkObject(idName)) {
+					//No necesito añadirlo a la lista pq el metodo de antes del GM ya lo hace
+
+					//Elimino el objeto que tenga en la mano
+					eliminoAlimento();
+
+					//Cambio el mesh por un carrito que pese más
+
+					//TODO
+
+					return true;
+				}
+				//Si te has equivocado...
+				else {
+					//La penalizacion está hecha en el GM				
+					//Elimino el objeto que tenga en la mano
+					eliminoAlimento();
+					return true;
+				}
 			}
 		}
 	}

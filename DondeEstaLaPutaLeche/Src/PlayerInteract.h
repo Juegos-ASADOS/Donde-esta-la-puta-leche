@@ -19,6 +19,7 @@ namespace El_Horno {
 		void update() override;
 		//Metodo para hallar el ID del objeto que tengo en la mano
 		std::string buscoIdHijo();
+		void eliminoAlimento();
 
 		virtual bool recieveEvent(Event* ev);
 
@@ -30,6 +31,8 @@ namespace El_Horno {
 		//void dropItem();
 		//Valores de 0 a 10
 		int sizeCart;
+
+		bool llevaCarrito;
 		amountCart capacity;
 
 		InputManager* input;
