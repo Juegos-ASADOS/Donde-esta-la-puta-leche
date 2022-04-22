@@ -12,6 +12,7 @@
 #include <Mesh.h>
 #include <Rigibody.h>
 #include <FoodCartComponent.h>
+#include <GameManager.h>
 
 El_Horno::PlayerInteract::PlayerInteract() : sizeCart(0), capacity(empty)
 {
@@ -31,7 +32,7 @@ void El_Horno::PlayerInteract::update()
 bool El_Horno::PlayerInteract::recieveEvent(Event* ev)
 {
 	//Comprobamos colisiones
-	if (ev->ty_ == EventType::CollisionStay) {
+	if (ev->ty_ == EventType::TriggerStay) {
 		return processCollisionStay(ev);
 	}
 	return false;
@@ -53,7 +54,7 @@ bool El_Horno::PlayerInteract::processCollisionStay(Event* ev)
 
 		//Y es el carrito de la compra...
 		if (idEntity->isCart()) {			
-			return manageCart(ev);
+			return manageCart(ev,entity);
 		}
 		//Si es la estanteria...
 		else if (idEntity->isEstantery()) {
@@ -63,35 +64,41 @@ bool El_Horno::PlayerInteract::processCollisionStay(Event* ev)
 	return false;
 }
 
-bool El_Horno::PlayerInteract::manageCart(Event* ev)
+bool El_Horno::PlayerInteract::manageCart(Event* ev, Entity* entity)
 {
-	// Coge Id de la entidad
-	Entity* entity = static_cast<rbTriggerStay*>(ev)->other_->getParent();
 	
-	//TODO CREO QUE ESTÁ MAL ESTA MIERDA EL NOMBRE NO SE CUAL ES
-	FoodCartComponent* ay = entity->getComponent<FoodCartComponent>("FoodCartComponent");
+	//Si no tiene alimentos que coger...
+	
+	//TODO TENDRA QUE SER ==1 PQ EL TRIGGER YA ES UN HIJO
+	if (entity_->getChildCount() == 0)
+		//No ocurre nada
+		return false;
 
 	//Si pulsas la tecla E...
 	if (input->isKeyDown(SDL_SCANCODE_E)) {
 
-		//TODO ELIMINAR ESTA MIERDA
-		foodType joemacho = (foodType)1;
-
 		//Si puedo meterlo..
-		if (!ay->puedoMeterlo(joemacho)) {
-			//Elimino el objeto que tenga en la mano
+		if (!GameManager::getInstance()->checkObject("ay")) {
+			//No necesito añadirlo a la lista pq el metodo de antes del GM ya lo hace
 
+
+			//Elimino el objeto que tenga en la mano
+			
+
+			//TODO
 
 
 			return true;
 		}
 		//No puedes meterlo
 		else {
+
 			//Lo tiro a tomar por culo
 
 
+
 			//Igual aqui es otro return true creo
-			return false;
+			return true;
 		}
 
 		

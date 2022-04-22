@@ -23,7 +23,7 @@ namespace El_Horno {
 	protected:
 		
 		bool processCollisionStay(Event* ev);
-		bool manageCart(Event* ev);
+		bool manageCart(Event* ev,Entity* entity);
 		bool manageEstantery(Entity* entity, EntityId* idEntity);
 		//void dropItem();
 		//Valores de 0 a 10
