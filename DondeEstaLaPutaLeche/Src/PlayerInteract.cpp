@@ -26,7 +26,42 @@ void El_Horno::PlayerInteract::start()
 
 void El_Horno::PlayerInteract::update()
 {
+	//TODO SI PULSAS LA R TIRAS EL PUTO OBJETO AL SUELO Y A MAMARLA
+	if (input->isKeyDown(SDL_SCANCODE_R)) {
 
+		std::string idName = buscoIdHijo();
+
+		//Si tengo algún objeto cualquiera en la mano
+		if (idName != "") {
+	
+			//Lo tiro al puto suelo
+			//TODO
+
+		}
+
+	}
+}
+
+std::string El_Horno::PlayerInteract::buscoIdHijo()
+{
+	std::string idName = "";
+	//Recorro el vector hasta encontrar uno que tenga el componente entityId
+	auto it = entity_->getChildren().begin();
+	bool idFound = false;
+
+	while (it != entity_->getChildren().end() && !idFound) {
+
+		//Cogemos el posible id
+		auto id = (*it)->getComponent<EntityId>("entityId");
+		//
+		if (id != nullptr) {
+			idName = id->getId();
+			idFound = true;
+		}
+		it++;
+	}
+
+	return idName;
 }
 
 bool El_Horno::PlayerInteract::recieveEvent(Event* ev)
@@ -35,6 +70,7 @@ bool El_Horno::PlayerInteract::recieveEvent(Event* ev)
 	if (ev->ty_ == EventType::TriggerStay) {
 		return processCollisionStay(ev);
 	}
+
 	return false;
 }
 
@@ -53,8 +89,8 @@ bool El_Horno::PlayerInteract::processCollisionStay(Event* ev)
 	if (idEntity != nullptr) {
 
 		//Y es el carrito de la compra...
-		if (idEntity->isCart()) {			
-			return manageCart(ev,entity);
+		if (idEntity->isCart()) {
+			return manageCart(ev, entity);
 		}
 		//Si es la estanteria...
 		else if (idEntity->isEstantery()) {
@@ -66,52 +102,49 @@ bool El_Horno::PlayerInteract::processCollisionStay(Event* ev)
 
 bool El_Horno::PlayerInteract::manageCart(Event* ev, Entity* entity)
 {
-	
-	//Si no tiene alimentos que coger...
-	
-	//TODO TENDRA QUE SER ==1 PQ EL TRIGGER YA ES UN HIJO
-	if (entity_->getChildCount() == 0)
-		//No ocurre nada
-		return false;
-
 	//Si pulsas la tecla E...
 	if (input->isKeyDown(SDL_SCANCODE_E)) {
 
-		//Si puedo meterlo..
-		if (!GameManager::getInstance()->checkObject("ay")) {
-			//No necesito añadirlo a la lista pq el metodo de antes del GM ya lo hace
+		//Si no tiene nada en la mano (A parte del trigger)...
+		//TODO TENDRA QUE SER ==1 PQ EL TRIGGER YA ES UN HIJO
+		if (entity_->getChildCount() == 0) {
+			//Me agarro al puto carrito
 
-
-			//Elimino el objeto que tenga en la mano
-			
-
-			//TODO
 
 
 			return true;
 		}
-		//No puedes meterlo
 		else {
 
-			//Lo tiro a tomar por culo
+			std::string idName = buscoIdHijo();
 
+			
 
+			//Si esta dentro de la lista...
+			if (!GameManager::getInstance()->checkObject(idName)) {
+				//No necesito añadirlo a la lista pq el metodo de antes del GM ya lo hace
 
-			//Igual aqui es otro return true creo
-			return true;
+				//Elimino el objeto que tenga en la mano
+				//TODO
+
+				return true;
+			}
+			//Si te has equivocado...
+			else {
+				//La penalizacion está hecha en el GM
+
+				//Elimino el objeto que tenga en la mano
+				//TODO
+
+				return true;
+			}
 		}
-
-		
 	}
-
-	//TODO SI PULSAS OTRA TECLA COGES O SUELTAS EL CARRITO
-
 	return false;
 }
 
 bool El_Horno::PlayerInteract::manageEstantery(Entity* entity, EntityId* idEntity)
 {
-
 	//Si no tiene alimentos que coger...
 	if (entity_->getChildCount() != 0)
 		//No ocurre nada

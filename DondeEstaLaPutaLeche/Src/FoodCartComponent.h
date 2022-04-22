@@ -5,8 +5,9 @@
 #include <Component.h>
 #include <map>
 
-//Componente propio del carrito que gestiona las cosas que tenga en la lista
+//Componente propio del carrito que gestiona el cambio de imagen 
 
+//Para cambiar el carrito accedemos al componente MESH y lo cambio
 
 namespace El_Horno {
 

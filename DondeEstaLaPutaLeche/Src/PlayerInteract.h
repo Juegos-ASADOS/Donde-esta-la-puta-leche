@@ -17,6 +17,8 @@ namespace El_Horno {
 
 		void start() override;
 		void update() override;
+		//Metodo para hallar el ID del objeto que tengo en la mano
+		std::string buscoIdHijo();
 
 		virtual bool recieveEvent(Event* ev);
 
