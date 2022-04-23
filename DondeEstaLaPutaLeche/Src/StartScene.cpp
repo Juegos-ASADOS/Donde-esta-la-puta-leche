@@ -19,6 +19,8 @@
 #include <PlayerController.h>
 #include <EntityId.h>
 #include <EstanteryEnter.h>
+#include <Patrol.h>
+#include <vector>
 
 namespace El_Horno {
 	void StartScene::init()
@@ -67,6 +69,19 @@ namespace El_Horno {
 		Entity* stanChild = addEntity("estanteryTrigger", "prueba", b);
 		stanChild->addComponent<Transform>("transform", HornoVector3(-50, 10, 0), HornoVector3(0, 0, 0), HornoVector3(3, 3, 3));
 		stanChild->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
+		
+		std::vector<HornoVector3> patata; 
+
+		patata.push_back(HornoVector3(-200, 10, 0));
+		patata.push_back(HornoVector3(-220, 10, 0));
+		patata.push_back(HornoVector3(-210, 10, -20));
+
+		b = addEntity("moneco", "prueba");
+		b->addComponent<Transform>("transform", HornoVector3(-200, 10, 0), HornoVector3(0, 0, 0), HornoVector3(0.5, 0.5, 0.5));
+		b->addComponent<Mesh>("mesh", "cube");
+		b->addComponent<RigidBody>("rigidbody", 3.0f, false, false, 0);
+		b->addComponent<Patrol>("patrol", 100, patata);
+
 		
 		//b = addEntity("button1", "prueba");
 		//b->addComponent<Transform>("transform", HornoVector3(0,0,0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
