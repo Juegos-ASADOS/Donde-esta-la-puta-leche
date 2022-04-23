@@ -31,13 +31,9 @@ void El_Horno::Patrol::update()
 			pos = positions.front();
 		}
 
-		auto dir = HornoVectorToBullet(pos) - HornoVectorToBullet(tr->getHornoPosition());
+		auto dir = HornoVectorToBullet(pos) - HornoVectorToBullet(tr->getHornoGlobalPosition());
 
 		rb->setLinearVelocity(dir.normalized() * speed);
-
-		std::cout << "GOING TO " << pos.x_ << " " << pos.y_ << " " << pos.z_ << "\n";
-		std::cout << "FROM " << tr->getHornoPosition().x_ << " " << tr->getHornoPosition().y_ << " " << tr->getHornoPosition().z_ << "\n";
-
 	}
 }
 
@@ -53,7 +49,7 @@ void El_Horno::Patrol::addPosition(const HornoVector3& pos)
 
 bool El_Horno::Patrol::isClose()
 {
-	auto diff = HornoVectorToBullet(tr->getHornoPosition()) - HornoVectorToBullet(positions.front());
+	auto diff = HornoVectorToBullet(tr->getHornoGlobalPosition()) - HornoVectorToBullet(positions.front());
 	double magnitude = diff.length();
 
 	return magnitude <= minRange;

@@ -72,15 +72,15 @@ namespace El_Horno {
 		
 		std::vector<HornoVector3> patata; 
 
+		patata.push_back(HornoVector3(-150, 10, 0));
 		patata.push_back(HornoVector3(-200, 10, 0));
-		patata.push_back(HornoVector3(-220, 10, 0));
-		patata.push_back(HornoVector3(-210, 10, -20));
+		patata.push_back(HornoVector3(-175, 10, -20));
 
 		b = addEntity("moneco", "prueba");
-		b->addComponent<Transform>("transform", HornoVector3(-200, 10, 0), HornoVector3(0, 0, 0), HornoVector3(0.5, 0.5, 0.5));
+		b->addComponent<Transform>("transform", HornoVector3(-150, 10, 0), HornoVector3(0, 0, 0), HornoVector3(0.5, 0.5, 0.5));
 		b->addComponent<Mesh>("mesh", "cube");
 		b->addComponent<RigidBody>("rigidbody", 3.0f, false, false, 0);
-		b->addComponent<Patrol>("patrol", 100, patata);
+		b->addComponent<Patrol>("patrol", 50, patata);
 
 		
 		//b = addEntity("button1", "prueba");
