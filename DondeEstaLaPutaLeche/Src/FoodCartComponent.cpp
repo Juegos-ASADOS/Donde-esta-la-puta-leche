@@ -21,5 +21,5 @@ void El_Horno::FoodCartComponent::update()
 
 bool El_Horno::FoodCartComponent::puedoMeterlo(std::string comida)
 {
-	return false;
+	return true;
 }

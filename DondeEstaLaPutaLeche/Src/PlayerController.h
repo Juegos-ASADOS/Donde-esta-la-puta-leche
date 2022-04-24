@@ -12,14 +12,15 @@ namespace El_Horno {
 	class PlayerController : public Component
 	{
 	public:
-		PlayerController(float s) : speed(s) {};
+		PlayerController(float s) : speed_(s), maxForce_(155) {};
 
 		void start() override;
 		void update() override;
 	protected:
-		float speed;
-		RigidBody* rb;
-		InputManager* input;
+		float speed_;
+		RigidBody* rb_;
+		InputManager* input_;
+		int maxForce_;
 	};
 }
 #endif 
