@@ -21,7 +21,6 @@
 namespace El_Horno {
 	void StartScene::init()
 	{
-		GameScene::init();
 		testScene();
 	}
 
