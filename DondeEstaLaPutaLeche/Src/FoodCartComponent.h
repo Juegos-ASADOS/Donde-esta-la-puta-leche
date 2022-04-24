@@ -1,12 +1,16 @@
 #pragma once
-#ifndef _ESTANTERY_COMPONENT_H
-#define _ESTANTERY_COMPONENT_H
+#ifndef _FOODCART_COMPONENT_H
+#define _FOODCART_COMPONENT_H
 
 #include <Component.h>
+#include <map>
 
-//UNIFICAR Y CREAR UN SOLO PLAYER INTERACT PARA ESTANTERIAS Y CARRITO
+//Componente propio del carrito que gestiona el cambio de imagen 
+
+//Para cambiar el carrito accedemos al componente MESH y lo cambio
+
 namespace El_Horno {
-	enum amountCart {empty,half_Empty, half_Full, full};
+
 	class FoodCartComponent : public Component
 	{
 	public:
@@ -15,16 +19,18 @@ namespace El_Horno {
 		void start() override;
 		void update() override;
 
-		virtual bool recieveEvent(Event* ev);
+		bool puedoMeterlo(std::string comida);
 
 	protected:
-		
-		//Valores de 0 a 10
+
+		//TODO DEBE SER ESTE COMPONENTE EL QUE GESTIONE CUANDO CO�O CAMBIAR LA IMAGEN DEL CARRITO. QUITAR DEL PLAYER INTERACT
 		int foodStored;
-		amountCart capacity;
+		int allFoodStored;
 
-		InputManager* input;
+		//NO SE DONDE NI COMO CARGAR LA LISTA PERO OKAY
+		std::map<std::string, int> infoList;
 
+		std::map<std::string, int> actualList;
 	};
 }
 #endif 

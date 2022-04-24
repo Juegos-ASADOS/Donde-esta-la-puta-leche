@@ -11,8 +11,11 @@
 #include <Scene.h>
 #include <Mesh.h>
 #include <Rigibody.h>
+#include <FoodCartComponent.h>
+#include <GameManager.h>
+#include <SceneManager.h>
 
-El_Horno::PlayerInteract::PlayerInteract() : sizeCart(0), capacity(empty)
+El_Horno::PlayerInteract::PlayerInteract() : sizeCart(0), capacity(empty), llevaCarrito(true)
 {
 }
 
@@ -24,101 +27,182 @@ void El_Horno::PlayerInteract::start()
 
 void El_Horno::PlayerInteract::update()
 {
+	//TODO SI PULSAS LA R TIRAS EL PUTO OBJETO AL SUELO Y A MAMARLA
+	if (input->isKeyDown(SDL_SCANCODE_R)) {
+
+		std::string idName = buscoIdHijo();
+
+		//Si tengo algún objeto cualquiera en la mano
+		if (idName != "") {
+
+			//Lo tiro al puto suelo
+			//TODO
+
+		}
+
+	}
+}
+
+std::string El_Horno::PlayerInteract::buscoIdHijo()
+{
+	std::string idName = "";
+	//Recorro el vector hasta encontrar uno que tenga el componente entityId
+	auto it = entity_->getChildren().begin();
+	bool idFound = false;
+
+	while (it != entity_->getChildren().end() && !idFound) {
+
+		//Cogemos el posible id
+		auto id = (*it)->getComponent<EntityId>("entityId");
+		//
+		if (id != nullptr) {
+			idName = id->getId();
+			idFound = true;
+		}
+		it++;
+	}
+
+	return idName;
+}
+
+//Eliminamos de la mano el objeto que tenga para añadirlo al carrito
+void El_Horno::PlayerInteract::eliminoAlimento()
+{
+	auto it = entity_->getChildren().begin();
+
+	//Avanza hasta encontrar al objeto
+	while ((*it)->getComponent<EntityId>("entityId") != nullptr) {
+		it++;
+	}
+
+	//Le digo al manager que me elimine la instancia
+	SceneManager::getInstance()->getCurrentScene()->deleteEntity((*it)->getName());
 
 }
 
 bool El_Horno::PlayerInteract::recieveEvent(Event* ev)
 {
 	//Comprobamos colisiones
-	if (ev->ty_ == EventType::CollisionStay) {
+	if (ev->ty_ == EventType::TriggerStay) {
+		return processCollisionStay(ev);
+	}
 
-		// Coge Id de la entidad
-		Entity* entity = static_cast<rbTriggerStay*>(ev)->other_->getParent();
+	return false;
+}
 
-		if (entity == nullptr)
-			return false;
+bool El_Horno::PlayerInteract::processCollisionStay(Event* ev)
+{
+	// Coge Id de la entidad
+	Entity* entity = static_cast<rbTriggerStay*>(ev)->other_->getParent();
 
-		EntityId* idEntity = entity->getComponent<EntityId>("entityid");
+	if (entity == nullptr)
+		return false;
 
-		//TODO SI TIENE ALGUN OBJETO EN LA MANO...
+	EntityId* idEntity = entity->getComponent<EntityId>("entityid");
 
-		if (idEntity != nullptr) {
+	//TODO SI TIENE ALGUN OBJETO EN LA MANO...
 
-			//Y es el carrito de la compra...
-			if (idEntity->isCart()) {
+	if (idEntity != nullptr) {
 
-				//Si pulsas la tecla E...
-				if (input->isKeyDown(SDL_SCANCODE_E)) {
+		//Y es el carrito de la compra...
+		if (idEntity->isCart()) {
+			return manageCart(ev, entity);
+		}
+		//Si es la estanteria...
+		else if (idEntity->isEstantery()) {
+			return manageEstantery(entity, idEntity);
+		}
+	}
+	return false;
+}
 
-					//TODO ELIMINAMOS EL OBJETO QUE TENGA EN LA MANO
+bool El_Horno::PlayerInteract::manageCart(Event* ev, Entity* entity)
+{
+	//Si pulsas la tecla E...
+	if (input->isKeyDown(SDL_SCANCODE_E)) {
 
-					//TODO COMPROBAR SI EL OBJETO QUE QUIERO METER SE PUEDE METER O LO TIRO AL SUELO
-					//Mientras no esté hecho siempre se añade y ale
-					sizeCart++;
+		//Si estoy moviendome con el carrito
+		if (llevaCarrito) {
+			//Dejo el carrito suelto
+			entity->setParent(nullptr);
+			llevaCarrito = false;
 
-					//TODO SWITCH
-					switch (sizeCart)
-					{
-					case 10:
-						capacity = full;
-						//PROGRAMAR EL CAMBIO DE CARRITO
-						break;
-					case 7:
-						capacity = half_Full;
-						//PROGRAMAR EL CAMBIO DE CARRITO
-						break;
-					case 3:
-						capacity = half_Empty;
-						//PROGRAMAR EL CAMBIO DE CARRITO
-						break;
-					case 0:
-						capacity = empty;
-						//PROGRAMAR EL CAMBIO DE CARRITO
-						break;
-					default:
-						break;
-					}
+			return true;
+		}
+		else {
+			//Si no tiene nada en la mano (A parte del trigger) y no tienes carrito...
+			//TODO TENDRA QUE SER ==1 PQ EL TRIGGER YA ES UN HIJO
+			if (entity_->getChildCount() == 0) {
 
-					//Meter algun return false en la comprobacion en caso de que no se pueda meter supongo
-					//O igual no pq tb ocurre un evento de tirar el objeto al suelo no c no soi 100tifiko
+				//Hago hijo al carrito para que se mueva junto con el player
+				entity->setParent(entity_);
+
+				//Habrá que ajustar esto para posicionar al carro justo agarrado de la mano del player
+
+				llevaCarrito = true;
+
+				return true;
+			}
+			//Si lo que quiero es meter un objeto...
+			else {
+
+				//Busco el id del objeto
+				std::string idName = buscoIdHijo();
+
+				//Si esta dentro de la lista...
+				if (GameManager::getInstance()->checkObject(idName)) {
+					//No necesito añadirlo a la lista pq el metodo de antes del GM ya lo hace
+
+					//Elimino el objeto que tenga en la mano
+					eliminoAlimento();
+
+					//Cambio el mesh por un carrito que pese más
+
+					//TODO
+
 					return true;
 				}
-				//TODO SI PULSAS OTRA TECLA COGES O SUELTAS EL CARRITO
-
-			}
-			//Si es la estanteria...
-			else if (idEntity->isEstantery()) {
-
-				//Si no tiene alimentos que coger...
-				if (entity_->getChildCount() != 0)
-					//No ocurre nada
-					return false;
-
-				// TODO Mostrar tecla E en la UI 
-
-				if (input->isKeyDown(SDL_SCANCODE_E)) {
-
-					Scene* scene = entity->getScene();
-					Transform* playerTr = entity_->getComponent<Transform>("transform");
-
-					// Crear entidad producto
-					Entity* product = scene->addEntity("product", scene->getName(), entity_);
-
-					/*product->addComponent<Transform>("transform", HornoVector3(playerTr->getHornoPosition().x_ + 4, playerTr->getHornoPosition().y_, playerTr->getHornoPosition().z_),
-						HornoVector3(0, 0, 0), HornoVector3(0.25, 0.25, 0.25));*/
-					product->addComponent<Transform>("transform", HornoVector3(-10, 10, 0),
-						HornoVector3(-90, 0, 0), HornoVector3(25, 25, 25));
-
-					product->addComponent<Mesh>("mesh", idEntity->getId());
-					product->addComponent<RigidBody>("rigidbody", 2.0f, true, true, 0);
-					product->addComponent<EntityId>("entityid", idEntity->getId());
-
-					product->start();
-
+				//Si te has equivocado...
+				else {
+					//La penalizacion está hecha en el GM				
+					//Elimino el objeto que tenga en la mano
+					eliminoAlimento();
 					return true;
 				}
 			}
 		}
 	}
 	return false;
+}
+
+bool El_Horno::PlayerInteract::manageEstantery(Entity* entity, EntityId* idEntity)
+{
+	//Si no tiene alimentos que coger...
+	if (entity_->getChildCount() != 0)
+		//No ocurre nada
+		return false;
+
+	// TODO Mostrar tecla E en la UI 
+
+	if (input->isKeyDown(SDL_SCANCODE_E)) {
+
+		Scene* scene = entity->getScene();
+		Transform* playerTr = entity_->getComponent<Transform>("transform");
+
+		// Crear entidad producto
+		Entity* product = scene->addEntity("product", scene->getName(), entity_);
+
+		/*product->addComponent<Transform>("transform", HornoVector3(playerTr->getHornoPosition().x_ + 4, playerTr->getHornoPosition().y_, playerTr->getHornoPosition().z_),
+			HornoVector3(0, 0, 0), HornoVector3(0.25, 0.25, 0.25));*/
+		product->addComponent<Transform>("transform", HornoVector3(-10, 10, 0),
+			HornoVector3(-90, 0, 0), HornoVector3(25, 25, 25));
+
+		product->addComponent<Mesh>("mesh", idEntity->getId());
+		product->addComponent<RigidBody>("rigidbody", 2.0f, true, true, 0);
+		product->addComponent<EntityId>("entityid", idEntity->getId());
+
+		product->start();
+
+		return true;
+	}
 }
