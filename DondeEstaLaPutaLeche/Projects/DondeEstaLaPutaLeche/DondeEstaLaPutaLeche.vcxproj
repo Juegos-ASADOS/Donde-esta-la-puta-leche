@@ -23,7 +23,6 @@
     <ClCompile Include="..\..\Src\EstanteryEnter.cpp" />
     <ClCompile Include="..\..\Src\FoodCartComponent.cpp" />
     <ClCompile Include="..\..\Src\GameManager.cpp" />
-    <ClCompile Include="..\..\Src\GameScene.cpp" />
     <ClCompile Include="..\..\Src\Main.cpp" />
     <ClCompile Include="..\..\Src\Patrol.cpp" />
     <ClCompile Include="..\..\Src\PlayerController.cpp" />
@@ -36,7 +35,6 @@
     <ClInclude Include="..\..\Src\EstanteryEnter.h" />
     <ClInclude Include="..\..\Src\GameFactories.h" />
     <ClInclude Include="..\..\Src\GameManager.h" />
-    <ClInclude Include="..\..\Src\GameScene.h" />
     <ClInclude Include="..\..\Src\Patrol.h" />
     <ClInclude Include="..\..\Src\PlayerController.h" />
     <ClInclude Include="..\..\Src\PlayerInteract.h" />

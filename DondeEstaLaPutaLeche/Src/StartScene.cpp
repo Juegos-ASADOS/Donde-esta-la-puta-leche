@@ -21,10 +21,13 @@
 #include <EstanteryEnter.h>
 #include <Patrol.h>
 #include <vector>
+#include <LuaManager.h>
+#include <SceneManager.h>
 
 namespace El_Horno {
-	void StartScene::init()
+	void StartScene::init(std::string name)
 	{
+		name_ = name;
 		testScene();
 	}
 
@@ -81,6 +84,7 @@ namespace El_Horno {
 		b->addComponent<RigidBody>("rigidbody", 3.0f, false, false, 0);
 		b->addComponent<Patrol>("patrol", 50, patata);
 
+		//LuaManager::getInstance()->loadScene();
 		
 		//b = addEntity("button1", "prueba");
 		//b->addComponent<Transform>("transform", HornoVector3(0,0,0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));

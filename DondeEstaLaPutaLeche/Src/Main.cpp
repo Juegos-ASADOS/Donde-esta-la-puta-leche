@@ -2,6 +2,7 @@
 #include <StartScene.h>
 #include <Windows.h>
 #include <GameFactories.h>
+#include <SceneManager.h>
 
 extern "C"
 {
@@ -12,7 +13,8 @@ extern "C"
 
 	_declspec(dllexport) El_Horno::Scene* loadStartScene() {
 		El_Horno::StartScene* start = new El_Horno::StartScene();
-		start->init();
+		El_Horno::SceneManager::getInstance()->setScene(start);
+		start->init("prueba");
 		return start;
 	}
 }

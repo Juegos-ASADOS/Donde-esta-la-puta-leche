@@ -9,7 +9,7 @@ namespace El_Horno {
 	{
 	public:
 		//StartScene() : Scene() {};
-		virtual void init() override;
+		virtual void init(std::string name) override;
 		void testScene();
 	};
 }
