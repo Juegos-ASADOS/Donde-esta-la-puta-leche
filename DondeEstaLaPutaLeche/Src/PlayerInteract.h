@@ -5,10 +5,7 @@
 #include <Component.h>
 
 namespace El_Horno {
-	class EntityId;
-
-	enum amountCart {empty,half_Empty, half_Full, full};
-	
+	class EntityId;	
 	class PlayerInteract : public Component
 	{
 	public:
@@ -28,12 +25,9 @@ namespace El_Horno {
 		bool processCollisionStay(Event* ev);
 		bool manageCart(Event* ev,Entity* entity);
 		bool manageEstantery(Entity* entity, EntityId* idEntity);
-		//void dropItem();
-		//Valores de 0 a 10
-		int sizeCart;
+		void dropItem();
 
 		bool llevaCarrito;
-		amountCart capacity;
 
 		InputManager* input;
 

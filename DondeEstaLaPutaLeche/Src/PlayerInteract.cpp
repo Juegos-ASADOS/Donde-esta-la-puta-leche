@@ -16,7 +16,7 @@
 #include <SceneManager.h>
 #include <iostream>
 
-El_Horno::PlayerInteract::PlayerInteract() : sizeCart(0), capacity(empty), llevaCarrito(true)
+El_Horno::PlayerInteract::PlayerInteract() : llevaCarrito(true)
 {
 }
 
@@ -28,19 +28,9 @@ void El_Horno::PlayerInteract::start()
 
 void El_Horno::PlayerInteract::update()
 {
-	//TODO SI PULSAS LA R TIRAS EL PUTO OBJETO AL SUELO Y A MAMARLA
+	//Si pulsas la tecla R...
 	if (input->isKeyDown(SDL_SCANCODE_R)) {
-
-		std::string idName = buscoIdHijo();
-
-		//Si tengo algún objeto cualquiera en la mano
-		if (idName != "") {
-
-			//Lo tiro al puto suelo
-			//TODO
-
-		}
-
+		dropItem();
 	}
 }
 
@@ -77,7 +67,7 @@ void El_Horno::PlayerInteract::eliminoAlimento()
 	}
 
 	//Le digo al manager que me elimine la instancia si no apunta al final de la lista
-	if (it != entity_->getParent()->getChildren().end()) 
+	if (it != entity_->getParent()->getChildren().end())
 		return;
 	SceneManager::getInstance()->getCurrentScene()->deleteEntity((*it)->getName());
 }
@@ -103,8 +93,6 @@ bool El_Horno::PlayerInteract::processCollisionStay(Event* ev)
 
 	EntityId* idEntity = entity->getComponent<EntityId>("entityid");
 
-	//TODO SI TIENE ALGUN OBJETO EN LA MANO... Oscar: Está hecho abajo no?
-	
 	if (idEntity != nullptr) {
 
 		//Y es el carrito de la compra...
@@ -134,7 +122,6 @@ bool El_Horno::PlayerInteract::manageCart(Event* ev, Entity* entity)
 		}
 		else {
 			//Si no tiene nada en la mano (A parte del trigger) y no tienes carrito...
-			//TODO TENDRA QUE SER ==1 PQ EL TRIGGER YA ES UN HIJO
 			if (entity_->getParent()->getChildCount() == 1) {
 
 				//Hago hijo al carrito para que se mueva junto con el player
@@ -160,11 +147,38 @@ bool El_Horno::PlayerInteract::manageCart(Event* ev, Entity* entity)
 					eliminoAlimento();
 
 					//Cambio el mesh por un carrito que pese más
+					auto porcentaje = GameManager::getInstance()->getProductCompletionPercentaje();
+					if (porcentaje == 100) {
+						//Cambia a lleno
 
-					//TODO
+						//Eliminamos el mesh
+						entity->removeComponent("mesh");
+						//Y metemos el nuevo
+						entity->addComponent<Mesh>("mesh", "FullCart");
+						entity->getComponent<Mesh>("mesh")->start();
+					}
+					else if (porcentaje >= 50) {
+						//Cambia a medio lleno
+						//Eliminamos el mesh
+						entity->removeComponent("mesh");
+						//Y metemos el nuevo
+						entity->addComponent<Mesh>("mesh", "HalfFullCart");
+						entity->getComponent<Mesh>("mesh")->start();
+
+					}
+					else if (porcentaje > 0) {
+						//Cambia a medio vacio
+						//Eliminamos el mesh
+						entity->removeComponent("mesh");
+						//Y metemos el nuevo
+						entity->addComponent<Mesh>("mesh", "HalfEmptyCart");
+						entity->getComponent<Mesh>("mesh")->start();
+
+					}
 
 					return true;
 				}
+				//Si te has equivocado...
 				//Si te has equivocado...
 				else {
 					//La penalizacion está hecha en el GM				
@@ -205,5 +219,28 @@ bool El_Horno::PlayerInteract::manageEstantery(Entity* entity, EntityId* idEntit
 		product->start();
 
 		return true;
+	}
+}
+
+void El_Horno::PlayerInteract::dropItem()
+{
+	//Recorro el vector hasta encontrar uno que tenga el componente entityId
+	auto it = entity_->getParent()->getChildren().begin();
+	bool idFound = false;
+
+	while (it != entity_->getChildren().end() && !idFound) {
+
+		//Cogemos el posible id
+		auto id = (*it)->getComponent<EntityId>("entityId");
+
+		//Si tiene objeto en la mano...
+		if (id != nullptr) {
+			idFound = true;
+
+			//Y lo tiro
+			//Con esto la gravedad deberia de aplicarse y se deberia de caer al suelo no?
+			(*it)->setParent(nullptr);
+		}
+		it++;
 	}
 }
