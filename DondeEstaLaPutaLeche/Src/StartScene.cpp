@@ -17,7 +17,9 @@
 #include <HornoVector3.h>
 #include <FactoryCreator.h>
 #include <PlayerController.h>
+#include <PlayerInteract.h>
 #include <EntityId.h>
+#include <HornoVector3.h>
 #include <EstanteryEnter.h>
 #include <Patrol.h>
 #include <vector>
@@ -44,17 +46,22 @@ namespace El_Horno {
 		a->addComponent<AudioListenerComponent>("audioListener");
 
 		Entity* b = addEntity("player", "prueba");
-		b->addComponent<Transform>("transform", HornoVector3(-50, 70, 0), HornoVector3(0, 0, 0), p);
+		b->addComponent<Transform>("transform", HornoVector3(-50, 40, 0), HornoVector3(0, 0, 0), p);
 		b->addComponent<Mesh>("mesh", "Sinbad");
 		b->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
 		/*b->addComponent<AnimatorController>("animatorController");
 		b->addComponent<SinbadAnimTest>("sinbadAnimTest");*/
 		b->addComponent<AudioComponent>("audioComponent");
-		b->addComponent<PlayerController>("playercontroller", 500.0f);
-		b->addComponent<EstanteryEnter>("estanteryenter");
+		b->addComponent<PlayerController>("playercontroller", 300.0f);
+		//b->addComponent<EstanteryEnter>("estanteryenter");
+
+		Entity* playerChild = addEntity("playerTrigger", "prueba", b);
+		playerChild->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
+		playerChild->addComponent<RigidBody>("rigidbody", 2.0f, true, true, 0);
+		playerChild->addComponent<PlayerInteract>("playerinteract");
 
 		b = addEntity("object", "prueba");
-		b->addComponent<Transform>("transform", HornoVector3(0, -15, 0), HornoVector3(0, 0, 0), HornoVector3(5, 0.1, 5));
+		b->addComponent<Transform>("transform", HornoVector3(0, -15, 0), HornoVector3(0, 0, 0), HornoVector3(15, 0.1, 15));
 		b->addComponent<Mesh>("mesh", "cube");
 		b->addComponent<RigidBody>("rigidbody", 0.0f, false, false, 0);
 
@@ -69,18 +76,19 @@ namespace El_Horno {
 		b->addComponent<EntityId>("entityid", "Agua", true);
 
 		Entity* stanChild = addEntity("estanteryTrigger", "prueba", b);
-		stanChild->addComponent<Transform>("transform", HornoVector3(-50, 10, 0), HornoVector3(0, 0, 0), HornoVector3(3, 3, 3));
+		stanChild->addComponent<Transform>("transform", HornoVector3(-50, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
 		stanChild->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
 		
 		std::vector<HornoVector3> patata; 
 
 		patata.push_back(HornoVector3(-150, 10, 0));
-		patata.push_back(HornoVector3(-200, 10, 0));
-		patata.push_back(HornoVector3(-175, 10, -20));
+		patata.push_back(HornoVector3(-250, 10, 0));
+		patata.push_back(HornoVector3(-250, 10, -100));
+		patata.push_back(HornoVector3(-150, 10, -100));
 
 		b = addEntity("moneco", "prueba");
 		b->addComponent<Transform>("transform", HornoVector3(-150, 10, 0), HornoVector3(0, 0, 0), HornoVector3(0.5, 0.5, 0.5));
-		b->addComponent<Mesh>("mesh", "cube");
+		b->addComponent<Mesh>("mesh", "penguin");
 		b->addComponent<RigidBody>("rigidbody", 3.0f, false, false, 0);
 		b->addComponent<Patrol>("patrol", 50, patata);
 
