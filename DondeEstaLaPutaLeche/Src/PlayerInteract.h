@@ -16,7 +16,8 @@ namespace El_Horno {
 		void update() override;
 		//Metodo para hallar el ID del objeto que tengo en la mano
 		std::string buscoIdHijo();
-		void eliminoAlimento();
+		void deleteAliment();
+		void imInCartRegister(bool imIn);
 
 		virtual bool recieveEvent(Event* ev);
 
@@ -24,10 +25,14 @@ namespace El_Horno {
 		
 		bool processCollisionStay(Event* ev);
 		bool manageCart(Event* ev,Entity* entity);
+		bool manageCashRegister(Event* ev);
 		bool manageEstantery(Entity* entity, EntityId* idEntity);
 		void dropItem();
 
-		bool llevaCarrito;
+		void changeCartSize(Entity* entity);
+
+		bool carryingCart;
+		bool inCashRegister;
 
 		InputManager* input;
 

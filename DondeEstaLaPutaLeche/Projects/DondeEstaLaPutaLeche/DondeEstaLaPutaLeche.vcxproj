@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Src\CashRegister.cpp" />
     <ClCompile Include="..\..\Src\EntityId.cpp" />
     <ClCompile Include="..\..\Src\EstanteryEnter.cpp" />
     <ClCompile Include="..\..\Src\FoodCartComponent.cpp" />
@@ -30,6 +31,7 @@
     <ClCompile Include="..\..\Src\StartScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Src\CashRegister.h" />
     <ClInclude Include="..\..\Src\FoodCartComponent.h" />
     <ClInclude Include="..\..\Src\EntityId.h" />
     <ClInclude Include="..\..\Src\EstanteryEnter.h" />
