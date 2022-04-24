@@ -17,8 +17,9 @@
 #include <HornoVector3.h>
 #include <FactoryCreator.h>
 #include <PlayerController.h>
+#include <PlayerInteract.h>
 #include <EntityId.h>
-#include <EstanteryEnter.h>
+#include <HornoVector3.h>
 
 namespace El_Horno {
 	void StartScene::init()
@@ -47,7 +48,12 @@ namespace El_Horno {
 		b->addComponent<SinbadAnimTest>("sinbadAnimTest");*/
 		b->addComponent<AudioComponent>("audioComponent");
 		b->addComponent<PlayerController>("playercontroller", 500.0f);
-		b->addComponent<EstanteryEnter>("estanteryenter");
+		//b->addComponent<EstanteryEnter>("estanteryenter");
+
+		Entity* playerChild = addEntity("playerTrigger", "prueba", b);
+		playerChild->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
+		playerChild->addComponent<RigidBody>("rigidbody", 2.0f, true, true, 0);
+		playerChild->addComponent<PlayerInteract>("playerinteract");
 
 		b = addEntity("object", "prueba");
 		b->addComponent<Transform>("transform", HornoVector3(0, -15, 0), HornoVector3(0, 0, 0), HornoVector3(5, 0.1, 5));
@@ -65,7 +71,7 @@ namespace El_Horno {
 		b->addComponent<EntityId>("entityid", "Agua", true);
 
 		Entity* stanChild = addEntity("estanteryTrigger", "prueba", b);
-		stanChild->addComponent<Transform>("transform", HornoVector3(-50, 10, 0), HornoVector3(0, 0, 0), HornoVector3(3, 3, 3));
+		stanChild->addComponent<Transform>("transform", HornoVector3(-50, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
 		stanChild->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
 		
 		//b = addEntity("button1", "prueba");
