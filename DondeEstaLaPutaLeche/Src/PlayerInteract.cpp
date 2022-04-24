@@ -143,25 +143,29 @@ bool El_Horno::PlayerInteract::manageCart(Event* ev, Entity* entity)
 				//Busco el id del objeto
 				std::string idName = buscoIdHijo();
 
+				//TODO CAMBIAR TODO ESTO
 				//Si esta dentro de la lista...
-				if (GameManager::getInstance()->checkObject(idName)) {
-					//No necesito añadirlo a la lista pq el metodo de antes del GM ya lo hace
+				//if (GameManager::getInstance()->checkObject(idName)) {
+				//	//No necesito añadirlo a la lista pq el metodo de antes del GM ya lo hace
 
-					//Elimino el objeto que tenga en la mano
-					deleteAliment();
+				//	//Elimino el objeto que tenga en la mano
+				//	deleteAliment();
 
-					//Y cambio el carrito d tamaño
-					changeCartSize(entity);
+				//	//Y cambio el carrito d tamaño
+				//	changeCartSize(entity);
 
-					return true;
-				}
-				//Si te has equivocado...
-				else {
-					//La penalizacion está hecha en el GM				
-					//Elimino el objeto que tenga en la mano
-					deleteAliment();
-					return true;
-				}
+				//	return true;
+				//}
+				////Si te has equivocado...
+				//else {
+				//	//La penalizacion está hecha en el GM		
+
+				//	//TODO reproducir algun sonido de que te has equivocado y por eso tiramos al suelo el objeto
+
+				//	//Elimino el objeto que tenga en la mano
+				//	deleteAliment();
+				//	return true;
+				//}
 			}
 		}
 	}
@@ -202,33 +206,25 @@ bool El_Horno::PlayerInteract::manageCashRegister(Event* ev)
 				return true;
 			}
 			//Si te has equivocado...
-			//Si te has equivocado...
 			else {
-				//La penalizacion está hecha en el GM				
-				//Elimino el objeto que tenga en la mano
-				deleteAliment();
+
+				//TODO Reproducir algun sonido en plan nono cariño que este objeto no está en la lista mi ciela 
 				return true;
 			}
-
-
-
-
-
-			return true;
-
-
-
-
 			return true;
 		}
 		//Si solo llevo un objeto en la mano...
 		else {
-			//Elimino el elemento que esté agarrando
+			//Le digo al GM que elimine el objeto de la lista (si se puede)
+
+
+			//Y destruyo el elemento que esté agarrando
 			deleteAliment();
 
 			//TODO No se si hay que sumar algun tipo de puntuacion rara o que
 		}
 	}
+
 	return false;
 }
 
