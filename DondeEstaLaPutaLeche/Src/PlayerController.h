@@ -16,6 +16,7 @@ namespace El_Horno {
 
 		void start() override;
 		void update() override;
+		inline void setSpeed(float s) { speed_ = s; };
 	protected:
 		float speed_;
 		RigidBody* rb_;

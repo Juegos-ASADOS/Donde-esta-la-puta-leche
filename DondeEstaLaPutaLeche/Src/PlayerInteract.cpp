@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "ElHornoBase.h"
 #include "PlayerInteract.h"
+#include "PlayerController.h"
 #include "Event.h"
 #include "InputManager.h"
 #include <EntityId.h>
@@ -14,6 +15,7 @@
 #include <FoodCartComponent.h>
 #include <GameManager.h>
 #include <SceneManager.h>
+#include <Rigibody.h>
 #include <iostream>
 
 El_Horno::PlayerInteract::PlayerInteract() : carryingCart(true)
@@ -120,6 +122,10 @@ bool El_Horno::PlayerInteract::manageCart(Event* ev, Entity* entity)
 		if (carryingCart) {
 			//Dejo el carrito suelto
 			entity->setParent(nullptr);
+			auto rb = entity_->getParent()->getComponent<RigidBody>("rigidbody");
+			rb->setDamping(1.0f, 1.0f);
+			auto pc = entity_->getParent()->getComponent<PlayerController>("playercontroller");
+			pc->setSpeed(300);
 			carryingCart = false;
 
 			return true;
@@ -132,7 +138,10 @@ bool El_Horno::PlayerInteract::manageCart(Event* ev, Entity* entity)
 				entity->setParent(entity_->getParent());
 
 				//Habrá que ajustar esto para posicionar al carro justo agarrado de la mano del player
-
+				auto rb = entity_->getParent()->getComponent<RigidBody>("rigidbody");
+				rb->setDamping(0.5f, 0.5f);
+				auto pc = entity_->getParent()->getComponent<PlayerController>("playercontroller");
+				pc->setSpeed(450);
 				carryingCart = true;
 
 				return true;
