@@ -53,12 +53,12 @@ namespace El_Horno {
 		b->addComponent<SinbadAnimTest>("sinbadAnimTest");*/
 		b->addComponent<AudioComponent>("audioComponent");
 		b->addComponent<PlayerController>("playercontroller", 300.0f);
-		//b->addComponent<EstanteryEnter>("estanteryenter");
+		b->addComponent<PlayerInteract>("playerinteract");
 
-		Entity* playerChild = addEntity("playerTrigger", "prueba", b);
+		//b->addComponent<EstanteryEnter>("estanteryenter");
+		/*Entity* playerChild = addEntity("playerTrigger", "prueba", b);
 		playerChild->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
-		playerChild->addComponent<RigidBody>("rigidbody", 2.0f, true, true, 0);
-		playerChild->addComponent<PlayerInteract>("playerinteract");
+		playerChild->addComponent<RigidBody>("rigidbody", 2.0f, true, false, 0);*/
 
 		b = addEntity("object", "prueba");
 		b->addComponent<Transform>("transform", HornoVector3(0, -15, 0), HornoVector3(0, 0, 0), HornoVector3(15, 0.1, 15));
@@ -73,11 +73,11 @@ namespace El_Horno {
 		b->addComponent<Transform>("transform", HornoVector3(50, 10, 0), HornoVector3(0, 0, 0), HornoVector3(0.5, 1, 0.25));
 		b->addComponent<Mesh>("mesh", "cube");
 		b->addComponent<RigidBody>("rigidbody", 0.0f, false, false, 0);
-		b->addComponent<EntityId>("entityid", "Agua", true);
 
 		Entity* stanChild = addEntity("estanteryTrigger", "prueba", b);
-		stanChild->addComponent<Transform>("transform", HornoVector3(-50, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
+		stanChild->addComponent<Transform>("transform", HornoVector3(00, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
 		stanChild->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
+		stanChild->addComponent<EntityId>("entityid", "Agua", true);
 		
 		std::vector<HornoVector3> patata; 
 

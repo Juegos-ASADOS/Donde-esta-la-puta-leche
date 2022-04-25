@@ -6,6 +6,7 @@
 
 namespace El_Horno {
 	class EntityId;	
+	class InputManager;
 	class PlayerInteract : public Component
 	{
 	public:
@@ -18,24 +19,25 @@ namespace El_Horno {
 		std::string buscoIdHijo();
 		void deleteAliment();
 		void imInCartRegister(bool imIn);
-
-		virtual bool recieveEvent(Event* ev);
+		inline void setEstantery(Entity* e) { triggerStay_ = e; };
 
 	protected:
 		
-		bool processCollisionStay(Event* ev);
-		bool manageCart(Event* ev,Entity* entity);
-		bool manageCashRegister(Event* ev);
-		bool manageEstantery(Entity* entity, EntityId* idEntity);
+		bool processCollisionStay();
+		bool manageCart(Entity* entity);
+		bool manageCashRegister();
+		bool manageEstantery(EntityId* idEntity);
 		void dropItem();
 
 		void changeCartSize(Entity* entity);
 
-		bool carryingCart;
-		bool inCashRegister;
+		bool carryingCart_;
+		bool inCashRegister_;
 
-		InputManager* input;
+		InputManager* input_;
 
+		//Variables de triggers
+		Entity* triggerStay_;
 	};
 }
 #endif 

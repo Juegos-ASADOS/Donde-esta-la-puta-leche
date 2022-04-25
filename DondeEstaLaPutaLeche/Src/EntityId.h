@@ -18,6 +18,8 @@ namespace El_Horno {
 		inline const bool isEstantery() { return isEstantery_; };
 		inline const bool isCart() { return isCart_; }
 		inline const bool isCashRegister() { return isCashRegister_; }
+
+		virtual bool recieveEvent(Event* ev);
 	protected:
 		std::string id_;
 		bool isEstantery_;
