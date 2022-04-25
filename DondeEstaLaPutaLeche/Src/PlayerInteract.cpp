@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "ElHornoBase.h"
 #include "PlayerInteract.h"
+#include "PlayerController.h"
 #include "Event.h"
 #include "InputManager.h"
 #include <EntityId.h>
@@ -14,6 +15,7 @@
 #include <FoodCartComponent.h>
 #include <GameManager.h>
 #include <SceneManager.h>
+#include <Rigibody.h>
 #include <iostream>
 
 El_Horno::PlayerInteract::PlayerInteract() : carryingCart_(true), triggerStay_(nullptr)
@@ -57,7 +59,7 @@ std::string El_Horno::PlayerInteract::buscoIdHijo()
 	return idName;
 }
 
-//Eliminamos de la mano el objeto que tenga para añadirlo al carrito
+//Eliminamos de la mano el objeto que tenga para aï¿½adirlo al carrito
 void El_Horno::PlayerInteract::deleteAliment()
 {
 	auto it = entity_->getChildren().begin();
@@ -105,6 +107,10 @@ bool El_Horno::PlayerInteract::manageCart(Entity* entity)
 		if (carryingCart_) {
 			//Dejo el carrito suelto
 			entity->setParent(nullptr);
+			auto rb = entity_->getParent()->getComponent<RigidBody>("rigidbody");
+			rb->setDamping(1.0f, 1.0f);
+			auto pc = entity_->getParent()->getComponent<PlayerController>("playercontroller");
+			pc->setSpeed(300);
 			carryingCart_ = false;
 
 			return true;
@@ -116,8 +122,11 @@ bool El_Horno::PlayerInteract::manageCart(Entity* entity)
 				//Hago hijo al carrito para que se mueva junto con el player
 				entity->setParent(entity_);
 
-				//Habrá que ajustar esto para posicionar al carro justo agarrado de la mano del player
-
+				//Habrï¿½ que ajustar esto para posicionar al carro justo agarrado de la mano del player
+				auto rb = entity_->getParent()->getComponent<RigidBody>("rigidbody");
+				rb->setDamping(0.5f, 0.5f);
+				auto pc = entity_->getParent()->getComponent<PlayerController>("playercontroller");
+				pc->setSpeed(450);
 				carryingCart_ = true;
 
 				return true;
@@ -131,19 +140,19 @@ bool El_Horno::PlayerInteract::manageCart(Entity* entity)
 				//TODO CAMBIAR TODO ESTO
 				//Si esta dentro de la lista...
 				//if (GameManager::getInstance()->checkObject(idName)) {
-				//	//No necesito añadirlo a la lista pq el metodo de antes del GM ya lo hace
+				//	//No necesito aï¿½adirlo a la lista pq el metodo de antes del GM ya lo hace
 
 				//	//Elimino el objeto que tenga en la mano
 				//	deleteAliment();
 
-				//	//Y cambio el carrito d tamaño
+				//	//Y cambio el carrito d tamaï¿½o
 				//	changeCartSize(entity);
 
 				//	return true;
 				//}
 				////Si te has equivocado...
 				//else {
-				//	//La penalizacion está hecha en el GM		
+				//	//La penalizacion estï¿½ hecha en el GM		
 
 				//	//TODO reproducir algun sonido de que te has equivocado y por eso tiramos al suelo el objeto
 
@@ -183,9 +192,9 @@ bool El_Horno::PlayerInteract::manageCashRegister()
 
 			//Si esta dentro de la lista...
 			if (GameManager::getInstance()->checkObject(idName)) {
-				//No necesito añadirlo a la lista pq el metodo de antes del GM ya lo hace
+				//No necesito aï¿½adirlo a la lista pq el metodo de antes del GM ya lo hace
 
-				//Y cambiamos el tamaño del carrito
+				//Y cambiamos el tamaï¿½o del carrito
 				changeCartSize(*it);
 
 				return true;
@@ -193,7 +202,7 @@ bool El_Horno::PlayerInteract::manageCashRegister()
 			//Si te has equivocado...
 			else {
 
-				//TODO Reproducir algun sonido en plan nono cariño que este objeto no está en la lista mi ciela 
+				//TODO Reproducir algun sonido en plan nono cariï¿½o que este objeto no estï¿½ en la lista mi ciela 
 				return true;
 			}
 			return true;
@@ -203,7 +212,7 @@ bool El_Horno::PlayerInteract::manageCashRegister()
 			//Le digo al GM que elimine el objeto de la lista (si se puede)
 
 
-			//Y destruyo el elemento que esté agarrando
+			//Y destruyo el elemento que estï¿½ agarrando
 			deleteAliment();
 
 			//TODO No se si hay que sumar algun tipo de puntuacion rara o que
@@ -215,7 +224,7 @@ bool El_Horno::PlayerInteract::manageCashRegister()
 
 bool El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 {
-	//Oscar: No se por que cogias la escena de otra entidad y no de esta¿?
+	//Oscar: No se por que cogias la escena de otra entidad y no de estaï¿½?
 	//Si tiene alimento en la mano...
 	if (entity_->getChildCount() != 1)
 		//No ocurre nada
@@ -262,7 +271,7 @@ void El_Horno::PlayerInteract::dropItem()
 			//Y lo tiro
 			//Con esto la gravedad deberia de aplicarse y se deberia de caer al suelo no?
 			(*it)->setParent(nullptr);
-			//TODO Igual queremos meter algo tipo que en vez de que solo caiga también lo impulses hacia una direccion random o algo no se
+			//TODO Igual queremos meter algo tipo que en vez de que solo caiga tambiï¿½n lo impulses hacia una direccion random o algo no se
 		}
 		it++;
 	}
@@ -271,7 +280,7 @@ void El_Horno::PlayerInteract::dropItem()
 //Cambia el mesh del carrito en funcion del porcentaje que tenga
 void El_Horno::PlayerInteract::changeCartSize(Entity* entity)
 {
-	//Cambio el mesh por un carrito que pese más
+	//Cambio el mesh por un carrito que pese mï¿½s
 	auto porcentaje = GameManager::getInstance()->getProductCompletionPercentaje();
 	if (porcentaje == 100) {
 		//Cambia a lleno
