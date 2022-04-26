@@ -13,7 +13,7 @@ namespace El_Horno {
 	class PlayerController : public Component
 	{
 	public:
-		PlayerController(float s) : speed_(s), maxForce_(155) {};
+		PlayerController(float s) : speed_(s), maxForce_(200) {};
 
 		void start() override;
 		void update() override;
@@ -22,7 +22,8 @@ namespace El_Horno {
 		float speed_;
 		RigidBody* rb_;
 		InputManager* input_;
-		int maxForce_;
+		int maxForce_,
+			offset_;
 		AnimatorController* anim_;
 		bool walking_;
 	};

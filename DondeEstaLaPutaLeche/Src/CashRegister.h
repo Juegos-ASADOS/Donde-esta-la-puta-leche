@@ -4,19 +4,17 @@
 
 #include <Component.h>
 
+//AHORA MISMO NO SIRVE DE NADA DE NADA AAAA TODO
 namespace El_Horno {
 
+	//Gestiona los eventos al llevar la comida a la madre
 	class CashRegister : public Component
 	{
 	public:
-		CashRegister() {};
-
-		void start() override;
-		void update() override;
+		CashRegister();
 		bool inCashRegister(Event* ev,bool enter);
 
 		virtual bool recieveEvent(Event* ev);
-	protected:
 	};
 }
 #endif 

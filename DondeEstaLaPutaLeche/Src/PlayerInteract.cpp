@@ -234,7 +234,6 @@ bool El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 		return false;
 
 	// TODO Mostrar tecla E en la UI 
-	std::cout << "pilla entidad\n";
 	if (input_->isKeyDown(SDL_SCANCODE_E)) {
 
 		Scene* scene = entity_->getScene();
@@ -259,24 +258,23 @@ bool El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 void El_Horno::PlayerInteract::dropItem()
 {
 	//Recorro el vector hasta encontrar uno que tenga el componente entityId
-	auto it = entity_->getChildren().begin();
+	vector<Entity*> it = entity_->getChildren();
 	bool idFound = false;
-
-	while (it != entity_->getChildren().end() && !idFound) {
+	int i = 0;
+	while (i < it.size() && !idFound) {
 
 		//Cogemos el posible id
-		auto id = (*it)->getComponent<EntityId>("entityId");
-
+		EntityId* id = it[i]->getComponent<EntityId>("entityid");
 		//Si tiene objeto en la mano...
 		if (id != nullptr) {
 			idFound = true;
 
 			//Y lo tiro
 			//Con esto la gravedad deberia de aplicarse y se deberia de caer al suelo no?
-			(*it)->setParent(nullptr);
+			it[i]->setParent(nullptr);
 			//TODO Igual queremos meter algo tipo que en vez de que solo caiga tambi�n lo impulses hacia una direccion random o algo no se
 		}
-		it++;
+		i++;
 	}
 }
 

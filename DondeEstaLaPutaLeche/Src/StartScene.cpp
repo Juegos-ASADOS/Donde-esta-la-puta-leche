@@ -50,7 +50,7 @@ namespace El_Horno {
 		b->addComponent<Mesh>("mesh", "pipo");
 		b->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
 		b->addComponent<AudioComponent>("audioComponent");
-		b->addComponent<PlayerController>("playercontroller", 800.0f);
+		b->addComponent<PlayerController>("playercontroller", 1500.0f);
 		b->addComponent<PlayerInteract>("playerinteract");
 
 		//Creacion maquina de estados animator

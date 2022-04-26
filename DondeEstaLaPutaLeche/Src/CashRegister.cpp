@@ -7,16 +7,11 @@
 #include <iostream>
 
 
-void El_Horno::CashRegister::start()
+El_Horno::CashRegister::CashRegister()
 {
-
 }
 
-void El_Horno::CashRegister::update()
-{
-
-}
-
+//Comunica al jugador si está dentro o fuera del trigger
 bool El_Horno::CashRegister::inCashRegister(Event* ev, bool enter)
 {
 	// Coge la entidad del jugador
@@ -37,9 +32,11 @@ bool El_Horno::CashRegister::inCashRegister(Event* ev, bool enter)
 
 bool El_Horno::CashRegister::recieveEvent(Event* ev)
 {
+	//Al entrar al trigger
 	if (ev->ty_ == EventType::TriggerEnter) {
 		return inCashRegister(ev, true);
 	}
+	//Al salir del trigger
 	else if (ev->ty_ == EventType::TriggerExit) {
 		return inCashRegister(ev, false);
 	}
