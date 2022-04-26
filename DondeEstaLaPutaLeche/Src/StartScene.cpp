@@ -36,7 +36,7 @@ namespace El_Horno {
 	void StartScene::testScene()
 	{
 		Entity* light = addEntity("light", "prueba");
-		light->addComponent<Transform>("transform", HornoVector3(0, 200, 0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
+		light->addComponent<Transform>("transform", HornoVector3(0, 200, 200), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
 		light->addComponent<LightComponent>("light", 0, HornoVector3(0, 0, 0));
 
 		Entity* a = addEntity("camera", "prueba");
@@ -47,13 +47,24 @@ namespace El_Horno {
 
 		Entity* b = addEntity("player", "prueba");
 		b->addComponent<Transform>("transform", HornoVector3(-50, 40, 0), HornoVector3(0, 0, 0), p);
-		b->addComponent<Mesh>("mesh", "Sinbad");
+		b->addComponent<Mesh>("mesh", "pipo");
 		b->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
-		/*b->addComponent<AnimatorController>("animatorController");
-		b->addComponent<SinbadAnimTest>("sinbadAnimTest");*/
 		b->addComponent<AudioComponent>("audioComponent");
 		b->addComponent<PlayerController>("playercontroller", 300.0f);
 		b->addComponent<PlayerInteract>("playerinteract");
+
+		//Creacion maquina de estados animator
+		std::vector<std::pair<std::string, std::string>> animVector;		
+		animVector.push_back(std::pair<std::string, std::string>("Idle", "walk"));
+		animVector.push_back(std::pair<std::string, std::string>("walk", "Idle"));
+		animVector.push_back(std::pair<std::string, std::string>("Idle_with_product", "walk_with_product"));
+		animVector.push_back(std::pair<std::string, std::string>("walk_with_product", "Idle_with_product"));
+		animVector.push_back(std::pair<std::string, std::string>("Idle_with_cart", "walk_with_cart"));
+		animVector.push_back(std::pair<std::string, std::string>("walk_with_cart", "Idle_with_cart"));
+		animVector.push_back(std::pair<std::string, std::string>("AnyState", "Idle"));
+		animVector.push_back(std::pair<std::string, std::string>("AnyState", "Idle_with_product"));
+		animVector.push_back(std::pair<std::string, std::string>("AnyState", "Idle_with_cart"));
+		b->addComponent<AnimatorController>("animatorController", animVector);
 
 		//b->addComponent<EstanteryEnter>("estanteryenter");
 		/*Entity* playerChild = addEntity("playerTrigger", "prueba", b);
@@ -91,6 +102,12 @@ namespace El_Horno {
 		b->addComponent<Mesh>("mesh", "penguin");
 		b->addComponent<RigidBody>("rigidbody", 3.0f, false, false, 0);
 		b->addComponent<Patrol>("patrol", 50, patata);
+
+		/*std::vector<std::pair<std::string, std::string>> animVectorNpc;
+		animVectorNpc.push_back(std::pair<std::string, std::string>("Idle", "npc_walk"));
+		animVectorNpc.push_back(std::pair<std::string, std::string>("npc_walk", "Idle"));
+		animVectorNpc.push_back(std::pair<std::string, std::string>("AnyState", "Idle"));
+		b->addComponent<AnimatorController>("animatorController", animVectorNpc);*/
 
 		//LuaManager::getInstance()->loadScene();
 		

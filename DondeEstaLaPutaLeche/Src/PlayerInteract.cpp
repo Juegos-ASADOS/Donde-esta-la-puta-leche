@@ -16,6 +16,7 @@
 #include <GameManager.h>
 #include <SceneManager.h>
 #include <Rigibody.h>
+#include <AnimatorController.h>
 #include <iostream>
 
 El_Horno::PlayerInteract::PlayerInteract() : carryingCart_(true), triggerStay_(nullptr)
@@ -104,7 +105,8 @@ bool El_Horno::PlayerInteract::manageCart(Entity* entity)
 	if (input_->isKeyDown(SDL_SCANCODE_E)) {
 
 		//Si estoy moviendome con el carrito
-		if (carryingCart_) {
+		if (carryingCart_) 
+		{
 			//Dejo el carrito suelto
 			entity->setParent(nullptr);
 			auto rb = entity_->getParent()->getComponent<RigidBody>("rigidbody");
@@ -112,6 +114,7 @@ bool El_Horno::PlayerInteract::manageCart(Entity* entity)
 			auto pc = entity_->getParent()->getComponent<PlayerController>("playercontroller");
 			pc->setSpeed(300);
 			carryingCart_ = false;
+
 
 			return true;
 		}

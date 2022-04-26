@@ -7,6 +7,8 @@
 namespace El_Horno {
 	class EntityId;	
 	class InputManager;
+	class AnimatorController;
+
 	class PlayerInteract : public Component
 	{
 	public:
@@ -35,6 +37,7 @@ namespace El_Horno {
 		bool inCashRegister_;
 
 		InputManager* input_;
+		AnimatorController* anim_;
 
 		//Variables de triggers
 		Entity* triggerStay_;

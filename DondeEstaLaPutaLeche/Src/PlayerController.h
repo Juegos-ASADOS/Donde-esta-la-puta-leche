@@ -8,6 +8,7 @@
 namespace El_Horno {
 	class RigidBody;
 	class InputManager;
+	class AnimatorController;
 	
 	class PlayerController : public Component
 	{
@@ -22,6 +23,8 @@ namespace El_Horno {
 		RigidBody* rb_;
 		InputManager* input_;
 		int maxForce_;
+		AnimatorController* anim_;
+		bool walking_;
 	};
 }
 #endif 

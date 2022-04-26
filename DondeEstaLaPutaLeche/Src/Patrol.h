@@ -9,6 +9,7 @@
 namespace El_Horno {
 	class Transform;
 	class RigidBody;
+	class AnimatorController;
 
 	class Patrol : public Component
 	{
@@ -19,17 +20,19 @@ namespace El_Horno {
 		void update() override;
 
 		void setSpeed(float s);
-		void setRange(float r) { minRange = r; };
+		void setRange(float r) { minRange_ = r; };
 		void addPosition(const HornoVector3& pos);
 	private:
 		bool isClose();
 
-		Transform* tr;
-		RigidBody* rb;
-		std::queue<HornoVector3> positions;
+		Transform* tr_;
+		RigidBody* rb_;
+		AnimatorController* anim_;
+		std::queue<HornoVector3> positions_;
 
-		float speed = 1.0f;
-		float minRange = 5.0f;
+		float speed_ = 1.0f;
+		float minRange_ = 5.0f;
+		bool walking_ = false;
 	};
 }
 #endif 
