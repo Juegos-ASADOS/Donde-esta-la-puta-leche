@@ -120,7 +120,7 @@ bool El_Horno::PlayerInteract::manageCart(Entity* entity)
 		}
 		else {
 			//Si no tiene nada en la mano (A parte del trigger) y no tienes carrito...
-			if (entity_->getChildCount() == 1) {
+			if (entity_->getChildCount() == 0) {
 
 				//Hago hijo al carrito para que se mueva junto con el player
 				entity->setParent(entity_);
@@ -229,12 +229,12 @@ bool El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 {
 	//Oscar: No se por que cogias la escena de otra entidad y no de esta�?
 	//Si tiene alimento en la mano...
-	if (entity_->getChildCount() != 1)
+	if (entity_->getChildCount() != 0)
 		//No ocurre nada
 		return false;
 
 	// TODO Mostrar tecla E en la UI 
-
+	std::cout << "pilla entidad\n";
 	if (input_->isKeyDown(SDL_SCANCODE_E)) {
 
 		Scene* scene = entity_->getScene();

@@ -13,7 +13,7 @@ void El_Horno::PlayerController::start()
 	rb_ = entity_->getComponent<RigidBody>("rigidbody");
 	rb_->setAngularFactor(0.0f);
 	rb_->setSleepingThresholds(0, 0);
-	rb_->setFriction(50);
+	rb_->setFriction(100);
 	rb_->setScale(HornoVector3(0.5, 0.7, 0.5));
 	input_ = ElHornoBase::getInstance()->getInputManager();
 	anim_ = entity_->getComponent<AnimatorController>("animatorController");

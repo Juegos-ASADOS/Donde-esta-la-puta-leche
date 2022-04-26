@@ -11,7 +11,7 @@ bool El_Horno::EntityId::recieveEvent(Event* ev)
 		PlayerInteract* pI = static_cast<rbTriggerStay*>(ev)->other_->getComponent<PlayerInteract>("playerinteract");
 		if (pI != nullptr) {
 			pI->setEstantery(ev->ty_ == EventType::TriggerEnter ? entity_ : nullptr);
-			//std::cout << "Ha entado/salido " << ev->ty_ << "\n";
+			std::cout << "Ha entado/salido " << ev->ty_ << "\n";
 			return true;
 		}
 		return false;
