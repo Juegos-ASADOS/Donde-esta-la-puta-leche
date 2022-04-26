@@ -109,7 +109,7 @@ namespace El_Horno {
 		animVectorNpc.push_back(std::pair<std::string, std::string>("AnyState", "Idle"));
 		b->addComponent<AnimatorController>("animatorController", animVectorNpc);*/
 
-		//LuaManager::getInstance()->loadScene();
+		LuaManager::getInstance()->loadScene();
 		
 		//b = addEntity("button1", "prueba");
 		//b->addComponent<Transform>("transform", HornoVector3(0,0,0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
