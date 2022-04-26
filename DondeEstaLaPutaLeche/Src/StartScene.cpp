@@ -8,7 +8,7 @@
 #include <AudioComponent.h>
 #include <AudioListenerComponent.h>
 #include <ParticleSystem.h>
-//#include <UIPushButton.h>
+#include <UIPushButton.h>
 #include <Rigibody.h>
 #include <Mesh.h>
 #include <AnimatorController.h>
@@ -111,9 +111,9 @@ namespace El_Horno {
 
 		LuaManager::getInstance()->loadScene();
 		
-		//b = addEntity("button1", "prueba");
-		//b->addComponent<Transform>("transform", HornoVector3(0,0,0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
-		//b->addComponent<UIPushButton>("pushbutton", "TaharezLook", 0.05f, 0.05f, 0.2f, 0.1f, "push1");
+		b = addEntity("button1", "prueba");
+		b->addComponent<Transform>("transform", HornoVector3(0,0,0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
+		b->addComponent<UIPushButton>("pushbutton", "TaharezLook", 0.05f, 0.05f, 0.2f, 0.1f, "push1");
 
 		std::cout << "ESCENA CARGADA\n";
 	}
