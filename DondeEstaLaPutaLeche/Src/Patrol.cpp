@@ -16,6 +16,22 @@ El_Horno::Patrol::Patrol(float tspeed, const std::vector<HornoVector3>& pos)
 	speed_ = tspeed;
 }
 
+El_Horno::Patrol::Patrol()
+{
+}
+
+void El_Horno::Patrol::setParameters(std::vector<std::pair<std::string, std::string>> parameters)
+{
+	for (int i = 0; i < parameters.size(); i++) {
+		if (parameters[i].first == "speed") {
+			speed_ = stof(parameters[i].second);
+		}
+		else {
+			positions_.push(OgreVectorToHorno(StringToVector(parameters[i].second)));
+		}
+	}
+}
+
 void El_Horno::Patrol::start()
 {
 	rb_ = entity_->getComponent<RigidBody>("rigidbody");

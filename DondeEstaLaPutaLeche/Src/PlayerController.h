@@ -14,7 +14,9 @@ namespace El_Horno {
 	{
 	public:
 		PlayerController(float s) : speed_(s), maxForce_(200) {};
+		PlayerController() {};
 
+		void setParameters(std::vector<std::pair<std::string, std::string>> parameters) override;
 		void start() override;
 		void update() override;
 		inline void setSpeed(float s) { speed_ = s; };

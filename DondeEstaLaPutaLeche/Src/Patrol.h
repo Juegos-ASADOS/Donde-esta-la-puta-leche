@@ -15,7 +15,9 @@ namespace El_Horno {
 	{
 	public:
 		Patrol(float tspeed, const std::vector<HornoVector3>& pos = std::vector<HornoVector3>());
+		Patrol();
 
+		void setParameters(std::vector<std::pair<std::string, std::string>> parameters) override;
 		void start() override;
 		void update() override;
 

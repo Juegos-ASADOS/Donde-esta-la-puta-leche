@@ -11,9 +11,10 @@ namespace El_Horno {
 	{
 	public:
 		EntityId(std::string id, bool est = false, bool isCart = false, bool isCashRegister = false) : id_(id), isEstantery_(est), isCart_(isCart), isCashRegister_(isCashRegister) {};
+		EntityId() {};
 
 		//void start() override;
-
+		void setParameters(std::vector<std::pair<std::string, std::string>> parameters) override;
 		inline const std::string getId() { return id_; };
 		inline const bool isEstantery() { return isEstantery_; };
 		inline const bool isCart() { return isCart_; }

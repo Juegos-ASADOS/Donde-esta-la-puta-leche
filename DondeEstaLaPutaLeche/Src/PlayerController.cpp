@@ -8,6 +8,18 @@
 #include "AnimatorController.h"
 #include "iostream"
 
+void El_Horno::PlayerController::setParameters(std::vector<std::pair<std::string, std::string>> parameters)
+{
+	for (int i = 0; i < parameters.size(); i++) {
+		if (parameters[i].first == "speed") {
+			speed_ = stof(parameters[i].second);
+		}
+		else if (parameters[i].first == "maxForce") {
+			maxForce_ = stoi(parameters[i].second);
+		}
+	}
+}
+
 void El_Horno::PlayerController::start()
 {
 	rb_ = entity_->getComponent<RigidBody>("rigidbody");
