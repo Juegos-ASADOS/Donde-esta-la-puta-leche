@@ -25,14 +25,15 @@ namespace El_Horno {
 
 	protected:
 		
-		bool processCollisionStay();
-		bool manageCart(Entity* entity);
-		bool manageCashRegister();
-		bool manageEstantery(EntityId* idEntity);
+		void processCollisionStay();
+		void manageCart(Entity* entity);
+		void manageCashRegister();
+		void manageEstantery(EntityId* idEntity);
 		void dropItem();
 
 		void changeCartSize(Entity* entity);
 
+		Entity* handObject_;
 		bool carryingCart_;
 		bool inCashRegister_;
 

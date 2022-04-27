@@ -53,6 +53,4 @@ void El_Horno::PlayerController::update()
 		rb_->applyForce(btVector3(x, 0, -z));
 
 	//TODO Aplicar la rotacion
-	
-	std::cout << rb_->getLinearVelocity().x() << " " << rb_->getLinearVelocity().y() << " " << rb_->getLinearVelocity().z() <<"\n";
 }
