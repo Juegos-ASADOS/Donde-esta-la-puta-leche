@@ -71,17 +71,26 @@ void El_Horno::PlayerInteract::processCollisionStay()
 	if (triggerStay_ != nullptr) {
 		EntityId* idEntity = triggerStay_->getComponent<EntityId>("entityid");
 
-		//Y es el carrito de la compra...
-		if (idEntity->isCart()) {
-			manageCart(triggerStay_->getParent());
-		}
-		//Si es la estanteria...
-		else if (idEntity->isEstantery()) {
+		Type t = idEntity->getType();
+
+		switch (t)
+		{
+		case El_Horno::PRODUCT:
+			break;
+		case El_Horno::ESTANTERY:
 			manageEstantery(idEntity);
-		}
-		//Si estoy en la caja...
-		else if (idEntity->isCashRegister())
+			break;
+		case El_Horno::CART:
+			manageCart(triggerStay_->getParent());
+			break;
+		case El_Horno::CASHREGISTER:
 			manageCashRegister();
+			break;
+		case El_Horno::MEATTICKET:
+			break;
+		default:
+			break;
+		}	
 	}
 }
 
@@ -188,7 +197,7 @@ void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 			HornoVector3(-90, 0, 0), HornoVector3(25, 25, 25), true);
 
 		handObject_->addComponent<Mesh>("mesh", idEntity->getId());
-		handObject_->addComponent<EntityId>("entityid", idEntity->getId());
+		handObject_->addComponent<EntityId>("entityid", idEntity->getId(), Type::PRODUCT);
 
 		handObject_->start();
 

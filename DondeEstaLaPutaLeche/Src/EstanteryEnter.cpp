@@ -39,7 +39,7 @@ bool El_Horno::EstanteryEnter::recieveEvent(Event* ev)
 
 		EntityId* estComp = estantery->getComponent<EntityId>("entityid");
 
-		if (estComp != nullptr && estComp->isEstantery()) {
+		if (estComp != nullptr && estComp->getType() == Type::ESTANTERY) {
 
 			// TODO Mostrar tecla E en la UI 
 
@@ -58,7 +58,7 @@ bool El_Horno::EstanteryEnter::recieveEvent(Event* ev)
 
 				product->addComponent<Mesh>("mesh", estComp->getId());
 				product->addComponent<RigidBody>("rigidbody", 2.0f, true, true, 0);
-				product->addComponent<EntityId>("entityid", estComp->getId());
+				product->addComponent<EntityId>("entityid", estComp->getId(), Type::PRODUCT);
 
 				product->start();
 

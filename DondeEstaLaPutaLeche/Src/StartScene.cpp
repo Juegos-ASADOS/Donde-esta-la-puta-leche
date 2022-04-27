@@ -95,10 +95,10 @@ namespace El_Horno {
 		a->addComponent<Mesh>("mesh", "cube");
 		a->addComponent<RigidBody>("rigidbody", 0.0f, false, false, 0);
 
-		Entity* stanChild = addEntity("estanteryTrigger", "prueba", a);
-		stanChild->addComponent<Transform>("transform", HornoVector3(00, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
-		stanChild->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
-		stanChild->addComponent<EntityId>("entityid", "Agua", true);
+		Entity* trigger = addEntity("estanteryTrigger", "prueba", a);
+		trigger->addComponent<Transform>("transform", HornoVector3(00, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
+		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
+		trigger->addComponent<EntityId>("entityid", "Agua", Type::ESTANTERY);
 		
 		std::vector<HornoVector3> patata; 
 
@@ -133,10 +133,10 @@ namespace El_Horno {
 		a->addComponent<RigidBody>("rigidbody", 0.0f, false, false, 0);
 
 		// Trigger de la caja
-		stanChild = addEntity("cashTrigger", "prueba", a);
-		stanChild->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
-		stanChild->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
-		stanChild->addComponent<EntityId>("entityid", "", false, false, true);
+		trigger = addEntity("cashTrigger", "prueba", a);
+		trigger->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
+		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
+		trigger->addComponent<EntityId>("entityid", "", Type::CASHREGISTER);
 
 		// Carrito
 		a = addEntity("cart", "prueba");
@@ -145,10 +145,21 @@ namespace El_Horno {
 		a->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
 
 		// Trigger del carrito
-		stanChild = addEntity("cartTrigger", "prueba", a);
-		stanChild->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(3.5, 3, 3.5));
-		stanChild->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
-		stanChild->addComponent<EntityId>("entityid", "", false, true);
+		trigger = addEntity("cartTrigger", "prueba", a);
+		trigger->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(3.5, 3, 3.5));
+		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
+		trigger->addComponent<EntityId>("entityid", "", Type::CART);
+
+		// Estacion de tickets
+		a = addEntity("meatticket", "prueba");
+		a->addComponent<Transform>("transform", HornoVector3(150, 10, 10), HornoVector3(0, 0, 0), HornoVector3(0.5, 1, 0.25));
+		a->addComponent<Mesh>("mesh", "cube");
+		a->addComponent<RigidBody>("rigidbody", 0.0f, false, false, 0);
+
+		trigger = addEntity("ticketTrigger", "prueba", a);
+		trigger->addComponent<Transform>("transform", HornoVector3(00, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
+		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
+		trigger->addComponent<EntityId>("entityid", "", Type::MEATTICKET);
 
 		std::cout << "ESCENA CARGADA\n";
 	}
