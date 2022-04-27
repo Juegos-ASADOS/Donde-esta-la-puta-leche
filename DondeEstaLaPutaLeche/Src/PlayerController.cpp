@@ -54,5 +54,5 @@ void El_Horno::PlayerController::update()
 
 	//TODO Aplicar la rotacion
 	
-	std::cout << rb_->getLinearVelocity().x() << " " << rb_->getLinearVelocity().y() << " " << rb_->getLinearVelocity().z() <<"\n";
+	//std::cout << rb_->getLinearVelocity().x() << " " << rb_->getLinearVelocity().y() << " " << rb_->getLinearVelocity().z() <<"\n";
 }
