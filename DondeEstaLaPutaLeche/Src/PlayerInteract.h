@@ -8,6 +8,7 @@ namespace El_Horno {
 	class EntityId;	
 	class InputManager;
 	class AnimatorController;
+	class Timer;
 
 	class PlayerInteract : public Component
 	{
@@ -28,20 +29,25 @@ namespace El_Horno {
 		void processCollisionStay();
 		void manageCart(Entity* entity);
 		void manageCashRegister();
+		void manageMeatTicket();
 		void manageEstantery(EntityId* idEntity);
 		void dropItem();
 
 		void changeCartSize(Entity* entity);
 
 		Entity* handObject_;
-		bool carryingCart_;
-		bool inCashRegister_;
+		bool carryingCart_,
+			inCashRegister_,
+			ticketTimerRunning_;
 
 		InputManager* input_;
 		AnimatorController* anim_;
 
 		//Variables de triggers
 		Entity* triggerStay_;
+
+		Timer* meatTimer_;
+		float maxTicketTime_;
 	};
 }
 #endif 

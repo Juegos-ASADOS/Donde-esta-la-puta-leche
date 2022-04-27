@@ -17,9 +17,11 @@
 #include <SceneManager.h>
 #include <Rigibody.h>
 #include <AnimatorController.h>
+#include <Timer.h>
 #include <iostream>
 
-El_Horno::PlayerInteract::PlayerInteract() : carryingCart_(false), triggerStay_(nullptr), handObject_(nullptr)
+El_Horno::PlayerInteract::PlayerInteract() : carryingCart_(false), triggerStay_(nullptr), handObject_(nullptr), 
+ticketTimerRunning_(false), meatTimer_(nullptr), maxTicketTime_(7)
 {
 }
 
@@ -27,6 +29,7 @@ void El_Horno::PlayerInteract::start()
 {
 	//Cogemos el input manager
 	input_ = ElHornoBase::getInstance()->getInputManager();
+	meatTimer_ = new Timer();
 }
 
 void El_Horno::PlayerInteract::update()
@@ -35,6 +38,12 @@ void El_Horno::PlayerInteract::update()
 	if (input_->isKeyDown(SDL_SCANCODE_R)) {
 		dropItem();
 	}
+	if (ticketTimerRunning_ && meatTimer_->getTime() >= maxTicketTime_) {
+		//TODO enviar un mensaje para que la sección de carne permita obtener carne
+
+		ticketTimerRunning_ = false;
+	}
+
 	processCollisionStay();
 }
 
@@ -87,6 +96,7 @@ void El_Horno::PlayerInteract::processCollisionStay()
 			manageCashRegister();
 			break;
 		case El_Horno::MEATTICKET:
+			manageMeatTicket();
 			break;
 		default:
 			break;
@@ -176,6 +186,12 @@ void El_Horno::PlayerInteract::manageCashRegister()
 			GameManager::getInstance()->checkEnd();			
 		}
 	}
+}
+
+void El_Horno::PlayerInteract::manageMeatTicket()
+{
+	meatTimer_->resetTimer();
+	ticketTimerRunning_ = true;
 }
 
 void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
