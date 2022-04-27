@@ -10,6 +10,16 @@ using namespace El_Horno;
 
 GameManager* GameManager::instance_ = 0;
 
+El_Horno::GameManager::GameManager()
+{
+	gameState_ = GameState::STARTSTATE;
+
+	// Esto es para probar 
+	list_.emplace(std::pair<string, int>("Agua", 1));
+	productNum_ = 1;
+	maxProducts_ = productNum_;
+}
+
 GameManager* GameManager::getInstance()
 {
 	if (instance_ == 0)
@@ -34,7 +44,7 @@ void GameManager::erase()
 
 void El_Horno::GameManager::start()
 {
-	gameState_ = GameState::STARTSTATE;
+	setupInstance();
 }
 
 void El_Horno::GameManager::update()

@@ -47,6 +47,7 @@ std::string El_Horno::PlayerInteract::buscoIdHijo()
 void El_Horno::PlayerInteract::deleteAliment()
 {
 	SceneManager::getInstance()->getCurrentScene()->deleteEntity(handObject_->getName());
+	handObject_ = nullptr;
 }
 
 void El_Horno::PlayerInteract::processCollisionStay()
