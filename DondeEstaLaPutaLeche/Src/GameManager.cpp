@@ -111,5 +111,12 @@ void El_Horno::GameManager::checkEnd()
 // la cantidad mostrada en la mesh
 const float El_Horno::GameManager::getProductCompletionPercentaje()
 {
-	return 100 - (productNum_ / maxProducts_ * 100);
+	return 100 - ((productNum_ - paidFood) / maxProducts_ * 100);
 }
+
+void El_Horno::GameManager::paidFoodMum()
+{
+	//Todos los que hay - los que te faltan por comprar = los que has llevado a la madre
+	paidFood = maxProducts_ - productNum_;
+}
+

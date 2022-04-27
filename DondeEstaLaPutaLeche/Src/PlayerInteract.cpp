@@ -19,7 +19,7 @@
 #include <AnimatorController.h>
 #include <iostream>
 
-El_Horno::PlayerInteract::PlayerInteract() : carryingCart_(true), triggerStay_(nullptr), handObject_(nullptr)
+El_Horno::PlayerInteract::PlayerInteract() : carryingCart_(false), triggerStay_(nullptr), handObject_(nullptr)
 {
 }
 
@@ -80,9 +80,9 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 		{
 			//Dejo el carrito suelto
 			entity->setParent(nullptr);
-			auto rb = entity_->getParent()->getComponent<RigidBody>("rigidbody");
+			auto rb = entity_->getComponent<RigidBody>("rigidbody");
 			rb->setDamping(1.0f, 1.0f);
-			auto pc = entity_->getParent()->getComponent<PlayerController>("playercontroller");
+			auto pc = entity_->getComponent<PlayerController>("playercontroller");
 			pc->setSpeed(300);
 			carryingCart_ = false;
 			std::cout << "Soltar carrito\n";
@@ -95,9 +95,9 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 				entity->setParent(entity_);
 
 				//Habr� que ajustar esto para posicionar al carro justo agarrado de la mano del player
-				auto rb = entity_->getParent()->getComponent<RigidBody>("rigidbody");
+				auto rb = entity_->getComponent<RigidBody>("rigidbody");
 				rb->setDamping(0.5f, 0.5f);
-				auto pc = entity_->getParent()->getComponent<PlayerController>("playercontroller");
+				auto pc = entity_->getComponent<PlayerController>("playercontroller");
 				pc->setSpeed(450);
 				carryingCart_ = true;
 				std::cout << "Coger carrito\n";
@@ -142,6 +142,9 @@ void El_Horno::PlayerInteract::manageCashRegister()
 			while (!(*it)->hasComponent("foodcartcomponent")) {
 				it++;
 			}
+
+			//Con esto hace luego la proporcion de lo que tiene en el carrito correctamente
+			GameManager::getInstance()->paidFoodMum();
 
 			//Llamo a un metodo que vacia el carrito y resta los objetos que tenga que entregar
 			changeCartSize(*it);
