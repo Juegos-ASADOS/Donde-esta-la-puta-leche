@@ -46,7 +46,22 @@ std::string El_Horno::PlayerInteract::buscoIdHijo()
 //Eliminamos de la mano el objeto que tenga para a�adirlo al carrito
 void El_Horno::PlayerInteract::deleteAliment()
 {
+	std::string id = handObject_->getComponent<EntityId>("entityid")->getId();
+	entity_->getComponent<Mesh>("mesh")->detachObject(handObject_);
 	SceneManager::getInstance()->getCurrentScene()->deleteEntity(handObject_->getName());
+	handObject_ = nullptr;
+
+	Entity* ob = entity_->getScene()->addEntity("product", entity_->getScene()->getName());
+	ob->addComponent<Transform>("transform", HornoVector3(-10, 10, 0),
+		HornoVector3(-90, 0, 0), HornoVector3(25, 25, 25));
+
+	ob->addComponent<Mesh>("mesh", id);
+	ob->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
+
+	ob->start();
+
+	//Lanza el objeto
+	ob->getComponent<RigidBody>("rigidbody")->applyForce(HornoVector3(100, 0, 0));
 }
 
 void El_Horno::PlayerInteract::processCollisionStay()
@@ -169,7 +184,7 @@ void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 
 		// Crear entidad producto
 		handObject_ = scene->addEntity("product", scene->getName());
-		handObject_->addComponent<Transform>("transform", HornoVector3(-10, 10, 0),
+		handObject_->addComponent<Transform>("transform", HornoVector3(0, 0, 0),
 			HornoVector3(-90, 0, 0), HornoVector3(25, 25, 25), true);
 
 		handObject_->addComponent<Mesh>("mesh", idEntity->getId());
@@ -183,25 +198,8 @@ void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 
 void El_Horno::PlayerInteract::dropItem()
 {
-	//Recorro el vector hasta encontrar uno que tenga el componente entityId
-	vector<Entity*> it = entity_->getChildren();
-	bool idFound = false;
-	int i = 0;
-	while (i < it.size() && !idFound) {
-
-		//Cogemos el posible id
-		EntityId* id = it[i]->getComponent<EntityId>("entityid");
-		//Si tiene objeto en la mano...
-		if (id != nullptr) {
-			idFound = true;
-
-			//Y lo tiro
-			//Con esto la gravedad deberia de aplicarse y se deberia de caer al suelo no?
-			it[i]->setParent(nullptr);
-			//TODO Igual queremos meter algo tipo que en vez de que solo caiga tambi�n lo impulses hacia una direccion random o algo no se
-		}
-		i++;
-	}
+	if(handObject_ != nullptr)
+		deleteAliment();
 }
 
 //Cambia el mesh del carrito en funcion del porcentaje que tenga
