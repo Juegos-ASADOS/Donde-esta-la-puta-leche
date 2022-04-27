@@ -25,6 +25,7 @@
 #include <vector>
 #include <LuaManager.h>
 #include <SceneManager.h>
+#include <GameManager.h>
 
 namespace El_Horno {
 	void StartScene::init(std::string name)
@@ -35,24 +36,31 @@ namespace El_Horno {
 
 	void StartScene::testScene()
 	{
-		Entity* light = addEntity("light", "prueba");
-		light->addComponent<Transform>("transform", HornoVector3(0, 200, 200), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
-		light->addComponent<LightComponent>("light", 0, HornoVector3(0, 0, 0));
+		// GameManager
+		Entity* a = addEntity("gamemanager", "prueba");
+		a->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
+		a->addComponent<GameManager>("gamemanager");
 
-		Entity* a = addEntity("camera", "prueba");
+		// Light
+		a = addEntity("light", "prueba");
+		a->addComponent<Transform>("transform", HornoVector3(0, 200, 200), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
+		a->addComponent<LightComponent>("light", 0, HornoVector3(0, 0, 0));
+
+		// Camera
+		a = addEntity("camera", "prueba");
 		HornoVector3 p = { 10,10,10 };
 		a->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
 		a->addComponent<CameraComponent>("camera", HornoVector3(0, 100, 450), HornoVector3(0, 0, 0), HornoVector3(0, 0.3, 0.5), 1, 5, 10000);
 		a->addComponent<AudioListenerComponent>("audioListener");
 
-		// PLayer
-		Entity* b = addEntity("player", "prueba");
-		b->addComponent<Transform>("transform", HornoVector3(-50, 40, 0), HornoVector3(0, 0, 0), p);
-		b->addComponent<Mesh>("mesh", "pipo");
-		b->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
-		b->addComponent<AudioComponent>("audioComponent");
-		b->addComponent<PlayerController>("playercontroller", 1500.0f);
-		b->addComponent<PlayerInteract>("playerinteract");
+		// Player
+		a = addEntity("player", "prueba");
+		a->addComponent<Transform>("transform", HornoVector3(-50, 40, 0), HornoVector3(0, 0, 0), p);
+		a->addComponent<Mesh>("mesh", "pipo");
+		a->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
+		a->addComponent<AudioComponent>("audioComponent");
+		a->addComponent<PlayerController>("playercontroller", 1500.0f);
+		a->addComponent<PlayerInteract>("playerinteract");
 
 		//Creacion maquina de estados animator
 		std::vector<std::pair<std::string, std::string>> animVector;		
@@ -65,29 +73,29 @@ namespace El_Horno {
 		animVector.push_back(std::pair<std::string, std::string>("AnyState", "Idle"));
 		animVector.push_back(std::pair<std::string, std::string>("AnyState", "Idle_with_product"));
 		animVector.push_back(std::pair<std::string, std::string>("AnyState", "Idle_with_cart"));
-		b->addComponent<AnimatorController>("animatorController", animVector);
+		a->addComponent<AnimatorController>("animatorController", animVector);
 
 		//b->addComponent<EstanteryEnter>("estanteryenter");
 		/*Entity* playerChild = addEntity("playerTrigger", "prueba", b);
 		playerChild->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
 		playerChild->addComponent<RigidBody>("rigidbody", 2.0f, true, false, 0);*/
 
-		b = addEntity("object", "prueba");
-		b->addComponent<Transform>("transform", HornoVector3(0, -15, 0), HornoVector3(0, 0, 0), HornoVector3(15, 0.1, 15));
-		b->addComponent<Mesh>("mesh", "cube");
-		b->addComponent<RigidBody>("rigidbody", 0.0f, false, false, 0);
+		a = addEntity("object", "prueba");
+		a->addComponent<Transform>("transform", HornoVector3(0, -15, 0), HornoVector3(0, 0, 0), HornoVector3(15, 0.1, 15));
+		a->addComponent<Mesh>("mesh", "cube");
+		a->addComponent<RigidBody>("rigidbody", 0.0f, false, false, 0);
 
 		//b = addEntity("esmoque", "prueba");
 		//b->addComponent<Transform>("transform", HornoVector3(250, 10, 0), HornoVector3(0, 0, 0), p);
 		//b->addComponent<ParticleSystem>("particleSystem", "smoke", "Smoke", 10, true);
 
 		// Estanteria
-		b = addEntity("estantery", "prueba");
-		b->addComponent<Transform>("transform", HornoVector3(50, 10, 0), HornoVector3(0, 0, 0), HornoVector3(0.5, 1, 0.25));
-		b->addComponent<Mesh>("mesh", "cube");
-		b->addComponent<RigidBody>("rigidbody", 0.0f, false, false, 0);
+		a = addEntity("estantery", "prueba");
+		a->addComponent<Transform>("transform", HornoVector3(50, 10, 0), HornoVector3(0, 0, 0), HornoVector3(0.5, 1, 0.25));
+		a->addComponent<Mesh>("mesh", "cube");
+		a->addComponent<RigidBody>("rigidbody", 0.0f, false, false, 0);
 
-		Entity* stanChild = addEntity("estanteryTrigger", "prueba", b);
+		Entity* stanChild = addEntity("estanteryTrigger", "prueba", a);
 		stanChild->addComponent<Transform>("transform", HornoVector3(00, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
 		stanChild->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
 		stanChild->addComponent<EntityId>("entityid", "Agua", true);
@@ -100,11 +108,11 @@ namespace El_Horno {
 		patata.push_back(HornoVector3(-150, 10, -100));
 
 		// NPC
-		b = addEntity("moneco", "prueba");
-		b->addComponent<Transform>("transform", HornoVector3(-150, 10, 0), HornoVector3(0, 0, 0), HornoVector3(0.5, 0.5, 0.5));
-		b->addComponent<Mesh>("mesh", "penguin");
-		b->addComponent<RigidBody>("rigidbody", 3.0f, false, false, 0);
-		b->addComponent<Patrol>("patrol", 50, patata);
+		a = addEntity("moneco", "prueba");
+		a->addComponent<Transform>("transform", HornoVector3(-150, 10, 0), HornoVector3(0, 0, 0), HornoVector3(0.5, 0.5, 0.5));
+		a->addComponent<Mesh>("mesh", "penguin");
+		a->addComponent<RigidBody>("rigidbody", 3.0f, false, false, 0);
+		a->addComponent<Patrol>("patrol", 50, patata);
 
 		/*std::vector<std::pair<std::string, std::string>> animVectorNpc;
 		animVectorNpc.push_back(std::pair<std::string, std::string>("Idle", "npc_walk"));
@@ -119,25 +127,25 @@ namespace El_Horno {
 		//b->addComponent<UIPushButton>("pushbutton", "TaharezLook", 0.05f, 0.05f, 0.2f, 0.1f, "push1");
 
 		// Caja Registradora
-		b = addEntity("cashRegister", "prueba");
-		b->addComponent<Transform>("transform", HornoVector3(0, 15, -300), HornoVector3(0, 0, 0), HornoVector3(0.5, 1.5, 0.25));
-		b->addComponent<Mesh>("mesh", "cube");
-		b->addComponent<RigidBody>("rigidbody", 0.0f, false, false, 0);
+		a = addEntity("cashRegister", "prueba");
+		a->addComponent<Transform>("transform", HornoVector3(0, 15, -300), HornoVector3(0, 0, 0), HornoVector3(0.5, 1.5, 0.25));
+		a->addComponent<Mesh>("mesh", "cube");
+		a->addComponent<RigidBody>("rigidbody", 0.0f, false, false, 0);
 
 		// Trigger de la caja
-		stanChild = addEntity("cashTrigger", "prueba", b);
+		stanChild = addEntity("cashTrigger", "prueba", a);
 		stanChild->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
 		stanChild->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
 		stanChild->addComponent<EntityId>("entityid", "", false, false, true);
 
 		// Carrito
-		b = addEntity("cart", "prueba");
-		b->addComponent<Transform>("transform", HornoVector3(-100, 10, -300), HornoVector3(0, 0, 0), HornoVector3(0.2, 0.2, 0.2));
-		b->addComponent<Mesh>("mesh", "cube");
-		b->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
+		a = addEntity("cart", "prueba");
+		a->addComponent<Transform>("transform", HornoVector3(-100, 10, -300), HornoVector3(0, 0, 0), HornoVector3(0.2, 0.2, 0.2));
+		a->addComponent<Mesh>("mesh", "cube");
+		a->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
 
 		// Trigger del carrito
-		stanChild = addEntity("cartTrigger", "prueba", b);
+		stanChild = addEntity("cartTrigger", "prueba", a);
 		stanChild->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(3.5, 3, 3.5));
 		stanChild->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
 		stanChild->addComponent<EntityId>("entityid", "", false, true);

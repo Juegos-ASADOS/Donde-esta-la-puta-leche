@@ -12,6 +12,7 @@ namespace El_Horno {
 
 			creator->addFactory("playercontroller");
 			creator->addFactory("playerinteract");
+			creator->addFactory("gamemanager");
 			//creator->addFactory("estanteryenter");
 			creator->addFactory("entityid");
 			creator->addFactory("pushbutton");

@@ -5,7 +5,6 @@
 #include <Component.h>
 #include <map>
 
-
 namespace El_Horno {
 	class RigidBody;
 	class Timer;
@@ -14,7 +13,7 @@ namespace El_Horno {
 	class GameManager : public Component
 	{
 	public:
-		GameManager() {};
+		GameManager();
 		~GameManager() {};
 
 		static GameManager* getInstance();
