@@ -9,7 +9,7 @@
 namespace El_Horno {
 	class RigidBody;
 	class Timer;
-	enum GameState {RUNNING, PAUSED, MAINMENU, STARTSTATE};
+	enum GameState { RUNNING, PAUSED, MAINMENU, STARTSTATE };
 
 	class GameManager : public Component
 	{
@@ -26,13 +26,17 @@ namespace El_Horno {
 		void update() override;
 
 		void setLevel(float maxTime, std::map<std::string, int> list, int proctNum);
-		
+
 		bool checkObject(std::string objectId);
 		void togglePaused();
 		void checkEnd();
 		inline const bool hasWon() { return win_; };
 		inline const int getWrongProductNumber() { return wrongProducts_; };
 		const float getProductCompletionPercentaje();
+
+		//Se llama cuando vas a darle la compra a la madre
+		void paidFoodMum();
+
 	protected:
 		static GameManager* instance_;
 		std::map<std::string, int> list_;
@@ -46,6 +50,9 @@ namespace El_Horno {
 		int productNum_,
 			maxProducts_,
 			wrongProducts_;
+
+		//Por si vas a la madre y das los alimentos que tengas en el carrito sin que esten todos
+		int paidFood;
 
 		bool win_;
 	};
