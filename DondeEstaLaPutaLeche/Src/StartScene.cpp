@@ -47,15 +47,16 @@ namespace El_Horno {
 		a->addComponent<LightComponent>("light", 0, HornoVector3(0, 0, 0));
 
 		// Camera
-		a = addEntity("camera", "prueba");
+		Entity* cam = addEntity("camera", "prueba");
 		HornoVector3 p = { 10,10,10 };
-		a->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
-		a->addComponent<CameraComponent>("camera", HornoVector3(0, 100, 450), HornoVector3(0, 0, 0), HornoVector3(0, 0.3, 0.5), 1, 5, 10000);
-		a->addComponent<AudioListenerComponent>("audioListener");
+		cam->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
+		cam->addComponent<CameraComponent>("camera", HornoVector3(0, 100, 450), HornoVector3(0, 0, 0), HornoVector3(0, 0.3, 0.5), 1, 5, 10000);
+		cam->addComponent<AudioListenerComponent>("audioListener");
 
 		// Player
 		a = addEntity("player", "prueba");
 		a->addComponent<Transform>("transform", HornoVector3(-50, 40, 0), HornoVector3(0, 0, 0), p);
+		cam->getComponent<CameraComponent>("camera")->setFollow(a->getComponent<Transform>("transform"), 0.2f, HornoVector3(50, 60, 450));
 		a->addComponent<Mesh>("mesh", "pipo");
 		a->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
 		a->addComponent<AudioComponent>("audioComponent");
