@@ -14,12 +14,12 @@ namespace El_Horno {
 	{
 	public:
 		PlayerInteract();
-		~PlayerInteract() {};
+		~PlayerInteract();
 
 		void start() override;
 		void update() override;
 		//Metodo para hallar el ID del objeto que tengo en la mano
-		std::string buscoIdHijo();
+		std::string getHandObjectId();
 		void deleteAliment();
 		void imInCartRegister(bool imIn);
 		inline void setEstantery(Entity* e) { triggerStay_ = e; };
@@ -30,6 +30,8 @@ namespace El_Horno {
 		void manageCart(Entity* entity);
 		void manageCashRegister();
 		void manageMeatTicket();
+		void manageWheighingMachine();
+		void manageFishCleaner();
 		void manageEstantery(EntityId* idEntity);
 		void dropItem();
 
@@ -38,7 +40,9 @@ namespace El_Horno {
 		Entity* handObject_;
 		bool carryingCart_,
 			inCashRegister_,
-			ticketTimerRunning_;
+			ticketTimerRunning_,
+			fishTimerRunning_,
+			productLocked_;
 
 		InputManager* input_;
 		AnimatorController* anim_;
@@ -46,8 +50,10 @@ namespace El_Horno {
 		//Variables de triggers
 		Entity* triggerStay_;
 
-		Timer* meatTimer_;
-		float maxTicketTime_;
+		Timer* meatTimer_,
+			* fishTimer_;
+		float maxTicketTime_,
+			  maxFishTime_;
 	};
 }
 #endif 

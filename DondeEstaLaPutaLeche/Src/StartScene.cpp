@@ -99,7 +99,7 @@ namespace El_Horno {
 		Entity* trigger = addEntity("estanteryTrigger", "prueba", a);
 		trigger->addComponent<Transform>("transform", HornoVector3(00, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
 		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
-		trigger->addComponent<EntityId>("entityid", "Agua", Type::ESTANTERY);
+		trigger->addComponent<EntityId>("entityid", Type::ESTANTERY, ProductType::DEFAULT, "Agua");
 		
 		std::vector<HornoVector3> patata; 
 
@@ -137,7 +137,7 @@ namespace El_Horno {
 		trigger = addEntity("cashTrigger", "prueba", a);
 		trigger->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
 		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
-		trigger->addComponent<EntityId>("entityid", "", Type::CASHREGISTER);
+		trigger->addComponent<EntityId>("entityid", Type::CASHREGISTER);
 
 		// Carrito
 		a = addEntity("cart", "prueba");
@@ -149,7 +149,7 @@ namespace El_Horno {
 		trigger = addEntity("cartTrigger", "prueba", a);
 		trigger->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(3.5, 3, 3.5));
 		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
-		trigger->addComponent<EntityId>("entityid", "", Type::CART);
+		trigger->addComponent<EntityId>("entityid", Type::CART);
 
 		// Estacion de tickets
 		a = addEntity("meatticket", "prueba");
@@ -160,7 +160,7 @@ namespace El_Horno {
 		trigger = addEntity("ticketTrigger", "prueba", a);
 		trigger->addComponent<Transform>("transform", HornoVector3(00, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
 		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
-		trigger->addComponent<EntityId>("entityid", "", Type::MEATTICKET);
+		trigger->addComponent<EntityId>("entityid", Type::MEATTICKET);
 
 		std::cout << "ESCENA CARGADA\n";
 	}

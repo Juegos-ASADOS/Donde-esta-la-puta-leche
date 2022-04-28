@@ -21,9 +21,15 @@
 #include <Timer.h>
 #include <iostream>
 
-El_Horno::PlayerInteract::PlayerInteract() : carryingCart_(false), triggerStay_(nullptr), handObject_(nullptr),
-ticketTimerRunning_(false), meatTimer_(nullptr), maxTicketTime_(7)
+El_Horno::PlayerInteract::PlayerInteract() : carryingCart_(false), triggerStay_(nullptr), handObject_(nullptr), fishTimer_(nullptr),
+ticketTimerRunning_(false), fishTimerRunning_(false), productLocked_(false), meatTimer_(nullptr), maxTicketTime_(7), maxFishTime_(7)
 {
+}
+
+El_Horno::PlayerInteract::~PlayerInteract()
+{
+	delete fishTimer_; fishTimer_ = nullptr;
+	delete meatTimer_; meatTimer_ = nullptr;
 }
 
 void El_Horno::PlayerInteract::start()
@@ -31,6 +37,7 @@ void El_Horno::PlayerInteract::start()
 	//Cogemos el input manager
 	input_ = ElHornoBase::getInstance()->getInputManager();
 	meatTimer_ = new Timer();
+	fishTimer_ = new Timer();
 }
 
 void El_Horno::PlayerInteract::update()
@@ -44,11 +51,16 @@ void El_Horno::PlayerInteract::update()
 
 		ticketTimerRunning_ = false;
 	}
+	if (fishTimerRunning_ && fishTimer_->getTime() >= maxFishTime_) {
+		//TODO enviar un mensaje para que la sección de pescado permita obtener pescado
+
+		fishTimerRunning_ = false;
+	}
 
 	processCollisionStay();
 }
 
-std::string El_Horno::PlayerInteract::buscoIdHijo()
+std::string El_Horno::PlayerInteract::getHandObjectId()
 {
 	return handObject_->getComponent<EntityId>("entityid")->getId();
 }
@@ -104,6 +116,12 @@ void El_Horno::PlayerInteract::processCollisionStay()
 		case El_Horno::MEATTICKET:
 			manageMeatTicket();
 			break;
+		case El_Horno::WHEIGHINGMACHINE:
+			manageWheighingMachine();
+			break;
+		case El_Horno::FISHCLEANER:
+			manageFishCleaner();
+			break;
 		default:
 			break;
 		}
@@ -144,9 +162,9 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 				std::cout << "Coger carrito\n";
 			}
 			//Si lo que quiero es meter un objeto...
-			else {
+			else if (!productLocked_) {
 				//Busco el id del objeto
-				std::string idName = buscoIdHijo();
+				std::string idName = getHandObjectId();
 
 				//Si esta dentro de la lista...
 				if (GameManager::getInstance()->checkObject(idName)) {
@@ -161,6 +179,9 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 				}
 				//TODO añadir uno al FoodCartComponent
 				deleteAliment();
+			}
+			else {
+				//TODO Feedback (audio o UI) para indicar que hay que pesar/limpiar producto antes de poder meterlo al carro
 			}
 		}
 	}
@@ -201,6 +222,24 @@ void El_Horno::PlayerInteract::manageMeatTicket()
 	ticketTimerRunning_ = true;
 }
 
+void El_Horno::PlayerInteract::manageWheighingMachine()
+{
+	if (handObject_ != nullptr && handObject_->getComponent<EntityId>("entityid")->getProdType() == ProductType::FRUIT) {
+		productLocked_ = false;
+		//TODO Poner feedback de que el producto ha sido pesado
+	}
+}
+
+void El_Horno::PlayerInteract::manageFishCleaner()
+{
+	if (handObject_ != nullptr && handObject_->getComponent<EntityId>("entityid")->getProdType() == ProductType::FISH) {
+		productLocked_ = false;
+		fishTimerRunning_ = true;
+		fishTimer_->resetTimer();
+		//TODO Poner feedback de que el producto est
+	}
+}
+
 void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 {
 	//Oscar: No se por que cogias la escena de otra entidad y no de esta�?
@@ -220,18 +259,24 @@ void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 			HornoVector3(-90, 0, 0), HornoVector3(25, 25, 25), true);
 
 		handObject_->addComponent<Mesh>("mesh", idEntity->getId());
-		handObject_->addComponent<EntityId>("entityid", idEntity->getId(), Type::PRODUCT);
+		handObject_->addComponent<EntityId>("entityid", Type::PRODUCT, idEntity->getProdType(), idEntity->getId());
 
 		handObject_->start();
 
 		entity_->getComponent<Mesh>("mesh")->attachObject("Mano.R", handObject_);
+
+		// Se bloquea la posibilidad de meterlo al carrito hasta que se tomen las acciones pertinentes
+		if (idEntity->getProdType() == ProductType::FISH || idEntity->getProdType() == ProductType::FRUIT)
+			productLocked_ = true;
 	}
 }
 
 void El_Horno::PlayerInteract::dropItem()
 {
-	if (handObject_ != nullptr)
+	if (handObject_ != nullptr) {
 		deleteAliment();
+		productLocked_ = false;
+	}
 }
 
 //Cambia el mesh del carrito en funcion del porcentaje que tenga

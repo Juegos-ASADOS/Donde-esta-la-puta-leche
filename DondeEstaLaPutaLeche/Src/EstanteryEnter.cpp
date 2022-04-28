@@ -58,7 +58,7 @@ bool El_Horno::EstanteryEnter::recieveEvent(Event* ev)
 
 				product->addComponent<Mesh>("mesh", estComp->getId());
 				product->addComponent<RigidBody>("rigidbody", 2.0f, true, true, 0);
-				product->addComponent<EntityId>("entityid", estComp->getId(), Type::PRODUCT);
+				product->addComponent<EntityId>("entityid", Type::PRODUCT, estComp->getProdType(), estComp->getId());
 
 				product->start();
 
