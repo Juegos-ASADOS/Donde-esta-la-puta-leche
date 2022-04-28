@@ -8,6 +8,7 @@
 #include "Event.h"
 #include "InputManager.h"
 #include <EntityId.h>
+#include <HornoVector3.h>
 #include <Transform.h>
 #include <Scene.h>
 #include <Mesh.h>
@@ -20,7 +21,7 @@
 #include <Timer.h>
 #include <iostream>
 
-El_Horno::PlayerInteract::PlayerInteract() : carryingCart_(false), triggerStay_(nullptr), handObject_(nullptr), 
+El_Horno::PlayerInteract::PlayerInteract() : carryingCart_(false), triggerStay_(nullptr), handObject_(nullptr),
 ticketTimerRunning_(false), meatTimer_(nullptr), maxTicketTime_(7)
 {
 }
@@ -60,17 +61,22 @@ void El_Horno::PlayerInteract::deleteAliment()
 	SceneManager::getInstance()->getCurrentScene()->deleteEntity(handObject_->getName());
 	handObject_ = nullptr;
 
-	Entity* ob = entity_->getScene()->addEntity("product", entity_->getScene()->getName());
-	ob->addComponent<Transform>("transform", HornoVector3(-10, 10, 0),
-		HornoVector3(-90, 0, 0), HornoVector3(25, 25, 25));
+	//Transform del jugador
+	Transform* tr = entity_->getComponent<Transform>("transform");
 
-	ob->addComponent<Mesh>("mesh", id);
-	ob->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
+	if (!carryingCart_) {
+		Entity* ob = entity_->getScene()->addEntity("productShot", entity_->getScene()->getName());
+		ob->addComponent<Transform>("transform", OgreVectorToHorno(tr->getPosition()) /*+ HornoVector3(10, 0, 0)*/,
+			HornoVector3(-90, 0, 0), HornoVector3(15, 15, 15));
 
-	ob->start();
+		ob->addComponent<Mesh>("mesh", id);
+		ob->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
 
-	//Lanza el objeto
-	ob->getComponent<RigidBody>("rigidbody")->applyForce(HornoVector3(100, 0, 0));
+		ob->start();
+
+		//Lanza el objeto
+		ob->getComponent<RigidBody>("rigidbody")->applyForce(HornoVector3(100, 0, 0));
+	}
 }
 
 void El_Horno::PlayerInteract::processCollisionStay()
@@ -100,7 +106,7 @@ void El_Horno::PlayerInteract::processCollisionStay()
 			break;
 		default:
 			break;
-		}	
+		}
 	}
 }
 
@@ -113,19 +119,20 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 		if (carryingCart_)
 		{
 			//Dejo el carrito suelto
-			entity->setParent(nullptr);
+			/*entity->setParent(nullptr);
 			auto rb = entity_->getComponent<RigidBody>("rigidbody");
 			rb->setDamping(1.0f, 1.0f);
 			auto pc = entity_->getComponent<PlayerController>("playercontroller");
 			pc->setSpeed(300);
 			carryingCart_ = false;
-			std::cout << "Soltar carrito\n";
+			std::cout << "Soltar carrito\n";*/
 		}
 		else {
 			//Si no tiene nada en la mano...
 			if (handObject_ == nullptr) {
 
-				//Hago hijo al carrito para que se mueva junto con el player
+				//Hago hijo al carrito para que se mueva junto con el player. Carrito kinematico
+				entity->getComponent<RigidBody>("rigidbody")->setKinematic(true);
 				entity->setParent(entity_);
 
 				//Habr� que ajustar esto para posicionar al carro justo agarrado de la mano del player
@@ -183,7 +190,7 @@ void El_Horno::PlayerInteract::manageCashRegister()
 			//Llamo a un metodo que vacia el carrito y resta los objetos que tenga que entregar
 			changeCartSize(*it);
 
-			GameManager::getInstance()->checkEnd();			
+			GameManager::getInstance()->checkEnd();
 		}
 	}
 }
@@ -223,7 +230,7 @@ void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 
 void El_Horno::PlayerInteract::dropItem()
 {
-	if(handObject_ != nullptr)
+	if (handObject_ != nullptr)
 		deleteAliment();
 }
 
