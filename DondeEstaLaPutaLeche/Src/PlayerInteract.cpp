@@ -22,7 +22,8 @@
 #include <iostream>
 
 El_Horno::PlayerInteract::PlayerInteract() : carryingCart_(false), triggerStay_(nullptr), handObject_(nullptr), fishTimer_(nullptr),
-ticketTimerRunning_(false), fishTimerRunning_(false), productLocked_(false), meatTimer_(nullptr), maxTicketTime_(7), maxFishTime_(7)
+ticketTimerRunning_(false), fishTimerRunning_(false), productLocked_(false), meatTimer_(nullptr), maxTicketTime_(7), maxFishTime_(7),
+meatObtainable_(false), fishObtainable_(false), ticketExpirationTimer_(nullptr), ticketExpirationTimerRunning_(false)
 {
 }
 
@@ -30,6 +31,7 @@ El_Horno::PlayerInteract::~PlayerInteract()
 {
 	delete fishTimer_; fishTimer_ = nullptr;
 	delete meatTimer_; meatTimer_ = nullptr;
+	delete ticketExpirationTimer_; ticketExpirationTimer_ = nullptr;
 }
 
 void El_Horno::PlayerInteract::start()
@@ -38,6 +40,7 @@ void El_Horno::PlayerInteract::start()
 	input_ = ElHornoBase::getInstance()->getInputManager();
 	meatTimer_ = new Timer();
 	fishTimer_ = new Timer();
+	ticketExpirationTimer_ = new Timer();
 }
 
 void El_Horno::PlayerInteract::update()
@@ -46,14 +49,27 @@ void El_Horno::PlayerInteract::update()
 	if (input_->isKeyDown(SDL_SCANCODE_R)) {
 		dropItem();
 	}
+
+	// Se puede obtener la carne
 	if (ticketTimerRunning_ && meatTimer_->getTime() >= maxTicketTime_) {
-		//TODO enviar un mensaje para que la sección de carne permita obtener carne
-
+		cout << "timer carne terminao\n";
 		ticketTimerRunning_ = false;
+		ticketExpirationTimerRunning_ = true;
+		ticketExpirationTimer_->resetTimer();
+		meatObtainable_ = true;
 	}
-	if (fishTimerRunning_ && fishTimer_->getTime() >= maxFishTime_) {
-		//TODO enviar un mensaje para que la sección de pescado permita obtener pescado
 
+	// Se deja de poder obtener la carne
+	if (ticketExpirationTimerRunning_ && ticketExpirationTimer_->getTime() >= maxTicketTime_) {
+		cout << "timer ticket expirao\n";
+		ticketExpirationTimerRunning_ = false;
+		meatObtainable_ = false;
+	}
+
+	// Se puede obtener el pescado
+	if (fishTimerRunning_ && fishTimer_->getTime() >= maxFishTime_) {
+		fishObtainable_ = true;
+		cout << "timer pescao terminao\n";
 		fishTimerRunning_ = false;
 	}
 
@@ -218,25 +234,41 @@ void El_Horno::PlayerInteract::manageCashRegister()
 
 void El_Horno::PlayerInteract::manageMeatTicket()
 {
-	meatTimer_->resetTimer();
-	ticketTimerRunning_ = true;
+	// TODO Mostrar tecla E en la UI
+	if (input_->isKeyDown(SDL_SCANCODE_E)) {
+		cout << "carne\n";
+		meatTimer_->resetTimer();
+		ticketTimerRunning_ = true;
+	}
 }
 
 void El_Horno::PlayerInteract::manageWheighingMachine()
 {
-	if (handObject_ != nullptr && handObject_->getComponent<EntityId>("entityid")->getProdType() == ProductType::FRUIT) {
-		productLocked_ = false;
-		//TODO Poner feedback de que el producto ha sido pesado
+	if (productLocked_ && handObject_ != nullptr && handObject_->getComponent<EntityId>("entityid")->getProdType() == ProductType::FRUIT) {
+		cout << "fruta fuera\n";
+		// TODO Mostrar tecla E en la UI
+
+		if (input_->isKeyDown(SDL_SCANCODE_E)) {
+			productLocked_ = false;
+			cout << "fruta dentro\n";
+			//TODO Poner feedback de que el producto ha sido pesado
+		}
 	}
 }
 
 void El_Horno::PlayerInteract::manageFishCleaner()
 {
 	if (handObject_ != nullptr && handObject_->getComponent<EntityId>("entityid")->getProdType() == ProductType::FISH) {
-		productLocked_ = false;
-		fishTimerRunning_ = true;
-		fishTimer_->resetTimer();
-		//TODO Poner feedback de que el producto est
+		// TODO Mostrar tecla E en la UI 
+		cout << "pescado fuera\n";
+		if (input_->isKeyDown(SDL_SCANCODE_E)) {
+			productLocked_ = false;
+			fishTimerRunning_ = true;
+			fishTimer_->resetTimer();
+			deleteAliment();
+			cout << "pescado dentro\n";
+			//TODO Poner feedback de que el producto est
+		}
 	}
 }
 
