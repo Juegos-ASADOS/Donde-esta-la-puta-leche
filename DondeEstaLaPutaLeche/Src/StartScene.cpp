@@ -97,7 +97,7 @@ namespace El_Horno {
 		a->addComponent<RigidBody>("rigidbody", 0.0f, false, false, 0);
 
 		Entity* trigger = addEntity("estanteryTrigger", "prueba", a);
-		trigger->addComponent<Transform>("transform", HornoVector3(00, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
+		trigger->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
 		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
 		trigger->addComponent<EntityId>("entityid", Type::ESTANTERY, ProductType::DEFAULT, "Agua");
 		
