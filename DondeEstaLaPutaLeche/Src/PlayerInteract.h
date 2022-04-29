@@ -41,7 +41,10 @@ namespace El_Horno {
 		bool carryingCart_,
 			inCashRegister_,
 			ticketTimerRunning_,
+			ticketExpirationTimerRunning_,
 			fishTimerRunning_,
+			meatObtainable_,
+			fishObtainable_,
 			productLocked_;
 
 		InputManager* input_;
@@ -51,6 +54,7 @@ namespace El_Horno {
 		Entity* triggerStay_;
 
 		Timer* meatTimer_,
+			* ticketExpirationTimer_,
 			* fishTimer_;
 		float maxTicketTime_,
 			  maxFishTime_;
