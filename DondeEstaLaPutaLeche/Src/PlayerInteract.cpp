@@ -244,7 +244,7 @@ void El_Horno::PlayerInteract::manageMeatTicket()
 
 void El_Horno::PlayerInteract::manageWheighingMachine()
 {
-	if (producktLocked_ && handObject_ != nullptr && handObject_->getComponent<EntityId>("entityid")->getProdType() == ProductType::FRUIT) {
+	if (productLocked_ && handObject_ != nullptr && handObject_->getComponent<EntityId>("entityid")->getProdType() == ProductType::FRUIT) {
 		cout << "fruta fuera\n";
 		// TODO Mostrar tecla E en la UI
 

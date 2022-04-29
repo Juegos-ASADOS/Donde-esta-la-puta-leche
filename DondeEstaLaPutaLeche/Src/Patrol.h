@@ -11,10 +11,15 @@ namespace El_Horno {
 	class RigidBody;
 	class AnimatorController;
 
+	struct PatrolPos {
+		HornoVector3 pos;
+		float wait_time;
+	};
+
 	class Patrol : public Component
 	{
 	public:
-		Patrol(float tspeed, const std::vector<HornoVector3>& pos = std::vector<HornoVector3>());
+		Patrol(float tspeed, const std::vector<PatrolPos>& pos = std::vector<PatrolPos>());
 		Patrol();
 
 		void setParameters(std::vector<std::pair<std::string, std::string>> parameters) override;
@@ -23,17 +28,23 @@ namespace El_Horno {
 
 		void setSpeed(float s);
 		void setRange(float r) { minRange_ = r; };
-		void addPosition(const HornoVector3& pos);
+		void addPosition(const PatrolPos& pos);
+		void addPosition(const HornoVector3& pos, float time);
+		void addPosition(float x, float z, float time);
 	private:
 		bool isClose();
+		bool isWaiting();
 
 		Transform* tr_;
 		RigidBody* rb_;
 		AnimatorController* anim_;
-		std::queue<HornoVector3> positions_;
+		std::queue<PatrolPos> positions_;
 
 		float speed_ = 1.0f;
 		float minRange_ = 5.0f;
+
+		double timer = 0.0f;
+
 		bool walking_ = false;
 	};
 }

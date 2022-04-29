@@ -8,7 +8,6 @@
 #include <AudioComponent.h>
 #include <AudioListenerComponent.h>
 #include <ParticleSystem.h>
-//#include <UIPushButton.h>
 #include <Rigibody.h>
 #include <Mesh.h>
 #include <AnimatorController.h>
@@ -64,7 +63,7 @@ namespace El_Horno {
 		a->addComponent<PlayerInteract>("playerinteract");
 
 		//Creacion maquina de estados animator
-		std::vector<std::pair<std::string, std::string>> animVector;		
+		std::vector<std::pair<std::string, std::string>> animVector;
 		animVector.push_back(std::pair<std::string, std::string>("Idle", "walk"));
 		animVector.push_back(std::pair<std::string, std::string>("walk", "Idle"));
 		animVector.push_back(std::pair<std::string, std::string>("Idle_with_product", "walk_with_product"));
@@ -122,13 +121,13 @@ namespace El_Horno {
 		trigger->addComponent<Transform>("transform", HornoVector3(00, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
 		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
 		trigger->addComponent<EntityId>("entityid", Type::ESTANTERY, ProductType::FRUIT, "Agua");
-		
-		std::vector<HornoVector3> patata; 
 
-		patata.push_back(HornoVector3(-150, 10, 0));
-		patata.push_back(HornoVector3(-250, 10, 0));
-		patata.push_back(HornoVector3(-250, 10, -100));
-		patata.push_back(HornoVector3(-150, 10, -100));
+		std::vector<PatrolPos> patata;
+
+		patata.push_back({ HornoVector3(-150, 10, 0), 1 });
+		patata.push_back({ HornoVector3(-250, 10, 0), 1 });
+		patata.push_back({ HornoVector3(-250, 10, -100), 1 });
+		patata.push_back({ HornoVector3(-150, 10, -100), 1 });
 
 		// NPC
 		a = addEntity("moneco", "prueba");
