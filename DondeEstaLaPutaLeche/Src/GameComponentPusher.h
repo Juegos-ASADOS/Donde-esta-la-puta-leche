@@ -9,7 +9,7 @@ namespace El_Horno {
 	class GameComponentPusher
 	{
 	public:
-		static void pushComponents();
+		static void pushGameComponents();
 	};
 }
 #endif 

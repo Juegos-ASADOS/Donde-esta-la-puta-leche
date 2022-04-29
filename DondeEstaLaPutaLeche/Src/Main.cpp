@@ -15,7 +15,7 @@ extern "C"
 	_declspec(dllexport) El_Horno::Scene* loadStartScene() {
 		El_Horno::StartScene* start = new El_Horno::StartScene();
 		El_Horno::SceneManager::getInstance()->setScene(start);
-		El_Horno::GameComponentPusher::pushComponents();
+		El_Horno::GameComponentPusher::pushGameComponents();
 		start->init("prueba");
 		return start;
 	}
