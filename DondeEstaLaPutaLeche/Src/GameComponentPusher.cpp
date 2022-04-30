@@ -11,7 +11,6 @@
 #include "LightComponent.h"
 #include "ParticleSystem.h"
 #include "Rigibody.h"
-#include "UIPushButton.h"
 
 #include "Patrol.h"
 #include "EntityId.h"
@@ -33,7 +32,7 @@ void El_Horno::GameComponentPusher::pushGameComponents()
 	SceneManager::getInstance()->possibleComponents.emplace("light", &SceneManager::getInstance()->createComponent<LightComponent>);
 	SceneManager::getInstance()->possibleComponents.emplace("particleSystem", &SceneManager::getInstance()->createComponent<ParticleSystem>);
 	SceneManager::getInstance()->possibleComponents.emplace("rigidbody", &SceneManager::getInstance()->createComponent<RigidBody>);
-	SceneManager::getInstance()->possibleComponents.emplace("uiPushButton", &SceneManager::getInstance()->createComponent<UIPushButton>);
+	//SceneManager::getInstance()->possibleComponents.emplace("uipushbutton", &SceneManager::getInstance()->createComponent<UIPushButton>);
 
 	SceneManager::getInstance()->possibleComponents.emplace("patrol", &SceneManager::getInstance()->createComponent<Patrol>);
 	SceneManager::getInstance()->possibleComponents.emplace("entityId", &SceneManager::getInstance()->createComponent<EntityId>);
