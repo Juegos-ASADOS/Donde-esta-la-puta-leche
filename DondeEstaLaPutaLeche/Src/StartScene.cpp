@@ -162,6 +162,12 @@ namespace El_Horno {
 		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
 		trigger->addComponent<EntityId>("entityid", Type::MEATTICKET);
 
+		//charco
+		a = addEntity("puddle", "prueba");
+		a->addComponent<Transform>("transform", HornoVector3(300, 10, 20), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
+		a->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
+		a->addComponent<EntityId>("entityid", Type::PUDDLE);
+
 		std::cout << "ESCENA CARGADA\n";
 	}
 }

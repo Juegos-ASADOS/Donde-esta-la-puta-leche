@@ -23,16 +23,19 @@ namespace El_Horno {
 		void deleteAliment();
 		void imInCartRegister(bool imIn);
 		inline void setEstantery(Entity* e) { triggerStay_ = e; };
+		inline void setPuddleExit(Entity* e) { triggerExit_ = e; };
 
 	protected:
 		
 		void processCollisionStay();
+		void processCollisionExit();
 		void manageCart(Entity* entity);
 		void manageCashRegister();
 		void manageMeatTicket();
 		void manageWheighingMachine();
 		void manageFishCleaner();
 		void manageEstantery(EntityId* idEntity);
+		void managePuddle();
 		void dropItem();
 
 		void changeCartSize(Entity* entity);
@@ -49,6 +52,7 @@ namespace El_Horno {
 
 		//Variables de triggers
 		Entity* triggerStay_;
+		Entity* triggerExit_;
 
 		Timer* meatTimer_,
 			* fishTimer_;
