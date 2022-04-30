@@ -44,6 +44,8 @@ namespace El_Horno {
 
 		void changeCartSize(Entity* entity);
 
+		void instanciateCart();
+
 		Entity* handObject_;
 		bool carryingCart_,
 			inCashRegister_,
