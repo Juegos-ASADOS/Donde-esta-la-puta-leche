@@ -3,12 +3,14 @@
 #define _PLAYER_INTERACT_H
 
 #include <Component.h>
+#include <string>
 
 namespace El_Horno {
 	class EntityId;	
 	class InputManager;
 	class AnimatorController;
 	class Timer;
+	enum ProductType;
 
 	class PlayerInteract : public Component
 	{
@@ -27,12 +29,17 @@ namespace El_Horno {
 	protected:
 		
 		void processCollisionStay();
+
 		void manageCart(Entity* entity);
 		void manageCashRegister();
 		void manageMeatTicket();
 		void manageWheighingMachine();
 		void manageFishCleaner();
+		void manageMeatStation();
 		void manageEstantery(EntityId* idEntity);
+
+		//void createProduct(std::string id, ProductType pType);
+		void createProduct(std::string id, ProductType pType);
 		void dropItem();
 
 		void changeCartSize(Entity* entity);

@@ -138,6 +138,9 @@ void El_Horno::PlayerInteract::processCollisionStay()
 		case El_Horno::FISHCLEANER:
 			manageFishCleaner();
 			break;
+		case El_Horno::MEATSTATION:
+			manageMeatStation();
+			break;
 		default:
 			break;
 		}
@@ -261,13 +264,37 @@ void El_Horno::PlayerInteract::manageFishCleaner()
 	if (handObject_ != nullptr && handObject_->getComponent<EntityId>("entityid")->getProdType() == ProductType::FISH) {
 		// TODO Mostrar tecla E en la UI 
 		cout << "pescado fuera\n";
+		// Si se presiona la E se inicia el timer de limpieza de pescado
 		if (input_->isKeyDown(SDL_SCANCODE_E)) {
 			productLocked_ = false;
 			fishTimerRunning_ = true;
 			fishTimer_->resetTimer();
 			deleteAliment();
 			cout << "pescado dentro\n";
-			//TODO Poner feedback de que el producto est
+		}
+	}
+	else if (fishObtainable_ && handObject_ == nullptr) {
+		// TODO Mostrar tecla E en la UI 
+		// Si el pescado esta limpio
+		if (input_->isKeyDown(SDL_SCANCODE_E)) {
+			cout << "pescado en mano\n";
+			createProduct("Agua", ProductType::DEFAULT);
+			fishObtainable_ = false;
+		}
+	}
+}
+
+void El_Horno::PlayerInteract::manageMeatStation()
+{
+	if (meatObtainable_ && handObject_ == nullptr) {
+		cout << "Se puede obtener carne\n";
+		// TODO Mostrar tecla E en la UI 
+		if (input_->isKeyDown(SDL_SCANCODE_E)) {
+			cout << "Se obtuvo carne\n";
+		
+			// ESTO SERA "carne" CUANDO TENGAMOS EL MESH
+			createProduct("Agua", ProductType::DEFAULT);
+			meatObtainable_ = false;
 		}
 	}
 }
@@ -282,25 +309,30 @@ void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 
 	// TODO Mostrar tecla E en la UI 
 	if (input_->isKeyDown(SDL_SCANCODE_E)) {
-		Scene* scene = entity_->getScene();
-		Transform* playerTr = entity_->getComponent<Transform>("transform");
-
 		// Crear entidad producto
-		handObject_ = scene->addEntity("product", scene->getName());
-		handObject_->addComponent<Transform>("transform", HornoVector3(0, 0, 0),
-			HornoVector3(-90, 0, 0), HornoVector3(25, 25, 25), true);
-
-		handObject_->addComponent<Mesh>("mesh", idEntity->getId());
-		handObject_->addComponent<EntityId>("entityid", Type::PRODUCT, idEntity->getProdType(), idEntity->getId());
-
-		handObject_->start();
-
-		entity_->getComponent<Mesh>("mesh")->attachObject("Mano.R", handObject_);
-
-		// Se bloquea la posibilidad de meterlo al carrito hasta que se tomen las acciones pertinentes
-		if (idEntity->getProdType() == ProductType::FISH || idEntity->getProdType() == ProductType::FRUIT)
-			productLocked_ = true;
+		createProduct(idEntity->getId(), idEntity->getProdType());
 	}
+}
+
+void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
+{
+	Scene* scene = entity_->getScene();
+	Transform* playerTr = entity_->getComponent<Transform>("transform");
+
+	handObject_ = scene->addEntity("product", scene->getName());
+	handObject_->addComponent<Transform>("transform", HornoVector3(0, 0, 0),
+		HornoVector3(-90, 0, 0), HornoVector3(25, 25, 25), true);
+
+	handObject_->addComponent<Mesh>("mesh", id);
+	handObject_->addComponent<EntityId>("entityid", Type::PRODUCT, pType, id);
+
+	handObject_->start();
+
+	entity_->getComponent<Mesh>("mesh")->attachObject("Mano.R", handObject_);
+
+	// Se bloquea la posibilidad de meterlo al carrito hasta que se tomen las acciones pertinentes
+	if (pType == ProductType::FISH || pType == ProductType::FRUIT)
+		productLocked_ = true;
 }
 
 void El_Horno::PlayerInteract::dropItem()
