@@ -74,6 +74,7 @@ void El_Horno::PlayerInteract::update()
 	}
 
 	processCollisionStay();
+	processCollisionExit();
 }
 
 std::string El_Horno::PlayerInteract::getHandObjectId()
@@ -141,9 +142,32 @@ void El_Horno::PlayerInteract::processCollisionStay()
 		case El_Horno::MEATSTATION:
 			manageMeatStation();
 			break;
+		case El_Horno::PUDDLE:
+			managePuddle();
+			break;
 		default:
 			break;
 		}
+	}
+}
+
+void El_Horno::PlayerInteract::processCollisionExit()
+{
+	if (triggerExit_ != nullptr) {
+		EntityId* idEntity = triggerExit_->getComponent<EntityId>("entityid");
+
+		Type t = idEntity->getType();
+
+		switch (t)
+		{
+		case El_Horno::PUDDLE:
+			entity_->getComponent<RigidBody>("rigidbody")->setDamping(0.7f, 0.7f);
+			entity_->getComponent<PlayerController>("playercontroller")->setSliding(false);
+			break;
+		default:
+			break;
+		}
+		triggerExit_ = nullptr;
 	}
 }
 
@@ -337,6 +361,12 @@ void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 	// Se bloquea la posibilidad de meterlo al carrito hasta que se tomen las acciones pertinentes
 	if (pType == ProductType::FISH || pType == ProductType::FRUIT)
 		productLocked_ = true;
+}
+
+void El_Horno::PlayerInteract::managePuddle()
+{
+	entity_->getComponent<RigidBody>("rigidbody")->setDamping(0.05f, 0.05f);
+	entity_->getComponent<PlayerController>("playercontroller")->setSliding(true);
 }
 
 void El_Horno::PlayerInteract::dropItem()

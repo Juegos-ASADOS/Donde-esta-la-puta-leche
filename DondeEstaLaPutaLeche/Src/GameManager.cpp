@@ -51,9 +51,20 @@ void El_Horno::GameManager::update()
 {
 	if (gameState_ == GameState::RUNNING && gameTimer_->getTime() >= maxTime_) {
 		//Game over
+		endingEggs_ = 0;
+
+		// Escena final sin puntuación
 	}
 	else if (gameState_ == GameState::RUNNING && win_) {
 		//Ganar
+		endingEggs_ = 1;
+
+		if (gameTimer_->getTime() <= (maxTime_/3)*2)
+			endingEggs_++;
+		if (wrongProducts_ <= maxProducts_ / 4)
+			endingEggs_++;
+
+		//Pasar a la escena de score teniendo en cuenta la puntuación (huevos)
 	}
 }
 

@@ -20,6 +20,7 @@ namespace El_Horno {
 		void start() override;
 		void update() override;
 		inline void setSpeed(float s) { speed_ = s; };
+		inline void setSliding(bool sl) { sliding_ = sl; };
 	protected:
 		float speed_;
 		RigidBody* rb_;
@@ -28,6 +29,7 @@ namespace El_Horno {
 			offset_;
 		AnimatorController* anim_;
 		bool walking_;
+		bool sliding_ = false;
 	};
 }
 #endif 

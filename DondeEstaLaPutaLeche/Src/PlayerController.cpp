@@ -38,7 +38,7 @@ void El_Horno::PlayerController::update()
 {
 	if (input_->isKeyDown(SDL_SCANCODE_A) || input_->isKeyDown(SDL_SCANCODE_S) || input_->isKeyDown(SDL_SCANCODE_D) || input_->isKeyDown(SDL_SCANCODE_W)) {
 
-		if(rb_->getDamping() != 0.7f)
+		if(rb_->getDamping() != 0.7f && !sliding_)
 			rb_->setDamping(0.7f, 0);
 
 
@@ -50,7 +50,7 @@ void El_Horno::PlayerController::update()
 		}
 	}
 	else {
-		if (rb_->getDamping() != 0.999f)
+		if (rb_->getDamping() != 0.999f && !sliding_)
 			rb_->setDamping(0.999f, 0);
 
 		if (walking_) {
