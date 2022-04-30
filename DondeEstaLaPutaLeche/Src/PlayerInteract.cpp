@@ -22,7 +22,8 @@
 #include <iostream>
 
 El_Horno::PlayerInteract::PlayerInteract() : carryingCart_(false), triggerStay_(nullptr), handObject_(nullptr), fishTimer_(nullptr),
-ticketTimerRunning_(false), fishTimerRunning_(false), productLocked_(false), meatTimer_(nullptr), maxTicketTime_(7), maxFishTime_(7)
+ticketTimerRunning_(false), fishTimerRunning_(false), productLocked_(false), meatTimer_(nullptr), maxTicketTime_(7), maxFishTime_(7),
+meatObtainable_(false), fishObtainable_(false), ticketExpirationTimer_(nullptr), ticketExpirationTimerRunning_(false)
 {
 }
 
@@ -30,6 +31,7 @@ El_Horno::PlayerInteract::~PlayerInteract()
 {
 	delete fishTimer_; fishTimer_ = nullptr;
 	delete meatTimer_; meatTimer_ = nullptr;
+	delete ticketExpirationTimer_; ticketExpirationTimer_ = nullptr;
 }
 
 void El_Horno::PlayerInteract::start()
@@ -38,6 +40,7 @@ void El_Horno::PlayerInteract::start()
 	input_ = ElHornoBase::getInstance()->getInputManager();
 	meatTimer_ = new Timer();
 	fishTimer_ = new Timer();
+	ticketExpirationTimer_ = new Timer();
 }
 
 void El_Horno::PlayerInteract::update()
@@ -46,14 +49,27 @@ void El_Horno::PlayerInteract::update()
 	if (input_->isKeyDown(SDL_SCANCODE_R)) {
 		dropItem();
 	}
+
+	// Se puede obtener la carne
 	if (ticketTimerRunning_ && meatTimer_->getTime() >= maxTicketTime_) {
-		//TODO enviar un mensaje para que la sección de carne permita obtener carne
-
+		cout << "timer carne terminao\n";
 		ticketTimerRunning_ = false;
+		ticketExpirationTimerRunning_ = true;
+		ticketExpirationTimer_->resetTimer();
+		meatObtainable_ = true;
 	}
-	if (fishTimerRunning_ && fishTimer_->getTime() >= maxFishTime_) {
-		//TODO enviar un mensaje para que la sección de pescado permita obtener pescado
 
+	// Se deja de poder obtener la carne
+	if (ticketExpirationTimerRunning_ && ticketExpirationTimer_->getTime() >= maxTicketTime_) {
+		cout << "timer ticket expirao\n";
+		ticketExpirationTimerRunning_ = false;
+		meatObtainable_ = false;
+	}
+
+	// Se puede obtener el pescado
+	if (fishTimerRunning_ && fishTimer_->getTime() >= maxFishTime_) {
+		fishObtainable_ = true;
+		cout << "timer pescao terminao\n";
 		fishTimerRunning_ = false;
 	}
 
@@ -122,6 +138,9 @@ void El_Horno::PlayerInteract::processCollisionStay()
 			break;
 		case El_Horno::FISHCLEANER:
 			manageFishCleaner();
+			break;
+		case El_Horno::MEATSTATION:
+			manageMeatStation();
 			break;
 		case El_Horno::PUDDLE:
 			managePuddle();
@@ -242,25 +261,65 @@ void El_Horno::PlayerInteract::manageCashRegister()
 
 void El_Horno::PlayerInteract::manageMeatTicket()
 {
-	meatTimer_->resetTimer();
-	ticketTimerRunning_ = true;
+	// TODO Mostrar tecla E en la UI
+	if (input_->isKeyDown(SDL_SCANCODE_E)) {
+		cout << "carne\n";
+		meatTimer_->resetTimer();
+		ticketTimerRunning_ = true;
+	}
 }
 
 void El_Horno::PlayerInteract::manageWheighingMachine()
 {
-	if (handObject_ != nullptr && handObject_->getComponent<EntityId>("entityid")->getProdType() == ProductType::FRUIT) {
-		productLocked_ = false;
-		//TODO Poner feedback de que el producto ha sido pesado
+	if (productLocked_ && handObject_ != nullptr && handObject_->getComponent<EntityId>("entityid")->getProdType() == ProductType::FRUIT) {
+		cout << "fruta fuera\n";
+		// TODO Mostrar tecla E en la UI
+
+		if (input_->isKeyDown(SDL_SCANCODE_E)) {
+			productLocked_ = false;
+			cout << "fruta dentro\n";
+			//TODO Poner feedback de que el producto ha sido pesado
+		}
 	}
 }
 
 void El_Horno::PlayerInteract::manageFishCleaner()
 {
 	if (handObject_ != nullptr && handObject_->getComponent<EntityId>("entityid")->getProdType() == ProductType::FISH) {
-		productLocked_ = false;
-		fishTimerRunning_ = true;
-		fishTimer_->resetTimer();
-		//TODO Poner feedback de que el producto est
+		// TODO Mostrar tecla E en la UI 
+		cout << "pescado fuera\n";
+		// Si se presiona la E se inicia el timer de limpieza de pescado
+		if (input_->isKeyDown(SDL_SCANCODE_E)) {
+			productLocked_ = false;
+			fishTimerRunning_ = true;
+			fishTimer_->resetTimer();
+			deleteAliment();
+			cout << "pescado dentro\n";
+		}
+	}
+	else if (fishObtainable_ && handObject_ == nullptr) {
+		// TODO Mostrar tecla E en la UI 
+		// Si el pescado esta limpio
+		if (input_->isKeyDown(SDL_SCANCODE_E)) {
+			cout << "pescado en mano\n";
+			createProduct("Agua", ProductType::DEFAULT);
+			fishObtainable_ = false;
+		}
+	}
+}
+
+void El_Horno::PlayerInteract::manageMeatStation()
+{
+	if (meatObtainable_ && handObject_ == nullptr) {
+		cout << "Se puede obtener carne\n";
+		// TODO Mostrar tecla E en la UI 
+		if (input_->isKeyDown(SDL_SCANCODE_E)) {
+			cout << "Se obtuvo carne\n";
+		
+			// ESTO SERA "carne" CUANDO TENGAMOS EL MESH
+			createProduct("Agua", ProductType::DEFAULT);
+			meatObtainable_ = false;
+		}
 	}
 }
 
@@ -274,25 +333,30 @@ void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 
 	// TODO Mostrar tecla E en la UI 
 	if (input_->isKeyDown(SDL_SCANCODE_E)) {
-		Scene* scene = entity_->getScene();
-		Transform* playerTr = entity_->getComponent<Transform>("transform");
-
 		// Crear entidad producto
-		handObject_ = scene->addEntity("product", scene->getName());
-		handObject_->addComponent<Transform>("transform", HornoVector3(0, 0, 0),
-			HornoVector3(-90, 0, 0), HornoVector3(25, 25, 25), true);
-
-		handObject_->addComponent<Mesh>("mesh", idEntity->getId());
-		handObject_->addComponent<EntityId>("entityid", Type::PRODUCT, idEntity->getProdType(), idEntity->getId());
-
-		handObject_->start();
-
-		entity_->getComponent<Mesh>("mesh")->attachObject("Mano.R", handObject_);
-
-		// Se bloquea la posibilidad de meterlo al carrito hasta que se tomen las acciones pertinentes
-		if (idEntity->getProdType() == ProductType::FISH || idEntity->getProdType() == ProductType::FRUIT)
-			productLocked_ = true;
+		createProduct(idEntity->getId(), idEntity->getProdType());
 	}
+}
+
+void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
+{
+	Scene* scene = entity_->getScene();
+	Transform* playerTr = entity_->getComponent<Transform>("transform");
+
+	handObject_ = scene->addEntity("product", scene->getName());
+	handObject_->addComponent<Transform>("transform", HornoVector3(0, 0, 0),
+		HornoVector3(-90, 0, 0), HornoVector3(25, 25, 25), true);
+
+	handObject_->addComponent<Mesh>("mesh", id);
+	handObject_->addComponent<EntityId>("entityid", Type::PRODUCT, pType, id);
+
+	handObject_->start();
+
+	entity_->getComponent<Mesh>("mesh")->attachObject("Mano.R", handObject_);
+
+	// Se bloquea la posibilidad de meterlo al carrito hasta que se tomen las acciones pertinentes
+	if (pType == ProductType::FISH || pType == ProductType::FRUIT)
+		productLocked_ = true;
 }
 
 void El_Horno::PlayerInteract::managePuddle()

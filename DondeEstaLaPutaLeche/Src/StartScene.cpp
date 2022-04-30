@@ -8,7 +8,6 @@
 #include <AudioComponent.h>
 #include <AudioListenerComponent.h>
 #include <ParticleSystem.h>
-//#include <UIPushButton.h>
 #include <Rigibody.h>
 #include <Mesh.h>
 #include <AnimatorController.h>
@@ -55,7 +54,7 @@ namespace El_Horno {
 
 		// Player
 		a = addEntity("player", "prueba");
-		a->addComponent<Transform>("transform", HornoVector3(-50, 40, 0), HornoVector3(0, 0, 0), p);
+		a->addComponent<Transform>("transform", HornoVector3(-50, 10, 0), HornoVector3(0, 0, 0), p);
 		cam->getComponent<CameraComponent>("camera")->setFollow(a->getComponent<Transform>("transform"), 0.2f, HornoVector3(50, 60, 450));
 		a->addComponent<Mesh>("mesh", "pipo");
 		a->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
@@ -64,7 +63,7 @@ namespace El_Horno {
 		a->addComponent<PlayerInteract>("playerinteract");
 
 		//Creacion maquina de estados animator
-		std::vector<std::pair<std::string, std::string>> animVector;		
+		std::vector<std::pair<std::string, std::string>> animVector;
 		animVector.push_back(std::pair<std::string, std::string>("Idle", "walk"));
 		animVector.push_back(std::pair<std::string, std::string>("walk", "Idle"));
 		animVector.push_back(std::pair<std::string, std::string>("Idle_with_product", "walk_with_product"));
@@ -90,23 +89,45 @@ namespace El_Horno {
 		//b->addComponent<Transform>("transform", HornoVector3(250, 10, 0), HornoVector3(0, 0, 0), p);
 		//b->addComponent<ParticleSystem>("particleSystem", "smoke", "Smoke", 10, true);
 
-		// Estanteria
-		a = addEntity("estantery", "prueba");
-		a->addComponent<Transform>("transform", HornoVector3(50, 10, 0), HornoVector3(0, 0, 0), HornoVector3(0.5, 1, 0.25));
+		// Estanteria pescado
+		a = addEntity("festantery", "prueba");
+		a->addComponent<Transform>("transform", HornoVector3(0, 10, 450), HornoVector3(0, 0, 0), HornoVector3(0.5, 1, 0.25));
 		a->addComponent<Mesh>("mesh", "cube");
 		a->addComponent<RigidBody>("rigidbody", 0.0f, false, false, 0);
 
-		Entity* trigger = addEntity("estanteryTrigger", "prueba", a);
-		trigger->addComponent<Transform>("transform", HornoVector3(00, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
+		Entity* trigger = addEntity("festanteryTrigger", "prueba", a);
+		trigger->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
 		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
-		trigger->addComponent<EntityId>("entityid", Type::ESTANTERY, ProductType::DEFAULT, "Agua");
-		
-		std::vector<HornoVector3> patata; 
+		trigger->addComponent<EntityId>("entityid", Type::ESTANTERY, ProductType::FISH, "Agua");
 
-		patata.push_back(HornoVector3(-150, 10, 0));
-		patata.push_back(HornoVector3(-250, 10, 0));
-		patata.push_back(HornoVector3(-250, 10, -100));
-		patata.push_back(HornoVector3(-150, 10, -100));
+		// Estanteria carne
+		a = addEntity("mestantery", "prueba");
+		a->addComponent<Transform>("transform", HornoVector3(150, 10, 450), HornoVector3(0, 0, 0), HornoVector3(0.5, 1, 0.25));
+		a->addComponent<Mesh>("mesh", "cube");
+		a->addComponent<RigidBody>("rigidbody", 0.0f, false, false, 0);
+
+		trigger = addEntity("mestanteryTrigger", "prueba", a);
+		trigger->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
+		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
+		trigger->addComponent<EntityId>("entityid", Type::ESTANTERY, ProductType::MEAT, "Agua");
+
+		// Estanteria fruta
+		a = addEntity("frestantery", "prueba");
+		a->addComponent<Transform>("transform", HornoVector3(-150, 10, 450), HornoVector3(0, 0, 0), HornoVector3(0.5, 1, 0.25));
+		a->addComponent<Mesh>("mesh", "cube");
+		a->addComponent<RigidBody>("rigidbody", 0.0f, false, false, 0);
+
+		trigger = addEntity("frestanteryTrigger", "prueba", a);
+		trigger->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
+		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
+		trigger->addComponent<EntityId>("entityid", Type::ESTANTERY, ProductType::FRUIT, "Agua");
+
+		std::vector<PatrolPos> patata;
+
+		patata.push_back({ HornoVector3(-150, 10, 0), 1 });
+		patata.push_back({ HornoVector3(-250, 10, 0), 1 });
+		patata.push_back({ HornoVector3(-250, 10, -100), 1 });
+		patata.push_back({ HornoVector3(-150, 10, -100), 1 });
 
 		// NPC
 		a = addEntity("moneco", "prueba");
@@ -143,17 +164,17 @@ namespace El_Horno {
 		a = addEntity("cart", "prueba");
 		a->addComponent<Transform>("transform", HornoVector3(-100, 10, -300), HornoVector3(0, 0, 0), HornoVector3(0.2, 0.2, 0.2));
 		a->addComponent<Mesh>("mesh", "cube");
-		a->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
+		a->addComponent<RigidBody>("rigidbody", 200.0f, false, false, 0);
 
 		// Trigger del carrito
 		trigger = addEntity("cartTrigger", "prueba", a);
 		trigger->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(3.5, 3, 3.5));
-		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
+		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, true, 0);
 		trigger->addComponent<EntityId>("entityid", Type::CART);
 
 		// Estacion de tickets
 		a = addEntity("meatticket", "prueba");
-		a->addComponent<Transform>("transform", HornoVector3(150, 10, 10), HornoVector3(0, 0, 0), HornoVector3(0.5, 1, 0.25));
+		a->addComponent<Transform>("transform", HornoVector3(150, 10, 300), HornoVector3(0, 0, 0), HornoVector3(0.5, 1, 0.25));
 		a->addComponent<Mesh>("mesh", "cube");
 		a->addComponent<RigidBody>("rigidbody", 0.0f, false, false, 0);
 
@@ -161,6 +182,39 @@ namespace El_Horno {
 		trigger->addComponent<Transform>("transform", HornoVector3(00, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
 		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
 		trigger->addComponent<EntityId>("entityid", Type::MEATTICKET);
+
+		// Pescado
+		a = addEntity("fishcleaner", "prueba");
+		a->addComponent<Transform>("transform", HornoVector3(0, 10, 300), HornoVector3(0, 0, 0), HornoVector3(0.5, 1, 0.25));
+		a->addComponent<Mesh>("mesh", "cube");
+		a->addComponent<RigidBody>("rigidbody", 0.0f, false, false, 0);
+
+		trigger = addEntity("fishTrigger", "prueba", a);
+		trigger->addComponent<Transform>("transform", HornoVector3(00, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
+		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
+		trigger->addComponent<EntityId>("entityid", Type::FISHCLEANER);
+
+		// Bascula
+		a = addEntity("weighingmachine", "prueba");
+		a->addComponent<Transform>("transform", HornoVector3(-150, 10, 300), HornoVector3(0, 0, 0), HornoVector3(0.5, 1, 0.25));
+		a->addComponent<Mesh>("mesh", "cube");
+		a->addComponent<RigidBody>("rigidbody", 0.0f, false, false, 0);
+
+		trigger = addEntity("weighingTrigger", "prueba", a);
+		trigger->addComponent<Transform>("transform", HornoVector3(00, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
+		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
+		trigger->addComponent<EntityId>("entityid", Type::WHEIGHINGMACHINE);
+
+		// Estaci�n de recogida de carne
+		a = addEntity("meatstation", "prueba");
+		a->addComponent<Transform>("transform", HornoVector3(250, 10, 300), HornoVector3(0, 0, 0), HornoVector3(0.5, 1, 0.25));
+		a->addComponent<Mesh>("mesh", "cube");
+		a->addComponent<RigidBody>("rigidbody", 0.0f, false, false, 0);
+
+		trigger = addEntity("stationTrigger", "prueba", a);
+		trigger->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
+		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
+		trigger->addComponent<EntityId>("entityid", Type::MEATSTATION);
 
 		//charco
 		a = addEntity("puddle", "prueba");

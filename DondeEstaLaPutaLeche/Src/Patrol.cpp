@@ -4,10 +4,11 @@
 #include "Transform.h"
 #include "Rigibody.h"
 #include "AnimatorController.h"
-#include "btBulletCollisionCommon.h"
+#include "ElHornoBase.h"
+
 #include <iostream>
 
-El_Horno::Patrol::Patrol(float tspeed, const std::vector<HornoVector3>& pos)
+El_Horno::Patrol::Patrol(float tspeed, const std::vector<PatrolPos>& pos)
 {
 	for (auto p : pos) {
 		positions_.push(p);
@@ -22,14 +23,15 @@ El_Horno::Patrol::Patrol()
 
 void El_Horno::Patrol::setParameters(std::vector<std::pair<std::string, std::string>> parameters)
 {
-	for (int i = 0; i < parameters.size(); i++) {
+	//ADAPTAR A PATROLPOS
+	/*for (int i = 0; i < parameters.size(); i++) {
 		if (parameters[i].first == "speed") {
 			speed_ = stof(parameters[i].second);
 		}
 		else {
 			positions_.push(OgreVectorToHorno(StringToVector(parameters[i].second)));
 		}
-	}
+	}*/
 }
 
 void El_Horno::Patrol::start()
@@ -42,21 +44,31 @@ void El_Horno::Patrol::start()
 void El_Horno::Patrol::update()
 {
 	if (!positions_.empty()) {
-		auto pos = positions_.front();
+
+		if (isWaiting())
+			return;
+
+		PatrolPos pos = positions_.front();
 		if (isClose()) {
+			//Nueva posicion
 			positions_.pop();
 			positions_.push(pos);
 			pos = positions_.front();
+
+			//Reset de tiempo
+			timer = 0;
 		}
 
-		auto dir = HornoVectorToBullet(pos) - HornoVectorToBullet(tr_->getHornoGlobalPosition());
+		HornoVector3 dir =	pos.pos - tr_->getHornoGlobalPosition();
+
+		dir.y_ = 0; // Irrelevante
 
 		rb_->setLinearVelocity(dir.normalized() * speed_);
 
 		//Animacion
 		if (anim_)
 		{
-			if (rb_->getLinearVelocity().length() > 1)
+			if (rb_->getHornoLinearVelocity().magnitude() > 1)
 			{
 				if (!walking_)
 				{
@@ -78,15 +90,34 @@ void El_Horno::Patrol::setSpeed(float s)
 	speed_ = s;
 }
 
-void El_Horno::Patrol::addPosition(const HornoVector3& pos)
+void El_Horno::Patrol::addPosition(const PatrolPos& pos)
 {
 	positions_.push(pos);
 }
 
+void El_Horno::Patrol::addPosition(const HornoVector3& pos, float time)
+{
+	positions_.push({ pos, time });
+}
+
+void El_Horno::Patrol::addPosition(float x, float z, float time)
+{
+	positions_.push({ {x, 0, z}, time });
+}
+
 bool El_Horno::Patrol::isClose()
 {
-	auto diff = HornoVectorToBullet(tr_->getHornoGlobalPosition()) - HornoVectorToBullet(positions_.front());
-	double magnitude = diff.length();
+	HornoVector3 diff = tr_->getHornoGlobalPosition() - positions_.front().pos;
+	float magnitude = diff.magnitude();
 
 	return magnitude <= minRange_;
+}
+
+bool El_Horno::Patrol::isWaiting()
+{
+	if (timer < positions_.front().wait_time) {
+		timer += ElHornoBase::getInstance()->getDeltaTime();
+		return true;
+	}
+	return false;
 }
