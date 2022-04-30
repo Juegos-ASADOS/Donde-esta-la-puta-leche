@@ -164,12 +164,12 @@ namespace El_Horno {
 		a = addEntity("cart", "prueba");
 		a->addComponent<Transform>("transform", HornoVector3(-100, 10, -300), HornoVector3(0, 0, 0), HornoVector3(0.2, 0.2, 0.2));
 		a->addComponent<Mesh>("mesh", "cube");
-		a->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
+		a->addComponent<RigidBody>("rigidbody", 200.0f, false, false, 0);
 
 		// Trigger del carrito
 		trigger = addEntity("cartTrigger", "prueba", a);
 		trigger->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(3.5, 3, 3.5));
-		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
+		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, true, 0);
 		trigger->addComponent<EntityId>("entityid", Type::CART);
 
 		// Estacion de tickets
