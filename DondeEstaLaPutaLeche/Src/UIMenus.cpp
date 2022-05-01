@@ -5,14 +5,13 @@
 #include <UILayout.h>
 #include <Transform.h>
 #include <Entity.h>
-#include "CEGUI/EventArgs.h"
 
 #include "InputManager.h"
 #include <iostream>
 
 namespace El_Horno {
 
-	bool click(const CEGUI::EventArgs&) {
+	bool click(const CEGUI::EventArgs& e) {
 		std::cout << "CLICK GE EGCGI CKUCJ\n";
 		return true;
 	}
@@ -25,18 +24,17 @@ namespace El_Horno {
 	{
 		menu = SceneManager::getInstance()->getCurrentScene()->addEntity("menu", "prueba");
 		menu->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
-		menu->addComponent<UILayout>("uilayout", "TaharezLookOverview", "first");
+		menu->addComponent<UILayout>("uilayout", "MenuPrincipal", "first");
 		menu->awake();
 		menu->start();
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("clikao", click);
 	}
 
 	void UIMenus::update()
 	{
-		if (InputManager::getInstance()->isKeyDown(SDL_SCANCODE_M)) {
+		if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_M)) {
 			show();
 		}
-		else if (InputManager::getInstance()->isKeyDown(SDL_SCANCODE_N)) {
+		else if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_N)) {
 			hide();
 		}
 	}
@@ -48,9 +46,10 @@ namespace El_Horno {
 
 	void UIMenus::show()
 	{
-		menu->getComponent<UILayout>("uilayout")->loadScheme("TaharezLook");
-		menu->getComponent<UILayout>("uilayout")->loadScheme("Generic");
+		menu->getComponent<UILayout>("uilayout")->loadScheme("DondeTaLeche");
+		menu->getComponent<UILayout>("uilayout")->loadScheme("GWEN");
 		menu->getComponent<UILayout>("uilayout")->loadLayout();
+		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("MenuPrincipal/Fondo", click);
 	}
 
 }

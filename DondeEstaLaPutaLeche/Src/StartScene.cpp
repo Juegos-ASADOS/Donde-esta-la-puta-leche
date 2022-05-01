@@ -19,7 +19,6 @@
 #include <PlayerInteract.h>
 #include <EntityId.h>
 #include <HornoVector3.h>
-#include <EstanteryEnter.h>
 #include <Patrol.h>
 #include <vector>
 #include <LuaManager.h>
