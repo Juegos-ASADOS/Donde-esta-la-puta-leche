@@ -11,7 +11,6 @@
 #include <Rigibody.h>
 #include <Mesh.h>
 #include <AnimatorController.h>
-#include <SinbadAnimTest.h>
 #include <iostream>
 #include <HornoVector3.h>
 #include <FactoryCreator.h>
@@ -19,12 +18,12 @@
 #include <PlayerInteract.h>
 #include <EntityId.h>
 #include <HornoVector3.h>
-#include <EstanteryEnter.h>
 #include <Patrol.h>
 #include <vector>
 #include <LuaManager.h>
 #include <SceneManager.h>
 #include <GameManager.h>
+#include "UIMenus.h"
 
 namespace El_Horno {
 	void StartScene::init(std::string name)
@@ -148,6 +147,9 @@ namespace El_Horno {
 		a->addComponent<RigidBody>("rigidbody", 3.0f, false, false, 0);
 		a->addComponent<Patrol>("patrol", 50, patata);
 
+		a = addEntity("menu", "prueba");
+		a->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
+		a->addComponent<UIMenus>("uimenus");
 		/*std::vector<std::pair<std::string, std::string>> animVectorNpc;
 		animVectorNpc.push_back(std::pair<std::string, std::string>("Idle", "npc_walk"));
 		animVectorNpc.push_back(std::pair<std::string, std::string>("npc_walk", "Idle"));
