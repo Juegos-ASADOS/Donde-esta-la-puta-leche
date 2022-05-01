@@ -17,6 +17,7 @@ namespace El_Horno {
 			creator->addFactory("entityid");
 			creator->addFactory("pushbutton");
 			creator->addFactory("patrol");
+			creator->addFactory("uimenus");
 		}
 	}
 }
