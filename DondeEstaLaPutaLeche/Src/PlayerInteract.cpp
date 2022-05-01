@@ -93,19 +93,20 @@ void El_Horno::PlayerInteract::deleteAliment()
 	//Transform del jugador
 	Transform* tr = entity_->getComponent<Transform>("transform");
 
-	if (!carryingCart_) {
-		Entity* ob = entity_->getScene()->addEntity("productShot", entity_->getScene()->getName());
-		ob->addComponent<Transform>("transform", OgreVectorToHorno(tr->getPosition()) /*+ HornoVector3(10, 0, 0)*/,
-			HornoVector3(-90, 0, 0), HornoVector3(15, 15, 15));
+	//if (!carryingCart_) {
+	//	Entity* ob = SceneManager::getInstance()->getCurrentScene()->addEntity("productShot", "prueba");
+	//	ob->addComponent<Transform>("transform", OgreVectorToHorno(tr->getPosition()) /*+ HornoVector3(10, 0, 0)*/,
+	//		HornoVector3(-90, 0, 0), HornoVector3(15, 15, 15));
 
-		ob->addComponent<Mesh>("mesh", id);
-		ob->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
+	//	ob->addComponent<Mesh>("mesh", id);
+	//	ob->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
 
-		ob->start();
+	//	ob->awake();
+	//	ob->start();
 
-		//Lanza el objeto
-		ob->getComponent<RigidBody>("rigidbody")->applyForce(HornoVector3(100, 0, 0));
-	}
+	//	//Lanza el objeto
+	//	ob->getComponent<RigidBody>("rigidbody")->applyForce(HornoVector3(100, 0, 0));
+	//}
 }
 
 void El_Horno::PlayerInteract::processCollisionStay()
@@ -210,6 +211,7 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 			}
 			//Si lo que quiero es meter un objeto...
 			else if (!productLocked_) {
+				cout << "intento meter objeto jijio\n";
 				//Busco el id del objeto
 				std::string idName = getHandObjectId();
 
@@ -329,9 +331,8 @@ void El_Horno::PlayerInteract::manageMeatStation()
 
 void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 {
-	//Oscar: No se por que cogias la escena de otra entidad y no de esta�?
 	//Si tiene alimento en la mano o el carro...
-	if (handObject_ != nullptr || entity_->getChildCount() != 0)
+	if (handObject_ != nullptr || carryingCart_)
 		//No ocurre nada
 		return;
 
@@ -344,6 +345,8 @@ void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 
 void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 {
+	cout << "CREO PRODUCTO UO\n";
+	
 	Scene* scene = entity_->getScene();
 	Transform* playerTr = entity_->getComponent<Transform>("transform");
 
@@ -354,6 +357,7 @@ void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 	handObject_->addComponent<Mesh>("mesh", id);
 	handObject_->addComponent<EntityId>("entityid", Type::PRODUCT, pType, id);
 
+	handObject_->awake();
 	handObject_->start();
 
 	entity_->getComponent<Mesh>("mesh")->attachObject("Mano.R", handObject_);
@@ -420,6 +424,7 @@ void El_Horno::PlayerInteract::instanciateCart()
 		HornoVector3(0, 0, 0), HornoVector3(0.2, 0.2, 0.2));
 	cart->addComponent<Mesh>("mesh", "cube");
 	cart->addComponent<RigidBody>("rigidbody", 100.0f, false, false, 0);
+	cart->awake();
 	cart->start();
 	cart->getComponent<RigidBody>("rigidbody")->setAngularFactor(0);
 	//Trigger del carrito
@@ -427,6 +432,7 @@ void El_Horno::PlayerInteract::instanciateCart()
 	trig->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(3.5, 3, 3.5));
 	trig->addComponent<RigidBody>("rigidbody", 1.0f, true, true, 0);
 	trig->addComponent<EntityId>("entityid", Type::CART);
+	trig->awake();
 	trig->start();
 }
 
