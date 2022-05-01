@@ -22,6 +22,23 @@
 //	}
 //}
 
+//id_(id), type_(type), productType_(prodType)
+
+void El_Horno::EntityId::setParameters(std::vector<std::pair<std::string, std::string>> parameters)
+{
+	for (int i = 0; i < parameters.size(); i++) {
+		if (parameters[i].first == "type") {
+			type_ = (Type)stoi(parameters[i].second);
+		}
+		else if (parameters[i].first == "productType") {
+			productType_ = (ProductType)stoi(parameters[i].second);
+		}
+		else if (parameters[i].first == "id") {
+			id_ = parameters[i].second;
+		}
+	}
+}
+
 bool El_Horno::EntityId::recieveEvent(Event* ev)
 {
 	//Procesa los eventos de entrada/salida en él, y actualiza la entidad trigger de PlayerInteract en caso de que sea el jugador
