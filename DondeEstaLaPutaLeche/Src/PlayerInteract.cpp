@@ -21,7 +21,7 @@
 #include <Timer.h>
 #include <iostream>
 
-El_Horno::PlayerInteract::PlayerInteract() : carryingCart_(false), triggerStay_(nullptr), handObject_(nullptr), fishTimer_(nullptr),
+El_Horno::PlayerInteract::PlayerInteract() : carryingCart_(true), triggerStay_(nullptr), handObject_(nullptr), fishTimer_(nullptr),
 ticketTimerRunning_(false), fishTimerRunning_(false), productLocked_(false), meatTimer_(nullptr), maxTicketTime_(7), maxFishTime_(7),
 meatObtainable_(false), fishObtainable_(false), ticketExpirationTimer_(nullptr), ticketExpirationTimerRunning_(false)
 {
@@ -174,28 +174,32 @@ void El_Horno::PlayerInteract::processCollisionExit()
 void El_Horno::PlayerInteract::manageCart(Entity* entity)
 {
 	//Si pulsas la tecla E...
-	if (input_->isKeyDown(SDL_SCANCODE_E)) {
+	if (input_->getKeyDown(SDL_SCANCODE_E)) {
 
 		//Si estoy moviendome con el carrito
 		if (carryingCart_)
 		{
+			entity_->getChild("cart")->setActive(false);
+
 			//Dejo el carrito suelto
-			/*entity->setParent(nullptr);
+			std::cout << "Instancia carrito\n";
+			instanciateCart();
 			auto rb = entity_->getComponent<RigidBody>("rigidbody");
 			rb->setDamping(1.0f, 1.0f);
 			auto pc = entity_->getComponent<PlayerController>("playercontroller");
 			pc->setSpeed(300);
 			carryingCart_ = false;
-			std::cout << "Soltar carrito\n";*/
+			std::cout << "Soltar carrito\n";
 		}
 		else {
 			//Si no tiene nada en la mano...
 			if (handObject_ == nullptr) {
 
 				//Hago hijo al carrito para que se mueva junto con el player. Carrito kinematico
-				entity->getComponent<RigidBody>("rigidbody")->setKinematic(true);
-				entity->setParent(entity_);
-
+				entity_->getChild("cart")->setActive(true);
+				std::cout << triggerStay_->getParent()->getName() << "\n";
+				SceneManager::getInstance()->getCurrentScene()->deleteEntity(triggerStay_->getParent()->getName());
+				triggerStay_ = nullptr;
 				//Habr� que ajustar esto para posicionar al carro justo agarrado de la mano del player
 				auto rb = entity_->getComponent<RigidBody>("rigidbody");
 				rb->setDamping(0.5f, 0.5f);
@@ -405,6 +409,25 @@ void El_Horno::PlayerInteract::changeCartSize(Entity* entity)
 		entity->getComponent<Mesh>("mesh")->start();
 
 	}
+}
+
+void El_Horno::PlayerInteract::instanciateCart()
+{
+	//Carro hijo del player
+	Transform* tr = entity_->getChild("cart")->getComponent<Transform>("transform");
+	Entity* cart = SceneManager::getInstance()->getCurrentScene()->addEntity("cartInstance", "prueba");
+	cart->addComponent<Transform>("transform", OgreVectorToHorno(tr->getGlobalPosition()),
+		HornoVector3(0, 0, 0), HornoVector3(0.2, 0.2, 0.2));
+	cart->addComponent<Mesh>("mesh", "cube");
+	cart->addComponent<RigidBody>("rigidbody", 100.0f, false, false, 0);
+	cart->start();
+	cart->getComponent<RigidBody>("rigidbody")->setAngularFactor(0);
+	//Trigger del carrito
+	Entity* trig = SceneManager::getInstance()->getCurrentScene()->addEntity("cartTriggerInstance", "prueba", cart);
+	trig->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(3.5, 3, 3.5));
+	trig->addComponent<RigidBody>("rigidbody", 1.0f, true, true, 0);
+	trig->addComponent<EntityId>("entityid", Type::CART);
+	trig->start();
 }
 
 void El_Horno::PlayerInteract::imInCartRegister(bool imIn)
