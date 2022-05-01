@@ -24,6 +24,7 @@
 #include <LuaManager.h>
 #include <SceneManager.h>
 #include <GameManager.h>
+#include "UIMenus.h"
 
 namespace El_Horno {
 	void StartScene::init(std::string name)
@@ -53,13 +54,25 @@ namespace El_Horno {
 
 		// Player
 		a = addEntity("player", "prueba");
-		a->addComponent<Transform>("transform", HornoVector3(-50, 10, 0), HornoVector3(0, 0, 0), p);
+		a->addComponent<Transform>("transform", HornoVector3(-50, 15, 0), HornoVector3(0, 0, 0), p);
 		cam->getComponent<CameraComponent>("camera")->setFollow(a->getComponent<Transform>("transform"), 0.2f, HornoVector3(50, 60, 450));
 		a->addComponent<Mesh>("mesh", "pipo");
 		a->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
 		a->addComponent<AudioComponent>("audioComponent");
 		a->addComponent<PlayerController>("playercontroller", 1500.0f);
 		a->addComponent<PlayerInteract>("playerinteract");
+
+		////Carro hijo del player
+		Entity* ba = addEntity("cart", "prueba", a);
+		ba->addComponent<Transform>("transform", HornoVector3(0, 0, 2.5), HornoVector3(0, 0, 0), HornoVector3(0.02, 0.02, 0.02));
+		ba->addComponent<Mesh>("mesh", "cube");
+		ba->addComponent<RigidBody>("rigidbody", 2.0f, true, true, 0);
+
+		//Trigger del carrito
+		Entity* trig = addEntity("cartTrigger", "prueba", ba);
+		trig->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(3.5, 3, 3.5));
+		trig->addComponent<RigidBody>("rigidbody", 1.0f, true, true, 0);
+		trig->addComponent<EntityId>("entityid", Type::CART);
 
 		//Creacion maquina de estados animator
 		std::vector<std::pair<std::string, std::string>> animVector;
@@ -135,6 +148,9 @@ namespace El_Horno {
 		a->addComponent<RigidBody>("rigidbody", 3.0f, false, false, 0);
 		a->addComponent<Patrol>("patrol", 50, patata);
 
+		a = addEntity("menu", "prueba");
+		a->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
+		a->addComponent<UIMenus>("uimenus");
 		/*std::vector<std::pair<std::string, std::string>> animVectorNpc;
 		animVectorNpc.push_back(std::pair<std::string, std::string>("Idle", "npc_walk"));
 		animVectorNpc.push_back(std::pair<std::string, std::string>("npc_walk", "Idle"));
@@ -159,17 +175,17 @@ namespace El_Horno {
 		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
 		trigger->addComponent<EntityId>("entityid", Type::CASHREGISTER);
 
-		// Carrito
-		a = addEntity("cart", "prueba");
-		a->addComponent<Transform>("transform", HornoVector3(-100, 10, -300), HornoVector3(0, 0, 0), HornoVector3(0.2, 0.2, 0.2));
-		a->addComponent<Mesh>("mesh", "cube");
-		a->addComponent<RigidBody>("rigidbody", 200.0f, false, false, 0);
+		//// Carrito
+		//a = addEntity("cartInstance", "prueba");
+		//a->addComponent<Transform>("transform", HornoVector3(-100, 10, -300), HornoVector3(0, 0, 0), HornoVector3(0.2, 0.2, 0.2));
+		//a->addComponent<Mesh>("mesh", "cube");
+		//a->addComponent<RigidBody>("rigidbody", 200.0f, false, false, 0);
 
-		// Trigger del carrito
-		trigger = addEntity("cartTrigger", "prueba", a);
-		trigger->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(3.5, 3, 3.5));
-		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, true, 0);
-		trigger->addComponent<EntityId>("entityid", Type::CART);
+		//// Trigger del carrito
+		//trigger = addEntity("cartTriggerInstance", "prueba", a);
+		//trigger->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(3.5, 3, 3.5));
+		//trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, true, 0);
+		//trigger->addComponent<EntityId>("entityid", Type::CART);
 
 		// Estacion de tickets
 		a = addEntity("meatticket", "prueba");
