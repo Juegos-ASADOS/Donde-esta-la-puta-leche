@@ -22,12 +22,12 @@ void El_Horno::PlayerController::setParameters(std::vector<std::pair<std::string
 
 void El_Horno::PlayerController::start()
 {
-	rb_ = entity_->getComponent<RigidBody>("rigidbody");
-	rb_->setAngularFactor(0.0f);
-	rb_->setSleepingThresholds(0, 0);
-	//rb_->setFriction(150);
-	//rb_->setDamping(0.7f, 0);
-	rb_->setScale(HornoVector3(0.5, 0.7, 0.5));
+	//rb_ = entity_->getComponent<RigidBody>("rigidbody");
+	//rb_->setAngularFactor(0.0f);
+	//rb_->setSleepingThresholds(0, 0);
+	////rb_->setFriction(150);
+	////rb_->setDamping(0.7f, 0);
+	//rb_->setScale(HornoVector3(0.5, 0.7, 0.5));
 	input_ = ElHornoBase::getInstance()->getInputManager();
 	anim_ = entity_->getComponent<AnimatorController>("animatorController");
 	walking_ = false;
@@ -36,6 +36,15 @@ void El_Horno::PlayerController::start()
 
 void El_Horno::PlayerController::update()
 {
+	if (rb_ == nullptr) {
+		rb_ = entity_->getComponent<RigidBody>("rigidbody");
+		rb_->setAngularFactor(0.0f);
+		rb_->setSleepingThresholds(0, 0);
+		//rb_->setFriction(150);
+		//rb_->setDamping(0.7f, 0);
+		rb_->setScale(HornoVector3(0.5, 0.7, 0.5));
+	}
+
 	if (input_->isKeyDown(SDL_SCANCODE_A) || input_->isKeyDown(SDL_SCANCODE_S) || input_->isKeyDown(SDL_SCANCODE_D) || input_->isKeyDown(SDL_SCANCODE_W)) {
 
 		if(rb_->getDamping() != 0.7f && !sliding_)

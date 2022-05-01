@@ -153,8 +153,6 @@ namespace El_Horno {
 		animVectorNpc.push_back(std::pair<std::string, std::string>("npc_walk", "Idle"));
 		animVectorNpc.push_back(std::pair<std::string, std::string>("AnyState", "Idle"));
 		b->addComponent<AnimatorController>("animatorController", animVectorNpc);*/
-
-		//LuaManager::getInstance()->loadScene();
 		
 		//b = addEntity("button1", "prueba");
 		//b->addComponent<Transform>("transform", HornoVector3(0,0,0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
@@ -233,6 +231,8 @@ namespace El_Horno {
 		a->addComponent<Transform>("transform", HornoVector3(300, 10, 20), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
 		a->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
 		a->addComponent<EntityId>("entityid", Type::PUDDLE);
+
+		//LuaManager::getInstance()->loadScene();
 
 		std::cout << "ESCENA CARGADA\n";
 	}
