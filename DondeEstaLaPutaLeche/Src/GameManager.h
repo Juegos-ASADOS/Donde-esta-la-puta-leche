@@ -44,11 +44,14 @@ namespace El_Horno {
 
 		// Time
 		Timer* gameTimer_;
-		float maxTime_;
+		float maxTime_,
+			objectiveTime_;
 
 		int productNum_,
 			maxProducts_,
-			wrongProducts_;
+			minWrongProducts_,
+			wrongProducts_,
+			endingEggs_;
 
 		//Por si vas a la madre y das los alimentos que tengas en el carrito sin que esten todos
 		int paidFood;

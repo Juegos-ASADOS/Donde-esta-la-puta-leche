@@ -21,7 +21,7 @@
 #include <Timer.h>
 #include <iostream>
 
-El_Horno::PlayerInteract::PlayerInteract() : carryingCart_(false), triggerStay_(nullptr), handObject_(nullptr), fishTimer_(nullptr),
+El_Horno::PlayerInteract::PlayerInteract() : carryingCart_(true), triggerStay_(nullptr), handObject_(nullptr), fishTimer_(nullptr),
 ticketTimerRunning_(false), fishTimerRunning_(false), productLocked_(false), meatTimer_(nullptr), maxTicketTime_(7), maxFishTime_(7),
 meatObtainable_(false), fishObtainable_(false), ticketExpirationTimer_(nullptr), ticketExpirationTimerRunning_(false)
 {
@@ -74,6 +74,7 @@ void El_Horno::PlayerInteract::update()
 	}
 
 	processCollisionStay();
+	processCollisionExit();
 }
 
 std::string El_Horno::PlayerInteract::getHandObjectId()
@@ -138,37 +139,67 @@ void El_Horno::PlayerInteract::processCollisionStay()
 		case El_Horno::FISHCLEANER:
 			manageFishCleaner();
 			break;
+		case El_Horno::MEATSTATION:
+			manageMeatStation();
+			break;
+		case El_Horno::PUDDLE:
+			managePuddle();
+			break;
 		default:
 			break;
 		}
 	}
 }
 
+void El_Horno::PlayerInteract::processCollisionExit()
+{
+	if (triggerExit_ != nullptr) {
+		EntityId* idEntity = triggerExit_->getComponent<EntityId>("entityid");
+
+		Type t = idEntity->getType();
+
+		switch (t)
+		{
+		case El_Horno::PUDDLE:
+			entity_->getComponent<RigidBody>("rigidbody")->setDamping(0.7f, 0.7f);
+			entity_->getComponent<PlayerController>("playercontroller")->setSliding(false);
+			break;
+		default:
+			break;
+		}
+		triggerExit_ = nullptr;
+	}
+}
+
 void El_Horno::PlayerInteract::manageCart(Entity* entity)
 {
 	//Si pulsas la tecla E...
-	if (input_->isKeyDown(SDL_SCANCODE_E)) {
+	if (input_->getKeyDown(SDL_SCANCODE_E)) {
 
 		//Si estoy moviendome con el carrito
 		if (carryingCart_)
 		{
+			entity_->getChild("cart")->setActive(false);
+
 			//Dejo el carrito suelto
-			/*entity->setParent(nullptr);
+			std::cout << "Instancia carrito\n";
+			instanciateCart();
 			auto rb = entity_->getComponent<RigidBody>("rigidbody");
 			rb->setDamping(1.0f, 1.0f);
 			auto pc = entity_->getComponent<PlayerController>("playercontroller");
 			pc->setSpeed(300);
 			carryingCart_ = false;
-			std::cout << "Soltar carrito\n";*/
+			std::cout << "Soltar carrito\n";
 		}
 		else {
 			//Si no tiene nada en la mano...
 			if (handObject_ == nullptr) {
 
 				//Hago hijo al carrito para que se mueva junto con el player. Carrito kinematico
-				entity->getComponent<RigidBody>("rigidbody")->setKinematic(true);
-				entity->setParent(entity_);
-
+				entity_->getChild("cart")->setActive(true);
+				std::cout << triggerStay_->getParent()->getName() << "\n";
+				SceneManager::getInstance()->getCurrentScene()->deleteEntity(triggerStay_->getParent()->getName());
+				triggerStay_ = nullptr;
 				//Habr� que ajustar esto para posicionar al carro justo agarrado de la mano del player
 				auto rb = entity_->getComponent<RigidBody>("rigidbody");
 				rb->setDamping(0.5f, 0.5f);
@@ -261,13 +292,37 @@ void El_Horno::PlayerInteract::manageFishCleaner()
 	if (handObject_ != nullptr && handObject_->getComponent<EntityId>("entityid")->getProdType() == ProductType::FISH) {
 		// TODO Mostrar tecla E en la UI 
 		cout << "pescado fuera\n";
+		// Si se presiona la E se inicia el timer de limpieza de pescado
 		if (input_->isKeyDown(SDL_SCANCODE_E)) {
 			productLocked_ = false;
 			fishTimerRunning_ = true;
 			fishTimer_->resetTimer();
 			deleteAliment();
 			cout << "pescado dentro\n";
-			//TODO Poner feedback de que el producto est
+		}
+	}
+	else if (fishObtainable_ && handObject_ == nullptr) {
+		// TODO Mostrar tecla E en la UI 
+		// Si el pescado esta limpio
+		if (input_->isKeyDown(SDL_SCANCODE_E)) {
+			cout << "pescado en mano\n";
+			createProduct("Agua", ProductType::DEFAULT);
+			fishObtainable_ = false;
+		}
+	}
+}
+
+void El_Horno::PlayerInteract::manageMeatStation()
+{
+	if (meatObtainable_ && handObject_ == nullptr) {
+		cout << "Se puede obtener carne\n";
+		// TODO Mostrar tecla E en la UI 
+		if (input_->isKeyDown(SDL_SCANCODE_E)) {
+			cout << "Se obtuvo carne\n";
+		
+			// ESTO SERA "carne" CUANDO TENGAMOS EL MESH
+			createProduct("Agua", ProductType::DEFAULT);
+			meatObtainable_ = false;
 		}
 	}
 }
@@ -282,25 +337,36 @@ void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 
 	// TODO Mostrar tecla E en la UI 
 	if (input_->isKeyDown(SDL_SCANCODE_E)) {
-		Scene* scene = entity_->getScene();
-		Transform* playerTr = entity_->getComponent<Transform>("transform");
-
 		// Crear entidad producto
-		handObject_ = scene->addEntity("product", scene->getName());
-		handObject_->addComponent<Transform>("transform", HornoVector3(0, 0, 0),
-			HornoVector3(-90, 0, 0), HornoVector3(25, 25, 25), true);
-
-		handObject_->addComponent<Mesh>("mesh", idEntity->getId());
-		handObject_->addComponent<EntityId>("entityid", Type::PRODUCT, idEntity->getProdType(), idEntity->getId());
-
-		handObject_->start();
-
-		entity_->getComponent<Mesh>("mesh")->attachObject("Mano.R", handObject_);
-
-		// Se bloquea la posibilidad de meterlo al carrito hasta que se tomen las acciones pertinentes
-		if (idEntity->getProdType() == ProductType::FISH || idEntity->getProdType() == ProductType::FRUIT)
-			productLocked_ = true;
+		createProduct(idEntity->getId(), idEntity->getProdType());
 	}
+}
+
+void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
+{
+	Scene* scene = entity_->getScene();
+	Transform* playerTr = entity_->getComponent<Transform>("transform");
+
+	handObject_ = scene->addEntity("product", scene->getName());
+	handObject_->addComponent<Transform>("transform", HornoVector3(0, 0, 0),
+		HornoVector3(-90, 0, 0), HornoVector3(25, 25, 25), true);
+
+	handObject_->addComponent<Mesh>("mesh", id);
+	handObject_->addComponent<EntityId>("entityid", Type::PRODUCT, pType, id);
+
+	handObject_->start();
+
+	entity_->getComponent<Mesh>("mesh")->attachObject("Mano.R", handObject_);
+
+	// Se bloquea la posibilidad de meterlo al carrito hasta que se tomen las acciones pertinentes
+	if (pType == ProductType::FISH || pType == ProductType::FRUIT)
+		productLocked_ = true;
+}
+
+void El_Horno::PlayerInteract::managePuddle()
+{
+	entity_->getComponent<RigidBody>("rigidbody")->setDamping(0.05f, 0.05f);
+	entity_->getComponent<PlayerController>("playercontroller")->setSliding(true);
 }
 
 void El_Horno::PlayerInteract::dropItem()
@@ -343,6 +409,25 @@ void El_Horno::PlayerInteract::changeCartSize(Entity* entity)
 		entity->getComponent<Mesh>("mesh")->start();
 
 	}
+}
+
+void El_Horno::PlayerInteract::instanciateCart()
+{
+	//Carro hijo del player
+	Transform* tr = entity_->getChild("cart")->getComponent<Transform>("transform");
+	Entity* cart = SceneManager::getInstance()->getCurrentScene()->addEntity("cartInstance", "prueba");
+	cart->addComponent<Transform>("transform", OgreVectorToHorno(tr->getGlobalPosition()),
+		HornoVector3(0, 0, 0), HornoVector3(0.2, 0.2, 0.2));
+	cart->addComponent<Mesh>("mesh", "cube");
+	cart->addComponent<RigidBody>("rigidbody", 100.0f, false, false, 0);
+	cart->start();
+	cart->getComponent<RigidBody>("rigidbody")->setAngularFactor(0);
+	//Trigger del carrito
+	Entity* trig = SceneManager::getInstance()->getCurrentScene()->addEntity("cartTriggerInstance", "prueba", cart);
+	trig->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(3.5, 3, 3.5));
+	trig->addComponent<RigidBody>("rigidbody", 1.0f, true, true, 0);
+	trig->addComponent<EntityId>("entityid", Type::CART);
+	trig->start();
 }
 
 void El_Horno::PlayerInteract::imInCartRegister(bool imIn)
