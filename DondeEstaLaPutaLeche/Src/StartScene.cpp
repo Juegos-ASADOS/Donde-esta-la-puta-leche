@@ -11,7 +11,6 @@
 #include <Rigibody.h>
 #include <Mesh.h>
 #include <AnimatorController.h>
-#include <SinbadAnimTest.h>
 #include <iostream>
 #include <HornoVector3.h>
 #include <FactoryCreator.h>
