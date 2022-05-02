@@ -48,7 +48,7 @@ void El_Horno::PlayerInteract::start()
 void El_Horno::PlayerInteract::update()
 {
 	//Si pulsas la tecla R...
-	if (input_->isKeyDown(SDL_SCANCODE_R)) {
+	if (input_->isKeyDown(SDL_SCANCODE_R) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_B)) {
 		dropItem();
 	}
 
@@ -177,7 +177,7 @@ void El_Horno::PlayerInteract::processCollisionExit()
 void El_Horno::PlayerInteract::manageCart(Entity* entity)
 {
 	//Si pulsas la tecla E...
-	if (input_->getKeyDown(SDL_SCANCODE_E)) {
+	if (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_A)) {
 
 		//Si estoy moviendome con el carrito
 		if (carryingCart_)
@@ -250,7 +250,7 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 void El_Horno::PlayerInteract::manageCashRegister()
 {
 	//Si pulsas la tecla E...
-	if (input_->isKeyDown(SDL_SCANCODE_E)) {
+	if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 
 		//Si tengo el carrito agarrado...
 		if (carryingCart_) {
@@ -271,7 +271,7 @@ void El_Horno::PlayerInteract::manageCashRegister()
 void El_Horno::PlayerInteract::manageMeatTicket()
 {
 	// TODO Mostrar tecla E en la UI
-	if (input_->isKeyDown(SDL_SCANCODE_E)) {
+	if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 		cout << "carne\n";
 		meatTimer_->resetTimer();
 		ticketTimerRunning_ = true;
@@ -286,7 +286,7 @@ void El_Horno::PlayerInteract::manageWheighingMachine()
 		cout << "fruta fuera\n";
 		// TODO Mostrar tecla E en la UI
 
-		if (input_->isKeyDown(SDL_SCANCODE_E)) {
+		if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 			productLocked_ = false;
 			cout << "fruta dentro\n";
 			//TODO Poner feedback de que el producto ha sido pesado
@@ -301,7 +301,7 @@ void El_Horno::PlayerInteract::manageFishCleaner()
 		// TODO Mostrar tecla E en la UI 
 		cout << "pescado fuera\n";
 		// Si se presiona la E se inicia el timer de limpieza de pescado
-		if (input_->isKeyDown(SDL_SCANCODE_E)) {
+		if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 			productLocked_ = false;
 			fishTimerRunning_ = true;
 			fishTimer_->resetTimer();
@@ -313,7 +313,7 @@ void El_Horno::PlayerInteract::manageFishCleaner()
 	else if (fishObtainable_ && handObject_ == nullptr) {
 		// TODO Mostrar tecla E en la UI 
 		// Si el pescado esta limpio
-		if (input_->isKeyDown(SDL_SCANCODE_E)) {
+		if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 			cout << "pescado en mano\n";
 			createProduct("Agua", ProductType::DEFAULT);
 			fishObtainable_ = false;
@@ -326,7 +326,7 @@ void El_Horno::PlayerInteract::manageMeatStation()
 	if (meatObtainable_ && handObject_ == nullptr) {
 		cout << "Se puede obtener carne\n";
 		// TODO Mostrar tecla E en la UI 
-		if (input_->isKeyDown(SDL_SCANCODE_E)) {
+		if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 			cout << "Se obtuvo carne\n";
 
 			// ESTO SERA "carne" CUANDO TENGAMOS EL MESH
@@ -344,7 +344,7 @@ void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 		return;
 
 	// TODO Mostrar tecla E en la UI 
-	if (input_->isKeyDown(SDL_SCANCODE_E)) {
+	if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 		// Crear entidad producto
 		createProduct(idEntity->getId(), idEntity->getProdType());
 	}
