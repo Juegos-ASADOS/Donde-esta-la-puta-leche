@@ -10,6 +10,8 @@ namespace El_Horno {
 	class InputManager;
 	class AnimatorController;
 	
+	enum PLayerState { PLAYER_DEFAULT, PLAYER_CART, PLAYER_PRODUCT };
+
 	class PlayerController : public Component
 	{
 	public:
@@ -21,6 +23,8 @@ namespace El_Horno {
 		void update() override;
 		inline void setSpeed(float s) { speed_ = s; };
 		inline void setSliding(bool sl) { sliding_ = sl; };
+		void setPlayerState(PLayerState s);
+
 	protected:
 		float speed_;
 		RigidBody* rb_;
@@ -30,6 +34,7 @@ namespace El_Horno {
 		AnimatorController* anim_;
 		bool walking_;
 		bool sliding_ = false;
+		PLayerState pState_;
 	};
 }
 #endif 
