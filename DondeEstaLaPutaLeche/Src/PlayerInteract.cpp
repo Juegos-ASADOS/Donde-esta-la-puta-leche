@@ -41,6 +41,7 @@ void El_Horno::PlayerInteract::start()
 	meatTimer_ = new Timer();
 	fishTimer_ = new Timer();
 	ticketExpirationTimer_ = new Timer();
+	anim_ = entity_->getComponent<AnimatorController>("animatorController");
 }
 
 void El_Horno::PlayerInteract::update()
@@ -93,19 +94,20 @@ void El_Horno::PlayerInteract::deleteAliment()
 	//Transform del jugador
 	Transform* tr = entity_->getComponent<Transform>("transform");
 
-	if (!carryingCart_) {
-		Entity* ob = entity_->getScene()->addEntity("productShot", entity_->getScene()->getName());
-		ob->addComponent<Transform>("transform", OgreVectorToHorno(tr->getPosition()) /*+ HornoVector3(10, 0, 0)*/,
-			HornoVector3(-90, 0, 0), HornoVector3(15, 15, 15));
+	//if (!carryingCart_) {
+	//	Entity* ob = SceneManager::getInstance()->getCurrentScene()->addEntity("productShot", "prueba");
+	//	ob->addComponent<Transform>("transform", OgreVectorToHorno(tr->getPosition()) /*+ HornoVector3(10, 0, 0)*/,
+	//		HornoVector3(-90, 0, 0), HornoVector3(15, 15, 15));
 
-		ob->addComponent<Mesh>("mesh", id);
-		ob->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
+	//	ob->addComponent<Mesh>("mesh", id);
+	//	ob->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
 
-		ob->start();
+	//	ob->awake();
+	//	ob->start();
 
-		//Lanza el objeto
-		ob->getComponent<RigidBody>("rigidbody")->applyForce(HornoVector3(100, 0, 0));
-	}
+	//	//Lanza el objeto
+	//	ob->getComponent<RigidBody>("rigidbody")->applyForce(HornoVector3(100, 0, 0));
+	//}
 }
 
 void El_Horno::PlayerInteract::processCollisionStay()
@@ -182,12 +184,13 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 			entity_->getChild("cart")->setActive(false);
 
 			//Dejo el carrito suelto
-			std::cout << "Instancia carrito\n";
 			instanciateCart();
 			auto rb = entity_->getComponent<RigidBody>("rigidbody");
 			rb->setDamping(1.0f, 1.0f);
 			auto pc = entity_->getComponent<PlayerController>("playercontroller");
 			pc->setSpeed(300);
+			pc->setPlayerState(El_Horno::PLAYER_DEFAULT);
+			anim_->setAnimBool("AnyState", "Idle", true);
 			carryingCart_ = false;
 			std::cout << "Soltar carrito\n";
 		}
@@ -205,11 +208,14 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 				rb->setDamping(0.5f, 0.5f);
 				auto pc = entity_->getComponent<PlayerController>("playercontroller");
 				pc->setSpeed(450);
+				pc->setPlayerState(El_Horno::PLAYER_CART);
+				anim_->setAnimBool("AnyState", "Idle_with_cart", true);
 				carryingCart_ = true;
 				std::cout << "Coger carrito\n";
 			}
 			//Si lo que quiero es meter un objeto...
 			else if (!productLocked_) {
+				cout << "intento meter objeto jijio\n";
 				//Busco el id del objeto
 				std::string idName = getHandObjectId();
 
@@ -329,9 +335,8 @@ void El_Horno::PlayerInteract::manageMeatStation()
 
 void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 {
-	//Oscar: No se por que cogias la escena de otra entidad y no de esta�?
 	//Si tiene alimento en la mano o el carro...
-	if (handObject_ != nullptr || entity_->getChildCount() != 0)
+	if (handObject_ != nullptr || carryingCart_)
 		//No ocurre nada
 		return;
 
@@ -344,6 +349,8 @@ void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 
 void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 {
+	cout << "CREO PRODUCTO UO\n";
+	
 	Scene* scene = entity_->getScene();
 	Transform* playerTr = entity_->getComponent<Transform>("transform");
 
@@ -354,6 +361,7 @@ void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 	handObject_->addComponent<Mesh>("mesh", id);
 	handObject_->addComponent<EntityId>("entityid", Type::PRODUCT, pType, id);
 
+	handObject_->awake();
 	handObject_->start();
 
 	entity_->getComponent<Mesh>("mesh")->attachObject("Mano.R", handObject_);
@@ -361,6 +369,10 @@ void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 	// Se bloquea la posibilidad de meterlo al carrito hasta que se tomen las acciones pertinentes
 	if (pType == ProductType::FISH || pType == ProductType::FRUIT)
 		productLocked_ = true;
+
+	auto pc = entity_->getComponent<PlayerController>("playercontroller");
+	pc->setPlayerState(El_Horno::PLAYER_PRODUCT);
+	anim_->setAnimBool("AnyState", "Idle_with_product", true);
 }
 
 void El_Horno::PlayerInteract::managePuddle()
@@ -374,6 +386,10 @@ void El_Horno::PlayerInteract::dropItem()
 	if (handObject_ != nullptr) {
 		deleteAliment();
 		productLocked_ = false;
+
+		auto pc = entity_->getComponent<PlayerController>("playercontroller");
+		pc->setPlayerState(El_Horno::PLAYER_DEFAULT);
+		anim_->setAnimBool("AnyState", "Idle", true);
 	}
 }
 
@@ -389,6 +405,7 @@ void El_Horno::PlayerInteract::changeCartSize(Entity* entity)
 		entity->removeComponent("mesh");
 		//Y metemos el nuevo
 		entity->addComponent<Mesh>("mesh", "FullCart");
+		entity->getComponent<Mesh>("mesh")->awake();
 		entity->getComponent<Mesh>("mesh")->start();
 	}
 	else if (porcentaje >= 50) {
@@ -397,6 +414,7 @@ void El_Horno::PlayerInteract::changeCartSize(Entity* entity)
 		entity->removeComponent("mesh");
 		//Y metemos el nuevo
 		entity->addComponent<Mesh>("mesh", "HalfFullCart");
+		entity->getComponent<Mesh>("mesh")->awake();
 		entity->getComponent<Mesh>("mesh")->start();
 
 	}
@@ -406,6 +424,7 @@ void El_Horno::PlayerInteract::changeCartSize(Entity* entity)
 		entity->removeComponent("mesh");
 		//Y metemos el nuevo
 		entity->addComponent<Mesh>("mesh", "HalfEmptyCart");
+		entity->getComponent<Mesh>("mesh")->awake();
 		entity->getComponent<Mesh>("mesh")->start();
 
 	}
@@ -420,6 +439,7 @@ void El_Horno::PlayerInteract::instanciateCart()
 		HornoVector3(0, 0, 0), HornoVector3(0.2, 0.2, 0.2));
 	cart->addComponent<Mesh>("mesh", "cube");
 	cart->addComponent<RigidBody>("rigidbody", 100.0f, false, false, 0);
+	cart->awake();
 	cart->start();
 	cart->getComponent<RigidBody>("rigidbody")->setAngularFactor(0);
 	//Trigger del carrito
@@ -427,6 +447,7 @@ void El_Horno::PlayerInteract::instanciateCart()
 	trig->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(3.5, 3, 3.5));
 	trig->addComponent<RigidBody>("rigidbody", 1.0f, true, true, 0);
 	trig->addComponent<EntityId>("entityid", Type::CART);
+	trig->awake();
 	trig->start();
 }
 

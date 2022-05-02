@@ -75,12 +75,12 @@ namespace El_Horno {
 
 		//Creacion maquina de estados animator
 		std::vector<std::pair<std::string, std::string>> animVector;
+		animVector.push_back(std::pair<std::string, std::string>("Idle_with_cart", "walk_with_cart"));
+		animVector.push_back(std::pair<std::string, std::string>("walk_with_cart", "Idle_with_cart"));
 		animVector.push_back(std::pair<std::string, std::string>("Idle", "walk"));
 		animVector.push_back(std::pair<std::string, std::string>("walk", "Idle"));
 		animVector.push_back(std::pair<std::string, std::string>("Idle_with_product", "walk_with_product"));
 		animVector.push_back(std::pair<std::string, std::string>("walk_with_product", "Idle_with_product"));
-		animVector.push_back(std::pair<std::string, std::string>("Idle_with_cart", "walk_with_cart"));
-		animVector.push_back(std::pair<std::string, std::string>("walk_with_cart", "Idle_with_cart"));
 		animVector.push_back(std::pair<std::string, std::string>("AnyState", "Idle"));
 		animVector.push_back(std::pair<std::string, std::string>("AnyState", "Idle_with_product"));
 		animVector.push_back(std::pair<std::string, std::string>("AnyState", "Idle_with_cart"));
@@ -147,9 +147,9 @@ namespace El_Horno {
 		a->addComponent<RigidBody>("rigidbody", 3.0f, false, false, 0);
 		a->addComponent<Patrol>("patrol", 50, patata);
 
-		a = addEntity("menu", "prueba");
-		a->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
-		a->addComponent<UIMenus>("uimenus");
+		//a = addEntity("menu", "prueba");
+		//a->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
+		//a->addComponent<UIMenus>("uimenus");
 		/*std::vector<std::pair<std::string, std::string>> animVectorNpc;
 		animVectorNpc.push_back(std::pair<std::string, std::string>("Idle", "npc_walk"));
 		animVectorNpc.push_back(std::pair<std::string, std::string>("npc_walk", "Idle"));
