@@ -28,6 +28,7 @@ namespace El_Horno {
 	protected:
 		float speed_;
 		RigidBody* rb_;
+		Transform* tb_;
 		InputManager* input_;
 		int maxForce_,
 			offset_;

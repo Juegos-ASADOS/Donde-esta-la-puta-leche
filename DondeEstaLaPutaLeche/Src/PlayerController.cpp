@@ -34,6 +34,7 @@ void El_Horno::PlayerController::start()
 	walking_ = false;
 	offset_ = 60;
 	pState_ = El_Horno::PLAYER_CART;
+	tb_ = entity_->getComponent<Transform>("transform");
 
 }
 
@@ -108,8 +109,7 @@ void El_Horno::PlayerController::update()
 
 	//TODO Aplicar la rotacion
 	if (x != 0 || z != 0) {
-		//entity_->getComponent<Transform>("transform")->rotateY(atan(x/z)- entity_->getComponent<Transform>("transform")->getRotation().y);
-		entity_->getComponent<Transform>("transform")->lookAt(HornoVector3(-x, entity_->getComponent<Transform>("transform")->getPosition().y, z));
+		tb_->lookAt(HornoVector3(-x+ tb_->getPosition().x, tb_->getPosition().y, z + tb_->getPosition().z));
 	}
 }
 
