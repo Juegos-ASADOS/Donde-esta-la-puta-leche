@@ -101,8 +101,12 @@ void El_Horno::PlayerController::update()
 		}
 	}
 
-	float x = -speed_ * input_->isKeyDown(SDL_SCANCODE_A) + speed_ * input_->isKeyDown(SDL_SCANCODE_D);
-	float z = -speed_ * input_->isKeyDown(SDL_SCANCODE_S) + speed_ * input_->isKeyDown(SDL_SCANCODE_W);
+	bool left = (input_->getAxis(SDL_CONTROLLER_AXIS_LEFTX) < 0.0f || input_->isKeyDown(SDL_SCANCODE_A));
+	bool right = (input_->getAxis(SDL_CONTROLLER_AXIS_LEFTX) > 0.0f || input_->isKeyDown(SDL_SCANCODE_D));
+	bool up = (input_->getAxis(SDL_CONTROLLER_AXIS_LEFTY) < 0.0f || input_->isKeyDown(SDL_SCANCODE_W));
+	bool down = (input_->getAxis(SDL_CONTROLLER_AXIS_LEFTY) > 0.0f || input_->isKeyDown(SDL_SCANCODE_S));
+	float x = -speed_ * left + speed_ * right;
+	float z = -speed_ * down + speed_ * up;
 	if (maxForce_ > rb_->getHornoLinearVelocity().magnitude())
 		rb_->applyForce(HornoVector3(x, 0, -z));
 
