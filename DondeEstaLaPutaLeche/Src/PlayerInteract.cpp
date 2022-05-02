@@ -423,7 +423,7 @@ void El_Horno::PlayerInteract::changeCartSize(Entity* entity)
 		//Eliminamos el mesh
 		entity->removeComponent("mesh");
 		//Y metemos el nuevo
-		entity->addComponent<Mesh>("mesh", "FullCart");
+		entity->addComponent<Mesh>("mesh", "cube");
 		entity->getComponent<Mesh>("mesh")->awake();
 		entity->getComponent<Mesh>("mesh")->start();
 	}
@@ -432,7 +432,7 @@ void El_Horno::PlayerInteract::changeCartSize(Entity* entity)
 		//Eliminamos el mesh
 		entity->removeComponent("mesh");
 		//Y metemos el nuevo
-		entity->addComponent<Mesh>("mesh", "HalfFullCart");
+		entity->addComponent<Mesh>("mesh", "cube");
 		entity->getComponent<Mesh>("mesh")->awake();
 		entity->getComponent<Mesh>("mesh")->start();
 
@@ -442,7 +442,7 @@ void El_Horno::PlayerInteract::changeCartSize(Entity* entity)
 		//Eliminamos el mesh
 		entity->removeComponent("mesh");
 		//Y metemos el nuevo
-		entity->addComponent<Mesh>("mesh", "HalfEmptyCart");
+		entity->addComponent<Mesh>("mesh", "cube");
 		entity->getComponent<Mesh>("mesh")->awake();
 		entity->getComponent<Mesh>("mesh")->start();
 

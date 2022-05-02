@@ -49,7 +49,7 @@ namespace El_Horno {
 		menu->getComponent<UILayout>("uilayout")->loadScheme("DondeTaLeche");
 		menu->getComponent<UILayout>("uilayout")->loadScheme("GWEN");
 		menu->getComponent<UILayout>("uilayout")->loadLayout();
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("MenuPrincipal/Fondo", click);
+		//menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("MenuPrincipal/Fondo", click);
 	}
 
 }
