@@ -5,6 +5,7 @@
 #include "Rigibody.h"
 #include "AnimatorController.h"
 #include "ElHornoBase.h"
+#include <sstream>
 
 #include <iostream>
 
@@ -24,14 +25,26 @@ El_Horno::Patrol::Patrol()
 void El_Horno::Patrol::setParameters(std::vector<std::pair<std::string, std::string>> parameters)
 {
 	//ADAPTAR A PATROLPOS
-	/*for (int i = 0; i < parameters.size(); i++) {
+	for (int i = 0; i < parameters.size(); i++) {
 		if (parameters[i].first == "speed") {
 			speed_ = stof(parameters[i].second);
 		}
 		else {
-			positions_.push(OgreVectorToHorno(StringToVector(parameters[i].second)));
+			std::istringstream in(parameters[i].second);
+			std::string val;
+			std::vector<float> values;
+
+			while (getline(in, val, ',')) {
+				values.push_back(std::stod(val));
+			}
+
+			int i = 0;
+			while (values.size() >= i + 4) {
+				positions_.push({ HornoVector3( values[i], values[i+1], values[i+2]), values[i+3] });
+				i += 4;
+			}
 		}
-	}*/
+	}
 }
 
 void El_Horno::Patrol::start()

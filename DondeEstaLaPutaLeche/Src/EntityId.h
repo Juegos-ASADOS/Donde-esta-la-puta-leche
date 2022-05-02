@@ -16,7 +16,7 @@ namespace El_Horno {
 		EntityId() {};
 
 		//void start() override;
-		//void setParameters(std::vector<std::pair<std::string, std::string>> parameters) override;
+		void setParameters(std::vector<std::pair<std::string, std::string>> parameters) override;
 		inline const std::string getId() { return id_; };
 		inline const Type getType() { return type_; };
 		inline const ProductType getProdType() { return productType_; };
