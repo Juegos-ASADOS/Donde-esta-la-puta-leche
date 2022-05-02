@@ -254,22 +254,11 @@ void El_Horno::PlayerInteract::manageCashRegister()
 
 		//Si tengo el carrito agarrado...
 		if (carryingCart_) {
-			//Busco el id del objeto
-			std::string idName = "";
-			//Recorro el vector hasta encontrar uno que tenga el componente entityId
-			auto it = entity_->getChildren().begin();
-			bool idFound = false;
-
-			//Voy buscando el carrito en mis hijos
-			while (!(*it)->hasComponent("foodcartcomponent")) {
-				it++;
-			}
-
 			//Con esto hace luego la proporcion de lo que tiene en el carrito correctamente
 			GameManager::getInstance()->paidFoodMum();
 
 			//Llamo a un metodo que vacia el carrito y resta los objetos que tenga que entregar
-			changeCartSize(*it);
+			changeCartSize(entity_->getChild("cart"));
 
 			GameManager::getInstance()->checkEnd();
 

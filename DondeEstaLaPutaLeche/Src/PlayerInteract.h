@@ -63,7 +63,7 @@ namespace El_Horno {
 
 		//Variables de triggers
 		Entity* triggerStay_;
-		Entity* triggerExit_;
+		Entity* triggerExit_;	//Salida del charco
 
 		Timer* meatTimer_,
 			* ticketExpirationTimer_,
