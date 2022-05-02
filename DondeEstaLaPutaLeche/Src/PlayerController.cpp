@@ -35,7 +35,6 @@ void El_Horno::PlayerController::start()
 	offset_ = 60;
 	pState_ = El_Horno::PLAYER_CART;
 	tb_ = entity_->getComponent<Transform>("transform");
-
 }
 
 void El_Horno::PlayerController::update()

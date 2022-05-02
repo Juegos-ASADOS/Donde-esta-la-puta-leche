@@ -184,7 +184,6 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 			entity_->getChild("cart")->setActive(false);
 
 			//Dejo el carrito suelto
-			std::cout << "Instancia carrito\n";
 			instanciateCart();
 			auto rb = entity_->getComponent<RigidBody>("rigidbody");
 			rb->setDamping(1.0f, 1.0f);
@@ -406,6 +405,7 @@ void El_Horno::PlayerInteract::changeCartSize(Entity* entity)
 		entity->removeComponent("mesh");
 		//Y metemos el nuevo
 		entity->addComponent<Mesh>("mesh", "FullCart");
+		entity->getComponent<Mesh>("mesh")->awake();
 		entity->getComponent<Mesh>("mesh")->start();
 	}
 	else if (porcentaje >= 50) {
@@ -414,6 +414,7 @@ void El_Horno::PlayerInteract::changeCartSize(Entity* entity)
 		entity->removeComponent("mesh");
 		//Y metemos el nuevo
 		entity->addComponent<Mesh>("mesh", "HalfFullCart");
+		entity->getComponent<Mesh>("mesh")->awake();
 		entity->getComponent<Mesh>("mesh")->start();
 
 	}
@@ -423,6 +424,7 @@ void El_Horno::PlayerInteract::changeCartSize(Entity* entity)
 		entity->removeComponent("mesh");
 		//Y metemos el nuevo
 		entity->addComponent<Mesh>("mesh", "HalfEmptyCart");
+		entity->getComponent<Mesh>("mesh")->awake();
 		entity->getComponent<Mesh>("mesh")->start();
 
 	}

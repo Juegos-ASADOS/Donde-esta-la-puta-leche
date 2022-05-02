@@ -7,6 +7,7 @@
 
 namespace El_Horno {
 	class RigidBody;
+	class Transform;
 	class InputManager;
 	class AnimatorController;
 	
