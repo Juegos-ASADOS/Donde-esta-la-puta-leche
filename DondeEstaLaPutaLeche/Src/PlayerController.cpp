@@ -33,6 +33,8 @@ void El_Horno::PlayerController::start()
 	anim_ = entity_->getComponent<AnimatorController>("animatorController");
 	walking_ = false;
 	offset_ = 60;
+	pState_ = El_Horno::PLAYER_CART;
+
 }
 
 void El_Horno::PlayerController::update()
@@ -52,10 +54,24 @@ void El_Horno::PlayerController::update()
 			rb_->setDamping(0.7f, 0);
 
 
-		// Animacion	
+		// Animacion idle->andar
 		if (!walking_)
 		{
-			anim_->setAnimBool("Idle", "walk", true);
+			switch (pState_)
+			{
+			case El_Horno::PLAYER_DEFAULT:
+				anim_->setAnimBool("Idle", "walk", true);
+				break;
+			case El_Horno::PLAYER_CART:
+				anim_->setAnimBool("Idle_with_cart", "walk_with_cart", true);
+				break;
+			case El_Horno::PLAYER_PRODUCT:
+				anim_->setAnimBool("Idle_with_product", "walk_with_product", true);
+				break;
+			default:
+				break;
+			}
+
 			walking_ = true;
 		}
 	}
@@ -63,8 +79,24 @@ void El_Horno::PlayerController::update()
 		if (rb_->getDamping() != 0.999f && !sliding_)
 			rb_->setDamping(0.999f, 0);
 
-		if (walking_) {
-			anim_->setAnimBool("walk", "Idle", true);
+		// Animacion andar->idle
+		if (walking_) 
+		{
+			switch (pState_)
+			{
+			case El_Horno::PLAYER_DEFAULT:
+				anim_->setAnimBool("walk", "Idle", true);
+				break;
+			case El_Horno::PLAYER_CART:
+				anim_->setAnimBool("walk_with_cart", "Idle_with_cart", true);
+				break;
+			case El_Horno::PLAYER_PRODUCT:
+				anim_->setAnimBool("walk_with_product", "Idle_with_product", true);
+				break;
+			default:
+				break;
+			}
+
 			walking_ = false;
 		}
 	}

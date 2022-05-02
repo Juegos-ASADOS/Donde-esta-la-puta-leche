@@ -41,6 +41,7 @@ void El_Horno::PlayerInteract::start()
 	meatTimer_ = new Timer();
 	fishTimer_ = new Timer();
 	ticketExpirationTimer_ = new Timer();
+	anim_ = entity_->getComponent<AnimatorController>("animatorController");
 }
 
 void El_Horno::PlayerInteract::update()
@@ -188,6 +189,8 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 			rb->setDamping(1.0f, 1.0f);
 			auto pc = entity_->getComponent<PlayerController>("playercontroller");
 			pc->setSpeed(300);
+			pc->setPlayerState(El_Horno::PLAYER_DEFAULT);
+			anim_->setAnimBool("AnyState", "Idle", true);
 			carryingCart_ = false;
 			std::cout << "Soltar carrito\n";
 		}
@@ -205,6 +208,8 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 				rb->setDamping(0.5f, 0.5f);
 				auto pc = entity_->getComponent<PlayerController>("playercontroller");
 				pc->setSpeed(450);
+				pc->setPlayerState(El_Horno::PLAYER_CART);
+				anim_->setAnimBool("AnyState", "Idle_with_cart", true);
 				carryingCart_ = true;
 				std::cout << "Coger carrito\n";
 			}
@@ -362,6 +367,10 @@ void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 	// Se bloquea la posibilidad de meterlo al carrito hasta que se tomen las acciones pertinentes
 	if (pType == ProductType::FISH || pType == ProductType::FRUIT)
 		productLocked_ = true;
+
+	auto pc = entity_->getComponent<PlayerController>("playercontroller");
+	pc->setPlayerState(El_Horno::PLAYER_PRODUCT);
+	anim_->setAnimBool("AnyState", "Idle_with_product", true);
 }
 
 void El_Horno::PlayerInteract::managePuddle()
@@ -375,6 +384,10 @@ void El_Horno::PlayerInteract::dropItem()
 	if (handObject_ != nullptr) {
 		deleteAliment();
 		productLocked_ = false;
+
+		auto pc = entity_->getComponent<PlayerController>("playercontroller");
+		pc->setPlayerState(El_Horno::PLAYER_DEFAULT);
+		anim_->setAnimBool("AnyState", "Idle", true);
 	}
 }
 
