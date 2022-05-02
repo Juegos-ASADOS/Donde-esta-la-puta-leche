@@ -11,7 +11,7 @@
 
 namespace El_Horno {
 
-	bool click(const CEGUI::EventArgs& e) {
+	bool click() {
 		std::cout << "CLICK GE EGCGI CKUCJ\n";
 		return true;
 	}
@@ -22,9 +22,9 @@ namespace El_Horno {
 
 	void UIMenus::start()
 	{
-		menu = SceneManager::getInstance()->getCurrentScene()->addEntity("menu", "prueba");
+		menu = SceneManager::getInstance()->getCurrentScene()->addEntity("menuprincipal", "prueba");
 		menu->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
-		menu->addComponent<UILayout>("uilayout", "MenuPrincipal", "first");
+		menu->addComponent<UILayout>("uilayout", "MenuPrincipal_Opciones", "first");
 		menu->awake();
 		menu->start();
 	}
@@ -46,10 +46,13 @@ namespace El_Horno {
 
 	void UIMenus::show()
 	{
-		menu->getComponent<UILayout>("uilayout")->loadScheme("DondeTaLeche");
 		menu->getComponent<UILayout>("uilayout")->loadScheme("GWEN");
+		menu->getComponent<UILayout>("uilayout")->loadScheme("DondeTaLeche");
+		menu->getComponent<UILayout>("uilayout")->loadScheme("TaharezLook");
+		menu->getComponent<UILayout>("uilayout")->loadScheme("Generic");
+		//menu->getComponent<UILayout>("uilayout")->createButton("TaharezLook", "Button", "start");
 		menu->getComponent<UILayout>("uilayout")->loadLayout();
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("MenuPrincipal/Fondo", click);
+		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("Menu/BotonVolver", click);
 	}
 
 }
