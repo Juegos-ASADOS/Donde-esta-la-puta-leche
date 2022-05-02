@@ -23,7 +23,7 @@ namespace El_Horno {
 		void update() override;
 		inline void setSpeed(float s) { speed_ = s; };
 		inline void setSliding(bool sl) { sliding_ = sl; };
-		inline void setPlayerState(PLayerState s) { pState_ = s; };
+		void setPlayerState(PLayerState s);
 
 	protected:
 		float speed_;

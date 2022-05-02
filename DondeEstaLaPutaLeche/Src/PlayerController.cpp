@@ -112,3 +112,9 @@ void El_Horno::PlayerController::update()
 		entity_->getComponent<Transform>("transform")->lookAt(HornoVector3(-x, entity_->getComponent<Transform>("transform")->getPosition().y, z));
 	}
 }
+
+void El_Horno::PlayerController::setPlayerState(PLayerState s)
+{
+	pState_ = s;
+	walking_ = false;
+}
