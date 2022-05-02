@@ -21,6 +21,7 @@ namespace El_Horno {
 		static void erase();
 
 
+		void setParameters(std::vector<std::pair<std::string, std::string>> parameters) override;
 		void start() override;
 		void update() override;
 
