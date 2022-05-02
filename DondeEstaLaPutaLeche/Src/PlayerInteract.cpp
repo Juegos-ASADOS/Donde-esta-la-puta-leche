@@ -331,7 +331,7 @@ void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 {
 	//Oscar: No se por que cogias la escena de otra entidad y no de esta�?
 	//Si tiene alimento en la mano o el carro...
-	if (handObject_ != nullptr || entity_->getChildCount() != 0)
+	if (handObject_ != nullptr || carryingCart_)
 		//No ocurre nada
 		return;
 
@@ -354,6 +354,7 @@ void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 	handObject_->addComponent<Mesh>("mesh", id);
 	handObject_->addComponent<EntityId>("entityid", Type::PRODUCT, pType, id);
 
+	handObject_->awake();
 	handObject_->start();
 
 	entity_->getComponent<Mesh>("mesh")->attachObject("Mano.R", handObject_);
@@ -420,6 +421,7 @@ void El_Horno::PlayerInteract::instanciateCart()
 		HornoVector3(0, 0, 0), HornoVector3(0.2, 0.2, 0.2));
 	cart->addComponent<Mesh>("mesh", "cube");
 	cart->addComponent<RigidBody>("rigidbody", 100.0f, false, false, 0);
+	cart->awake();
 	cart->start();
 	cart->getComponent<RigidBody>("rigidbody")->setAngularFactor(0);
 	//Trigger del carrito
@@ -427,6 +429,7 @@ void El_Horno::PlayerInteract::instanciateCart()
 	trig->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(3.5, 3, 3.5));
 	trig->addComponent<RigidBody>("rigidbody", 1.0f, true, true, 0);
 	trig->addComponent<EntityId>("entityid", Type::CART);
+	trig->awake();
 	trig->start();
 }
 

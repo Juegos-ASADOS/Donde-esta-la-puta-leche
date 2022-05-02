@@ -1,12 +1,13 @@
 #include "GameFactories.h"
 #include "PlayerController.h"
 #include "Rigibody.h"
+#include "Transform.h"
 #include "Entity.h"
 #include "InputManager.h"
 #include "ElHornoBase.h"
-#include "btBulletCollisionCommon.h"
 #include "AnimatorController.h"
 #include "iostream"
+#include <cmath>
 
 void El_Horno::PlayerController::setParameters(std::vector<std::pair<std::string, std::string>> parameters)
 {
@@ -70,8 +71,12 @@ void El_Horno::PlayerController::update()
 
 	float x = -speed_ * input_->isKeyDown(SDL_SCANCODE_A) + speed_ * input_->isKeyDown(SDL_SCANCODE_D);
 	float z = -speed_ * input_->isKeyDown(SDL_SCANCODE_S) + speed_ * input_->isKeyDown(SDL_SCANCODE_W);
-	if (maxForce_ > rb_->getLinearVelocity().length())
-		rb_->applyForce(btVector3(x, 0, -z));
+	if (maxForce_ > rb_->getHornoLinearVelocity().magnitude())
+		rb_->applyForce(HornoVector3(x, 0, -z));
 
 	//TODO Aplicar la rotacion
+	if (x != 0 || z != 0) {
+		//entity_->getComponent<Transform>("transform")->rotateY(atan(x/z)- entity_->getComponent<Transform>("transform")->getRotation().y);
+		entity_->getComponent<Transform>("transform")->lookAt(HornoVector3(-x, entity_->getComponent<Transform>("transform")->getPosition().y, z));
+	}
 }
