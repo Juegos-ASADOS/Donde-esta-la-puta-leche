@@ -24,7 +24,7 @@ namespace El_Horno {
 	{
 		menu = SceneManager::getInstance()->getCurrentScene()->addEntity("menu", "prueba");
 		menu->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
-		menu->addComponent<UILayout>("uilayout", "MenuPrincipal", "first");
+		menu->addComponent<UILayout>("uilayout");
 		menu->awake();
 		menu->start();
 	}
@@ -41,14 +41,15 @@ namespace El_Horno {
 
 	void UIMenus::hide()
 	{
-		menu->getComponent<UILayout>("uilayout")->removeLayout();
+		menu->getComponent<UILayout>("uilayout")->setLayoutVisibility("MenuPrincipal", false);
 	}
 
 	void UIMenus::show()
 	{
 		menu->getComponent<UILayout>("uilayout")->loadScheme("DondeTaLeche");
 		menu->getComponent<UILayout>("uilayout")->loadScheme("GWEN");
-		menu->getComponent<UILayout>("uilayout")->loadLayout();
+		menu->getComponent<UILayout>("uilayout")->addLayout("MenuPrincipal", "menuPrincipal");
+		menu->getComponent<UILayout>("uilayout")->setLayoutVisibility("MenuPrincipal", true);
 		//menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("MenuPrincipal/Fondo", click);
 	}
 
