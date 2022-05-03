@@ -22,7 +22,7 @@ namespace El_Horno {
 		void update() override;
 		//Metodo para hallar el ID del objeto que tengo en la mano
 		std::string getHandObjectId();
-		void deleteAliment();
+		void deleteAliment(bool ceaseExistence);
 		void imInCartRegister(bool imIn);
 		inline void setEstantery(Entity* e) { triggerStay_ = e; };
 		inline void setPuddleExit(Entity* e) { triggerExit_ = e; };
