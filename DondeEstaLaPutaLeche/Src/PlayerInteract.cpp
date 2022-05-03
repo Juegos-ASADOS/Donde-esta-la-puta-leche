@@ -376,7 +376,7 @@ void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 	handObject_->awake();
 	handObject_->start();
 
-	entity_->getComponent<Mesh>("mesh")->attachObject("Mano.R", handObject_);
+	entity_->getComponent<Mesh>("mesh")->attachObject("Producto", handObject_);
 
 	// Se bloquea la posibilidad de meterlo al carrito hasta que se tomen las acciones pertinentes
 	if (pType == ProductType::FISH || pType == ProductType::FRUIT)
