@@ -84,7 +84,7 @@ void El_Horno::PlayerController::update()
 			walking_ = true;
 		}
 
-		tb_->lookAt(HornoVector3(-x /*+ tb_->getPosition().x*/, tb_->getPosition().y, z /*+ tb_->getPosition().z*/));
+		tb_->lookAt(HornoVector3(-x + tb_->getPosition().x, tb_->getPosition().y, z + tb_->getPosition().z));
 	}
 	else {
 		if (rb_->getDamping() != 0.999f && !sliding_)
