@@ -7,7 +7,7 @@
 namespace El_Horno {
 	class RigidBody;
 	enum Type { PRODUCT, ESTANTERY, CART, CASHREGISTER, MEATTICKET, MEATSTATION, FISHCLEANER, WHEIGHINGMACHINE, PUDDLE };
-	enum ProductType { NONE, DEFAULT, FRUIT, FISH, MEAT };
+	enum ProductType { NONE, DEFAULT, FRUIT, FISH};
 
 	class EntityId : public Component
 	{
