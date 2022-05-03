@@ -15,8 +15,8 @@ namespace El_Horno {
 
 	private:
 
-		void hide();
-		void show();
+		void show(std::string menu);
+		void hide(std::string menu);
 
 		Entity* menu;
 	};

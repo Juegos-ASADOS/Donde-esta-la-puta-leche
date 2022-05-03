@@ -24,35 +24,41 @@ namespace El_Horno {
 	{
 		menu = SceneManager::getInstance()->getCurrentScene()->addEntity("menuprincipal", "prueba");
 		menu->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
-		menu->addComponent<UILayout>("uilayout", "MenuPrincipal_Opciones", "first");
+		menu->addComponent<UILayout>("uilayout");
 		menu->awake();
 		menu->start();
-	}
-
-	void UIMenus::update()
-	{
-		if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_M)) {
-			show();
-		}
-		else if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_N)) {
-			hide();
-		}
-	}
-
-	void UIMenus::hide()
-	{
-		menu->getComponent<UILayout>("uilayout")->removeLayout();
-	}
-
-	void UIMenus::show()
-	{
 		menu->getComponent<UILayout>("uilayout")->loadScheme("GWEN");
 		menu->getComponent<UILayout>("uilayout")->loadScheme("DondeTaLeche");
 		menu->getComponent<UILayout>("uilayout")->loadScheme("TaharezLook");
 		menu->getComponent<UILayout>("uilayout")->loadScheme("Generic");
 		//menu->getComponent<UILayout>("uilayout")->createButton("TaharezLook", "Button", "start");
-		menu->getComponent<UILayout>("uilayout")->loadLayout();
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("Menu/BotonVolver", click);
+		menu->getComponent<UILayout>("uilayout")->addLayout("MenuPrincipal"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
+		menu->getComponent<UILayout>("uilayout")->addLayout("Pausa"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
 	}
+
+	void UIMenus::update()
+	{
+		if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_M)) {
+			show("MenuPrincipal");
+		}
+		else if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_N)) {
+			hide("MenuPrincipal");
+		}
+		else if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_B)) {
+			show("Pausa");
+		}
+		else if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_V)) {
+			hide("Pausa");
+		}
+	}
+	void UIMenus::show(std::string m)
+	{
+		menu->getComponent<UILayout>("uilayout")->setLayoutVisibility(m, true);
+	}
+	void UIMenus::hide(std::string m)
+	{
+		menu->getComponent<UILayout>("uilayout")->setLayoutVisibility(m, false);
+	}
+
 
 }
