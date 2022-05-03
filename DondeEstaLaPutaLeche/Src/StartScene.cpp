@@ -39,11 +39,12 @@ namespace El_Horno {
 		Entity* a = addEntity("gamemanager", "prueba");
 		a->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
 		a->addComponent<GameManager>("gamemanager");
+		a->setDontDestryOnLoad(true);
 
 		// Light
 		a = addEntity("light", "prueba");
-		a->addComponent<Transform>("transform", HornoVector3(0, 200, 200), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
-		a->addComponent<LightComponent>("light", 0, HornoVector3(0, 0, 0));
+		a->addComponent<Transform>("transform", HornoVector3(0, 1000, 0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
+		a->addComponent<LightComponent>("light", 2, HornoVector3(0, 100, 0));
 
 		// Camera
 		Entity* cam = addEntity("camera", "prueba");

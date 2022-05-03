@@ -22,7 +22,7 @@ namespace El_Horno {
 
 	void UIMenus::start()
 	{
-		menu = SceneManager::getInstance()->getCurrentScene()->addEntity("menuprincipal", "prueba");
+		menu = entity_->getScene()->addEntity("menudeprueba", entity_->getScene()->getName());
 		menu->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
 		menu->addComponent<UILayout>("uilayout");
 		menu->awake();

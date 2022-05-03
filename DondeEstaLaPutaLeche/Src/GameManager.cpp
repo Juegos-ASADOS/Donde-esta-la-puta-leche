@@ -1,5 +1,8 @@
 #include "GameFactories.h"
 #include "GameManager.h"
+#include "InputManager.h"
+#include "SecondScene.h"
+#include "SceneManager.h"
 #include "Rigibody.h"
 #include "Entity.h"
 #include "Timer.h"
@@ -58,6 +61,7 @@ void El_Horno::GameManager::setParameters(std::vector<std::pair<std::string, std
 
 void El_Horno::GameManager::start()
 {
+	input_ = ElHornoBase::getInstance()->getInputManager();
 	setupInstance();
 }
 
@@ -79,6 +83,11 @@ void El_Horno::GameManager::update()
 			endingEggs_++;
 
 		//Pasar a la escena de score teniendo en cuenta la puntuación (huevos)
+	}
+	if (input_->isKeyDown(SDL_SCANCODE_K)) {
+		SecondScene* s = new SecondScene();
+		SceneManager::getInstance()->nextScene(s, "prueba");
+		return;
 	}
 }
 

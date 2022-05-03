@@ -84,7 +84,7 @@ void El_Horno::PlayerController::update()
 			walking_ = true;
 		}
 
-		tb_->lookAt(HornoVector3(-x + tb_->getPosition().x, tb_->getPosition().y, z + tb_->getPosition().z));
+		tb_->lookAt(HornoVector3(-x /*+ tb_->getPosition().x*/, tb_->getPosition().y, z /*+ tb_->getPosition().z*/));
 	}
 	else {
 		if (rb_->getDamping() != 0.999f && !sliding_)
@@ -111,11 +111,6 @@ void El_Horno::PlayerController::update()
 			walking_ = false;
 		}
 	}
-
-	//TODO Aplicar la rotacion
-	/*if (x != 0 || z != 0) {
-		tb_->lookAt(HornoVector3(-x+ tb_->getPosition().x, tb_->getPosition().y, z + tb_->getPosition().z));
-	}*/
 }
 
 void El_Horno::PlayerController::setPlayerState(PLayerState s)
