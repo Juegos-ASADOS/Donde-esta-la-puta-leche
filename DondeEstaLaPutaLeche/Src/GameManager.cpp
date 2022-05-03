@@ -42,6 +42,20 @@ void GameManager::erase()
 	delete instance_;
 }
 
+void El_Horno::GameManager::setParameters(std::vector<std::pair<std::string, std::string>> parameters)
+{
+	for (int i = 0; i < parameters.size(); i++) {
+		if (parameters[i].first == "state") {
+			gameState_ = (GameState)stoi(parameters[i].second);
+		}
+		else if (parameters[i].first == "productNum") {
+			productNum_ = stoi(parameters[i].second);
+			maxProducts_ = productNum_;
+		}
+	}
+	//list_.emplace(std::pair<string, int>("Agua", 1));
+}
+
 void El_Horno::GameManager::start()
 {
 	setupInstance();

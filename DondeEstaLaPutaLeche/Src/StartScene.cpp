@@ -30,6 +30,7 @@ namespace El_Horno {
 	{
 		name_ = name;
 		testScene();
+		//LuaManager::getInstance()->loadScene();
 	}
 
 	void StartScene::testScene()
@@ -155,7 +156,7 @@ namespace El_Horno {
 		animVectorNpc.push_back(std::pair<std::string, std::string>("npc_walk", "Idle"));
 		animVectorNpc.push_back(std::pair<std::string, std::string>("AnyState", "Idle"));
 		b->addComponent<AnimatorController>("animatorController", animVectorNpc);*/
-		
+
 		//b = addEntity("button1", "prueba");
 		//b->addComponent<Transform>("transform", HornoVector3(0,0,0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
 		//b->addComponent<UIPushButton>("pushbutton", "TaharezLook", 0.05f, 0.05f, 0.2f, 0.1f, "push1");

@@ -18,6 +18,7 @@
 #include <SceneManager.h>
 #include <Rigibody.h>
 #include <AnimatorController.h>
+#include <AudioComponent.h>
 #include <Timer.h>
 #include <iostream>
 
@@ -42,12 +43,13 @@ void El_Horno::PlayerInteract::start()
 	fishTimer_ = new Timer();
 	ticketExpirationTimer_ = new Timer();
 	anim_ = entity_->getComponent<AnimatorController>("animatorController");
+	anim_->setAnimBool("AnyState", "Idle_with_cart", true);
 }
 
 void El_Horno::PlayerInteract::update()
 {
 	//Si pulsas la tecla R...
-	if (input_->isKeyDown(SDL_SCANCODE_R)) {
+	if (input_->isKeyDown(SDL_SCANCODE_R) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_B)) {
 		dropItem();
 	}
 
@@ -58,6 +60,8 @@ void El_Horno::PlayerInteract::update()
 		ticketExpirationTimerRunning_ = true;
 		ticketExpirationTimer_->resetTimer();
 		meatObtainable_ = true;
+		//Audio
+		entity_->getComponent<AudioComponent>("audioComponent")->playSound("SFX/ComidaLista.mp3");
 	}
 
 	// Se deja de poder obtener la carne
@@ -65,6 +69,8 @@ void El_Horno::PlayerInteract::update()
 		cout << "timer ticket expirao\n";
 		ticketExpirationTimerRunning_ = false;
 		meatObtainable_ = false;
+		//!Audio 
+
 	}
 
 	// Se puede obtener el pescado
@@ -72,6 +78,8 @@ void El_Horno::PlayerInteract::update()
 		fishObtainable_ = true;
 		cout << "timer pescao terminao\n";
 		fishTimerRunning_ = false;
+		//Audio
+		entity_->getComponent<AudioComponent>("audioComponent")->playSound("SFX/ComidaLista.mp3");
 	}
 
 	processCollisionStay();
@@ -176,7 +184,7 @@ void El_Horno::PlayerInteract::processCollisionExit()
 void El_Horno::PlayerInteract::manageCart(Entity* entity)
 {
 	//Si pulsas la tecla E...
-	if (input_->getKeyDown(SDL_SCANCODE_E)) {
+	if (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 
 		//Si estoy moviendome con el carrito
 		if (carryingCart_)
@@ -212,6 +220,8 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 				anim_->setAnimBool("AnyState", "Idle_with_cart", true);
 				carryingCart_ = true;
 				std::cout << "Coger carrito\n";
+				//Audio
+				entity_->getComponent<AudioComponent>("audioComponent")->playSound("SFX/Carrito.mp3");
 			}
 			//Si lo que quiero es meter un objeto...
 			else if (!productLocked_) {
@@ -224,17 +234,22 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 					//Y cambio el carrito d tama�o
 					changeCartSize(entity);
 					std::cout << "Objeto correcto\n";
+					//Audio //Meter objeto en el carro
+					entity_->getComponent<AudioComponent>("audioComponent")->playSound("SFX/SoltarObjeto.mp3");
 				}
 				//Si te has equivocado...
 				else {
 					//TODO reproducir algun sonido de que te has equivocado y por eso tiramos al suelo el objeto
 					std::cout << "Objeto equivocado\n";
+					//Audio
+					entity_->getComponent<AudioComponent>("audioComponent")->playSound("SFX/MalAlimento.mp3");
 				}
 				//TODO añadir uno al FoodCartComponent
 				deleteAliment();
 			}
 			else {
 				//TODO Feedback (audio o UI) para indicar que hay que pesar/limpiar producto antes de poder meterlo al carro
+				//!Audio JBL apagar  
 			}
 		}
 	}
@@ -243,28 +258,20 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 void El_Horno::PlayerInteract::manageCashRegister()
 {
 	//Si pulsas la tecla E...
-	if (input_->isKeyDown(SDL_SCANCODE_E)) {
+	if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 
 		//Si tengo el carrito agarrado...
 		if (carryingCart_) {
-			//Busco el id del objeto
-			std::string idName = "";
-			//Recorro el vector hasta encontrar uno que tenga el componente entityId
-			auto it = entity_->getChildren().begin();
-			bool idFound = false;
-
-			//Voy buscando el carrito en mis hijos
-			while (!(*it)->hasComponent("foodcartcomponent")) {
-				it++;
-			}
-
 			//Con esto hace luego la proporcion de lo que tiene en el carrito correctamente
 			GameManager::getInstance()->paidFoodMum();
 
 			//Llamo a un metodo que vacia el carrito y resta los objetos que tenga que entregar
-			changeCartSize(*it);
+			changeCartSize(entity_->getChild("cart"));
 
 			GameManager::getInstance()->checkEnd();
+
+			//Audio
+			entity_->getComponent<AudioComponent>("audioComponent")->playSound("SFX/Ambiente/BeepCaja.mp3");
 		}
 	}
 }
@@ -272,10 +279,12 @@ void El_Horno::PlayerInteract::manageCashRegister()
 void El_Horno::PlayerInteract::manageMeatTicket()
 {
 	// TODO Mostrar tecla E en la UI
-	if (input_->isKeyDown(SDL_SCANCODE_E)) {
+	if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 		cout << "carne\n";
 		meatTimer_->resetTimer();
 		ticketTimerRunning_ = true;
+		//Audio
+		entity_->getComponent<AudioComponent>("audioComponent")->playSound("SFX/Ticket.mp3");
 	}
 }
 
@@ -285,10 +294,11 @@ void El_Horno::PlayerInteract::manageWheighingMachine()
 		cout << "fruta fuera\n";
 		// TODO Mostrar tecla E en la UI
 
-		if (input_->isKeyDown(SDL_SCANCODE_E)) {
+		if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 			productLocked_ = false;
 			cout << "fruta dentro\n";
 			//TODO Poner feedback de que el producto ha sido pesado
+			//!Audio
 		}
 	}
 }
@@ -299,18 +309,20 @@ void El_Horno::PlayerInteract::manageFishCleaner()
 		// TODO Mostrar tecla E en la UI 
 		cout << "pescado fuera\n";
 		// Si se presiona la E se inicia el timer de limpieza de pescado
-		if (input_->isKeyDown(SDL_SCANCODE_E)) {
+		if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 			productLocked_ = false;
 			fishTimerRunning_ = true;
 			fishTimer_->resetTimer();
 			deleteAliment();
 			cout << "pescado dentro\n";
+			//Audio
+			entity_->getComponent<AudioComponent>("audioComponent")->playSound("SFX/CortarAlimento.mp3");
 		}
 	}
 	else if (fishObtainable_ && handObject_ == nullptr) {
 		// TODO Mostrar tecla E en la UI 
 		// Si el pescado esta limpio
-		if (input_->isKeyDown(SDL_SCANCODE_E)) {
+		if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 			cout << "pescado en mano\n";
 			createProduct("Agua", ProductType::DEFAULT);
 			fishObtainable_ = false;
@@ -323,9 +335,9 @@ void El_Horno::PlayerInteract::manageMeatStation()
 	if (meatObtainable_ && handObject_ == nullptr) {
 		cout << "Se puede obtener carne\n";
 		// TODO Mostrar tecla E en la UI 
-		if (input_->isKeyDown(SDL_SCANCODE_E)) {
+		if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 			cout << "Se obtuvo carne\n";
-		
+
 			// ESTO SERA "carne" CUANDO TENGAMOS EL MESH
 			createProduct("Agua", ProductType::DEFAULT);
 			meatObtainable_ = false;
@@ -341,7 +353,7 @@ void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 		return;
 
 	// TODO Mostrar tecla E en la UI 
-	if (input_->isKeyDown(SDL_SCANCODE_E)) {
+	if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 		// Crear entidad producto
 		createProduct(idEntity->getId(), idEntity->getProdType());
 	}
@@ -350,7 +362,7 @@ void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 {
 	cout << "CREO PRODUCTO UO\n";
-	
+
 	Scene* scene = entity_->getScene();
 	Transform* playerTr = entity_->getComponent<Transform>("transform");
 
@@ -373,6 +385,9 @@ void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 	auto pc = entity_->getComponent<PlayerController>("playercontroller");
 	pc->setPlayerState(El_Horno::PLAYER_PRODUCT);
 	anim_->setAnimBool("AnyState", "Idle_with_product", true);
+
+	//Audio
+	entity_->getComponent<AudioComponent>("audioComponent")->playSound("SFX/CogerObjerto.mp3");
 }
 
 void El_Horno::PlayerInteract::managePuddle()
@@ -390,6 +405,8 @@ void El_Horno::PlayerInteract::dropItem()
 		auto pc = entity_->getComponent<PlayerController>("playercontroller");
 		pc->setPlayerState(El_Horno::PLAYER_DEFAULT);
 		anim_->setAnimBool("AnyState", "Idle", true);
+		//Audio
+		entity_->getComponent<AudioComponent>("audioComponent")->playSound("SFX/SoltarObjeto.mp3");
 	}
 }
 
@@ -404,7 +421,7 @@ void El_Horno::PlayerInteract::changeCartSize(Entity* entity)
 		//Eliminamos el mesh
 		entity->removeComponent("mesh");
 		//Y metemos el nuevo
-		entity->addComponent<Mesh>("mesh", "FullCart");
+		entity->addComponent<Mesh>("mesh", "cube");
 		entity->getComponent<Mesh>("mesh")->awake();
 		entity->getComponent<Mesh>("mesh")->start();
 	}
@@ -413,7 +430,7 @@ void El_Horno::PlayerInteract::changeCartSize(Entity* entity)
 		//Eliminamos el mesh
 		entity->removeComponent("mesh");
 		//Y metemos el nuevo
-		entity->addComponent<Mesh>("mesh", "HalfFullCart");
+		entity->addComponent<Mesh>("mesh", "cube");
 		entity->getComponent<Mesh>("mesh")->awake();
 		entity->getComponent<Mesh>("mesh")->start();
 
@@ -423,7 +440,7 @@ void El_Horno::PlayerInteract::changeCartSize(Entity* entity)
 		//Eliminamos el mesh
 		entity->removeComponent("mesh");
 		//Y metemos el nuevo
-		entity->addComponent<Mesh>("mesh", "HalfEmptyCart");
+		entity->addComponent<Mesh>("mesh", "cube");
 		entity->getComponent<Mesh>("mesh")->awake();
 		entity->getComponent<Mesh>("mesh")->start();
 
