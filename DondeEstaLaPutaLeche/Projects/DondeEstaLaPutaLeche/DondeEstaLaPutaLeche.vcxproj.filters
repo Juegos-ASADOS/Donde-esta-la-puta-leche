@@ -54,6 +54,9 @@
     <ClCompile Include="..\..\Src\UIMenus.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Src\SecondScene.cpp">
+      <Filter>Archivos de origen\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Src\StartScene.h">
@@ -88,6 +91,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Src\UIMenus.h">
       <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\SecondScene.h">
+      <Filter>Archivos de encabezado\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
