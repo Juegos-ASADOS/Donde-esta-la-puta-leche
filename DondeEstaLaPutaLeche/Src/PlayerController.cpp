@@ -48,7 +48,16 @@ void El_Horno::PlayerController::update()
 		rb_->setScale(HornoVector3(0.5, 0.7, 0.5));
 	}
 
-	if (input_->isKeyDown(SDL_SCANCODE_A) || input_->isKeyDown(SDL_SCANCODE_S) || input_->isKeyDown(SDL_SCANCODE_D) || input_->isKeyDown(SDL_SCANCODE_W)) {
+	bool left = (input_->getAxis(SDL_CONTROLLER_AXIS_LEFTX) < 0.0f || input_->isKeyDown(SDL_SCANCODE_A));
+	bool right = (input_->getAxis(SDL_CONTROLLER_AXIS_LEFTX) > 0.0f || input_->isKeyDown(SDL_SCANCODE_D));
+	bool up = (input_->getAxis(SDL_CONTROLLER_AXIS_LEFTY) < 0.0f || input_->isKeyDown(SDL_SCANCODE_W));
+	bool down = (input_->getAxis(SDL_CONTROLLER_AXIS_LEFTY) > 0.0f || input_->isKeyDown(SDL_SCANCODE_S));
+	float x = -speed_ * left + speed_ * right;
+	float z = -speed_ * down + speed_ * up;
+	if (maxForce_ > rb_->getHornoLinearVelocity().magnitude())
+		rb_->applyForce(HornoVector3(x, 0, -z));
+
+	if (left || right || up || down) {
 
 		if(rb_->getDamping() != 0.7f && !sliding_)
 			rb_->setDamping(0.7f, 0);
@@ -74,6 +83,8 @@ void El_Horno::PlayerController::update()
 
 			walking_ = true;
 		}
+
+		tb_->lookAt(HornoVector3(-x + tb_->getPosition().x, tb_->getPosition().y, z + tb_->getPosition().z));
 	}
 	else {
 		if (rb_->getDamping() != 0.999f && !sliding_)
@@ -101,19 +112,10 @@ void El_Horno::PlayerController::update()
 		}
 	}
 
-	bool left = (input_->getAxis(SDL_CONTROLLER_AXIS_LEFTX) < 0.0f || input_->isKeyDown(SDL_SCANCODE_A));
-	bool right = (input_->getAxis(SDL_CONTROLLER_AXIS_LEFTX) > 0.0f || input_->isKeyDown(SDL_SCANCODE_D));
-	bool up = (input_->getAxis(SDL_CONTROLLER_AXIS_LEFTY) < 0.0f || input_->isKeyDown(SDL_SCANCODE_W));
-	bool down = (input_->getAxis(SDL_CONTROLLER_AXIS_LEFTY) > 0.0f || input_->isKeyDown(SDL_SCANCODE_S));
-	float x = -speed_ * left + speed_ * right;
-	float z = -speed_ * down + speed_ * up;
-	if (maxForce_ > rb_->getHornoLinearVelocity().magnitude())
-		rb_->applyForce(HornoVector3(x, 0, -z));
-
 	//TODO Aplicar la rotacion
-	if (x != 0 || z != 0) {
+	/*if (x != 0 || z != 0) {
 		tb_->lookAt(HornoVector3(-x+ tb_->getPosition().x, tb_->getPosition().y, z + tb_->getPosition().z));
-	}
+	}*/
 }
 
 void El_Horno::PlayerController::setPlayerState(PLayerState s)

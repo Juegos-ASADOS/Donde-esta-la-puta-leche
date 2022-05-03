@@ -177,7 +177,7 @@ void El_Horno::PlayerInteract::processCollisionExit()
 void El_Horno::PlayerInteract::manageCart(Entity* entity)
 {
 	//Si pulsas la tecla E...
-	if (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_A)) {
+	if (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 
 		//Si estoy moviendome con el carrito
 		if (carryingCart_)
