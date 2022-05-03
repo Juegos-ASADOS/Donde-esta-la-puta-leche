@@ -43,7 +43,7 @@ namespace El_Horno {
 		float speed_ = 1.0f;
 		float minRange_ = 5.0f;
 
-		double timer = 0.0f;
+		double timer = 0.0;
 
 		bool walking_ = false;
 	};
