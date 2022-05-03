@@ -43,8 +43,8 @@ namespace El_Horno {
 
 		// Light
 		a = addEntity("light", "prueba");
-		a->addComponent<Transform>("transform", HornoVector3(0, 200, 200), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
-		a->addComponent<LightComponent>("light", 0, HornoVector3(0, 0, 0));
+		a->addComponent<Transform>("transform", HornoVector3(0, 1000, 0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
+		a->addComponent<LightComponent>("light", 2, HornoVector3(0, 100, 0));
 
 		// Camera
 		Entity* cam = addEntity("camera", "prueba");
@@ -144,14 +144,14 @@ namespace El_Horno {
 
 		// NPC
 		a = addEntity("moneco", "prueba");
-		a->addComponent<Transform>("transform", HornoVector3(-150, 10, 0), HornoVector3(0, 0, 0), HornoVector3(0.5, 0.5, 0.5));
+		a->addComponent<Transform>("transform", HornoVector3(-100, 10, 0), HornoVector3(0, 0, 0), HornoVector3(0.5, 0.5, 0.5));
 		a->addComponent<Mesh>("mesh", "penguin");
 		a->addComponent<RigidBody>("rigidbody", 3.0f, false, false, 0);
 		a->addComponent<Patrol>("patrol", 50, patata);
 
-		/*a = addEntity("menu", "prueba");
+		a = addEntity("menu", "prueba");
 		a->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
-		a->addComponent<UIMenus>("uimenus");*/
+		a->addComponent<UIMenus>("uimenus");
 		/*std::vector<std::pair<std::string, std::string>> animVectorNpc;
 		animVectorNpc.push_back(std::pair<std::string, std::string>("Idle", "npc_walk"));
 		animVectorNpc.push_back(std::pair<std::string, std::string>("npc_walk", "Idle"));
