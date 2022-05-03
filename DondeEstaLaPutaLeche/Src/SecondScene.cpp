@@ -112,7 +112,7 @@ namespace El_Horno {
 		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
 		trigger->addComponent<EntityId>("entityid", Type::ESTANTERY, ProductType::FISH, "Agua");
 
-		// Estanteria carne
+		// Estanteria normal
 		a = addEntity("mestantery", "prueba");
 		a->addComponent<Transform>("transform", HornoVector3(150, 10, 450), HornoVector3(0, 0, 0), HornoVector3(0.5, 1, 0.25));
 		a->addComponent<Mesh>("mesh", "cube");

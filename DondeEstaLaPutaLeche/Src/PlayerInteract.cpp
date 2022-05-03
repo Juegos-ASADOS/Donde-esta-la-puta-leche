@@ -292,6 +292,9 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 				}
 				//TODO añadir uno al FoodCartComponent
 				deleteAliment(true);
+
+				auto pc = entity_->getComponent<PlayerController>("playercontroller");
+				pc->setPlayerState(El_Horno::PLAYER_DEFAULT);
 				anim_->setAnimBool("AnyState", "Idle", true);
 			}
 			else {
@@ -362,6 +365,8 @@ void El_Horno::PlayerInteract::manageFishCleaner()
 			fishTimer_->resetTimer();
 			deleteAliment(true);
 
+			auto pc = entity_->getComponent<PlayerController>("playercontroller");
+			pc->setPlayerState(El_Horno::PLAYER_DEFAULT);
 			anim_->setAnimBool("AnyState", "Idle", true);
 			cout << "pescado dentro\n";
 			//Audio
