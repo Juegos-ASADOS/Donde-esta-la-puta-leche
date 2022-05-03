@@ -42,8 +42,8 @@ namespace El_Horno {
 
 		// Light
 		a = addEntity("light", "prueba");
-		a->addComponent<Transform>("transform", HornoVector3(0, 200, 200), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
-		a->addComponent<LightComponent>("light", 0, HornoVector3(0, 0, 0));
+		a->addComponent<Transform>("transform", HornoVector3(0, 1000, 0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
+		a->addComponent<LightComponent>("light", 2, HornoVector3(0, 100, 0));
 
 		// Camera
 		Entity* cam = addEntity("camera", "prueba");
