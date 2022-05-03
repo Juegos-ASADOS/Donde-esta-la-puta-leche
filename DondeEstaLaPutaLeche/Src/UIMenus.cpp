@@ -34,6 +34,7 @@ namespace El_Horno {
 		//menu->getComponent<UILayout>("uilayout")->createButton("TaharezLook", "Button", "start");
 		menu->getComponent<UILayout>("uilayout")->addLayout("MenuPrincipal"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
 		menu->getComponent<UILayout>("uilayout")->addLayout("Pausa"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
+		menu->getComponent<UILayout>("uilayout")->addLayout("Carballo"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
 	}
 
 	void UIMenus::update()
@@ -49,6 +50,12 @@ namespace El_Horno {
 		}
 		else if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_V)) {
 			hide("Pausa");
+		}
+		else if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_O)) {
+			show("Carballo");
+		}
+		else if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_P)) {
+			hide("Carballo");
 		}
 	}
 	void UIMenus::show(std::string m)
