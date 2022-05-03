@@ -155,9 +155,6 @@ void El_Horno::PlayerInteract::processCollisionStay()
 		case El_Horno::MEATSTATION:
 			manageMeatStation();
 			break;
-		case El_Horno::PUDDLE:
-			managePuddle();
-			break;
 		default:
 			break;
 		}
@@ -181,6 +178,12 @@ void El_Horno::PlayerInteract::processCollisionExit()
 			break;
 		}
 		triggerExit_ = nullptr;
+		for (int i = 0; i < triggeredEntities_.size(); i++) {
+			if (triggeredEntities_[i]->getComponent<EntityId>("entityid")->getType() == Type::PUDDLE) {
+				triggeredEntities_.erase(triggeredEntities_.begin() + i);
+				return;
+			}
+		}
 	}
 }
 
@@ -188,6 +191,8 @@ El_Horno::Entity* El_Horno::PlayerInteract::processTriggerPriority()
 {
 	float minDist = -1;
 	Entity* nearestEnt = nullptr;
+	bool cart = false;
+	int puddle = 0;
 
 	// Buscar entre las entidades trigger
 	for (int i = 0; i < triggeredEntities_.size(); i++) {
@@ -195,14 +200,21 @@ El_Horno::Entity* El_Horno::PlayerInteract::processTriggerPriority()
 			- entity_->getComponent<Transform>("transform")->getHornoGlobalPosition()).magnitude();
 
 		// El carro se devuelve con prioridad
-		if (triggeredEntities_[i]->getComponent<EntityId>("entityid")->getType() == Type::CART) {
-			return triggeredEntities_[i];
+		if (!cart && triggeredEntities_[i]->getComponent<EntityId>("entityid")->getType() == Type::CART) {
+			nearestEnt = triggeredEntities_[i];
+			cart = true;
 		}
-		else if (minDist == -1 || dist < minDist) {
+		else if (triggeredEntities_[i]->getComponent<EntityId>("entityid")->getType() == Type::PUDDLE) {
+			managePuddle();
+			puddle = i;
+		}
+		else if (!cart && (minDist == -1 || dist < minDist)) {
 			minDist = dist;
 			nearestEnt = triggeredEntities_[i];
 		}
 	}
+	if (nearestEnt == nullptr)
+		nearestEnt = triggeredEntities_[puddle];
 	return nearestEnt;
 }
 
@@ -235,6 +247,16 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 				entity_->getChild("cart")->setActive(true);
 				std::cout << triggerStay_->getParent()->getName() << "\n";
 				SceneManager::getInstance()->getCurrentScene()->deleteEntity(triggerStay_->getParent()->getName());
+
+				int i = 0;
+				bool found = false;
+				while (!found && i < triggeredEntities_.size()) {
+					if (triggeredEntities_[i]->getComponent<EntityId>("entityid")->getType() == Type::CART) {
+						triggeredEntities_.erase(triggeredEntities_.begin() + i);
+						found = true;
+					}
+					i++;
+				}
 				triggerStay_ = nullptr;
 				//Habr� que ajustar esto para posicionar al carro justo agarrado de la mano del player
 				auto rb = entity_->getComponent<RigidBody>("rigidbody");
@@ -502,8 +524,8 @@ void El_Horno::PlayerInteract::imInCartRegister(bool imIn)
 
 void El_Horno::PlayerInteract::setEstantery(Entity* e, bool enter)
 {
-	if (enter) 
-		triggeredEntities_.push_back(e); 
+	if (enter)
+		triggeredEntities_.push_back(e);
 	else {
 		for (size_t i = 0; i < triggeredEntities_.size(); i++)
 		{

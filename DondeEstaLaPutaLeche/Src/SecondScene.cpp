@@ -43,7 +43,7 @@ namespace El_Horno {
 		// Light
 		a = addEntity("light", "prueba");
 		a->addComponent<Transform>("transform", HornoVector3(0, 200, 200), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
-		a->addComponent<LightComponent>("light", 0, HornoVector3(0, 0, 0));
+		a->addComponent<LightComponent>("light", 1, HornoVector3(0, 0, 0));
 
 		// Camera
 		Entity* cam = addEntity("camera", "prueba");
@@ -121,7 +121,7 @@ namespace El_Horno {
 		trigger = addEntity("mestanteryTrigger", "prueba", a);
 		trigger->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
 		trigger->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
-		trigger->addComponent<EntityId>("entityid", Type::ESTANTERY, ProductType::MEAT, "Agua");
+		trigger->addComponent<EntityId>("entityid", Type::ESTANTERY, ProductType::DEFAULT, "Agua");
 
 		// Estanteria fruta
 		a = addEntity("frestantery", "prueba");
