@@ -53,7 +53,7 @@ void El_Horno::GameManager::setParameters(std::vector<std::pair<std::string, std
 			maxProducts_ = productNum_;
 		}
 	}
-	list_.emplace(std::pair<string, int>("Agua", 1));
+	//list_.emplace(std::pair<string, int>("Agua", 1));
 }
 
 void El_Horno::GameManager::start()
