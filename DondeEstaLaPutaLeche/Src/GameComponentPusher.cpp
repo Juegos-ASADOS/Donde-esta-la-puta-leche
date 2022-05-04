@@ -36,10 +36,8 @@ void El_Horno::GameComponentPusher::pushGameComponents()
 
 	SceneManager::getInstance()->possibleComponents.emplace("patrol", &SceneManager::getInstance()->createComponent<Patrol>);
 	SceneManager::getInstance()->possibleComponents.emplace("entityid", &SceneManager::getInstance()->createComponent<EntityId>);
-	SceneManager::getInstance()->possibleComponents.emplace("foodCart", &SceneManager::getInstance()->createComponent<FoodCartComponent>);
 	SceneManager::getInstance()->possibleComponents.emplace("playercontroller", &SceneManager::getInstance()->createComponent<PlayerController>);
 	SceneManager::getInstance()->possibleComponents.emplace("playerinteract", &SceneManager::getInstance()->createComponent<PlayerInteract>);
-	SceneManager::getInstance()->possibleComponents.emplace("cashregister", &SceneManager::getInstance()->createComponent<CashRegister>);
 	SceneManager::getInstance()->possibleComponents.emplace("gamemanager", &SceneManager::getInstance()->createComponent<GameManager>);
 	SceneManager::getInstance()->possibleComponents.emplace("uimenus", &SceneManager::getInstance()->createComponent<UIMenus>);
 	//SceneManager::getInstance()->possibleComponents.emplace("cashRegister", &SceneManager::getInstance()->createComponent<CashRegister>);
