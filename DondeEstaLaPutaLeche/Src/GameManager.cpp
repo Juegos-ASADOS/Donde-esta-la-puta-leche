@@ -1,6 +1,7 @@
 #include "GameFactories.h"
 #include "GameManager.h"
 #include "InputManager.h"
+#include "LuaManager.h"
 #include "SecondScene.h"
 #include "SceneManager.h"
 #include "Rigibody.h"
@@ -84,8 +85,7 @@ void El_Horno::GameManager::update()
 		//Pasar a la escena de score teniendo en cuenta la puntuación (huevos)
 	}
 	if (input_->isKeyDown(SDL_SCANCODE_K)) {
-		SecondScene* s = new SecondScene();
-		SceneManager::getInstance()->nextScene(s, "prueba");
+		LuaManager::getInstance()->callLuaFunction("loadNextScene");
 		return;
 	}
 }

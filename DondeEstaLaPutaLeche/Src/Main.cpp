@@ -3,6 +3,7 @@
 #include <GameFactories.h>
 #include <SceneManager.h>
 #include <GameComponentPusher.h>
+#include <ScenesPusher.h>
 
 extern "C"
 {
@@ -15,6 +16,7 @@ extern "C"
 		El_Horno::StartScene* start = new El_Horno::StartScene();
 		El_Horno::SceneManager::getInstance()->setScene(start);
 		El_Horno::GameComponentPusher::pushGameComponents();
+		El_Horno::ScenePusher::pushScenes();
 		start->init("escenaRotar");
 		return start;
 	}
