@@ -28,6 +28,7 @@
     <ClCompile Include="..\..\Src\Patrol.cpp" />
     <ClCompile Include="..\..\Src\PlayerController.cpp" />
     <ClCompile Include="..\..\Src\PlayerInteract.cpp" />
+    <ClCompile Include="..\..\Src\ScenesPusher.cpp" />
     <ClCompile Include="..\..\Src\SecondScene.cpp" />
     <ClCompile Include="..\..\Src\StartScene.cpp" />
     <ClCompile Include="..\..\Src\UIMenus.cpp" />
@@ -42,6 +43,7 @@
     <ClInclude Include="..\..\Src\Patrol.h" />
     <ClInclude Include="..\..\Src\PlayerController.h" />
     <ClInclude Include="..\..\Src\PlayerInteract.h" />
+    <ClInclude Include="..\..\Src\ScenesPusher.h" />
     <ClInclude Include="..\..\Src\SecondScene.h" />
     <ClInclude Include="..\..\Src\StartScene.h" />
     <ClInclude Include="..\..\Src\UIMenus.h" />

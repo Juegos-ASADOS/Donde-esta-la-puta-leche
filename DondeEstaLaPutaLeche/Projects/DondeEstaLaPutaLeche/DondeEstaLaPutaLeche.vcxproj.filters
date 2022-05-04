@@ -57,6 +57,9 @@
     <ClCompile Include="..\..\Src\SecondScene.cpp">
       <Filter>Archivos de origen\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Src\ScenesPusher.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Src\StartScene.h">
@@ -94,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="..\..\Src\SecondScene.h">
       <Filter>Archivos de encabezado\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\ScenesPusher.h">
+      <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

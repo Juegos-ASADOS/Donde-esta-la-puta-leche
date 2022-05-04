@@ -1,6 +1,7 @@
 #include "UIMenus.h"
 
 #include <Scene.h>
+#include <LuaManager.h>
 #include <SceneManager.h>
 #include <UILayout.h>
 #include <Transform.h>
