@@ -4,7 +4,7 @@
 
 #include <Component.h>
 
-//AHORA MISMO NO SIRVE DE NADA DE NADA AAAA TODO
+//AHORA MISMO NO SIRVE DE NADA
 namespace El_Horno {
 
 	//Gestiona los eventos al llevar la comida a la madre

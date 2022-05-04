@@ -15,7 +15,6 @@ namespace El_Horno {
 		void start() override;
 		void update() override;
 
-
 		//botones de los menus que deberian de ir por LUA
 		bool play_button(const CEGUI::EventArgs& e);
 		bool opciones_button(const CEGUI::EventArgs& e);
@@ -33,11 +32,7 @@ namespace El_Horno {
 		bool opcionesPausaButton(const CEGUI::EventArgs& e);
 
 		bool salirPausaButton(const CEGUI::EventArgs& e);
-
-
 	private:
-
-		
 
 		void show(std::string menu);
 		void hide(std::string menu);

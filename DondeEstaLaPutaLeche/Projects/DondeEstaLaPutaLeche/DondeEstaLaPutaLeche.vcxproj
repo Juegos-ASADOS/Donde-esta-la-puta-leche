@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClCompile Include="..\..\Src\CashRegister.cpp" />
     <ClCompile Include="..\..\Src\EntityId.cpp" />
-    <ClCompile Include="..\..\Src\FoodCartComponent.cpp" />
     <ClCompile Include="..\..\Src\GameComponentPusher.cpp" />
     <ClCompile Include="..\..\Src\GameManager.cpp" />
     <ClCompile Include="..\..\Src\Main.cpp" />
@@ -34,7 +33,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Src\CashRegister.h" />
-    <ClInclude Include="..\..\Src\FoodCartComponent.h" />
     <ClInclude Include="..\..\Src\EntityId.h" />
     <ClInclude Include="..\..\Src\GameComponentPusher.h" />
     <ClInclude Include="..\..\Src\GameFactories.h" />

@@ -1,4 +1,3 @@
-#include <iostream>
 #include <StartScene.h>
 #include <Windows.h>
 #include <GameFactories.h>

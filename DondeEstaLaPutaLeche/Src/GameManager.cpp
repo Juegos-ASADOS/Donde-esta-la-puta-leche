@@ -7,7 +7,6 @@
 #include "Entity.h"
 #include "Timer.h"
 #include "ElHornoBase.h"
-#include "btBulletCollisionCommon.h"
 
 using namespace El_Horno;
 

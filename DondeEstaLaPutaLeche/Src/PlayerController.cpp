@@ -6,7 +6,6 @@
 #include "InputManager.h"
 #include "ElHornoBase.h"
 #include "AnimatorController.h"
-#include "iostream"
 #include <cmath>
 
 void El_Horno::PlayerController::setParameters(std::vector<std::pair<std::string, std::string>> parameters)
@@ -23,12 +22,6 @@ void El_Horno::PlayerController::setParameters(std::vector<std::pair<std::string
 
 void El_Horno::PlayerController::start()
 {
-	//rb_ = entity_->getComponent<RigidBody>("rigidbody");
-	//rb_->setAngularFactor(0.0f);
-	//rb_->setSleepingThresholds(0, 0);
-	////rb_->setFriction(150);
-	////rb_->setDamping(0.7f, 0);
-	//rb_->setScale(HornoVector3(0.5, 0.7, 0.5));
 	input_ = ElHornoBase::getInstance()->getInputManager();
 	anim_ = entity_->getComponent<AnimatorController>("animatorController");
 	walking_ = false;

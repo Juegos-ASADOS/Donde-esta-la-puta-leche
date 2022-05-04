@@ -4,7 +4,6 @@
 
 #include "Entity.h"
 #include "Event.h"
-#include <iostream>
 
 
 El_Horno::CashRegister::CashRegister()

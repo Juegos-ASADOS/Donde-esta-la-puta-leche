@@ -1,5 +1,3 @@
-
-//TODO REVISAR SI PONER "" O <>
 #include "GameFactories.h"
 #include "Entity.h"
 #include "ElHornoBase.h"
@@ -13,7 +11,6 @@
 #include <Scene.h>
 #include <Mesh.h>
 #include <Rigibody.h>
-#include <FoodCartComponent.h>
 #include <GameManager.h>
 #include <SceneManager.h>
 #include <Rigibody.h>

@@ -2,27 +2,6 @@
 #include "Event.h"
 #include "PlayerInteract.h"
 #include "Entity.h"
-#include <iostream>
-
-//void El_Horno::EntityId::setParameters(std::vector<std::pair<std::string, std::string>> parameters)
-//{
-//	for (int i = 0; i < parameters.size(); i++) {
-//		if (parameters[i].first == "id") {
-//			id_ = parameters[i].second;
-//		}
-//		else if (parameters[i].first == "isEstantery") {
-//			isEstantery_ = stoi(parameters[i].second);
-//		}
-//		else if (parameters[i].first == "isCart") {
-//			isCart_ = stoi(parameters[i].second);
-//		}
-//		else if (parameters[i].first == "isCashRegister") {
-//			isCashRegister_ = stoi(parameters[i].second);
-//		}
-//	}
-//}
-
-//id_(id), type_(type), productType_(prodType)
 
 void El_Horno::EntityId::setParameters(std::vector<std::pair<std::string, std::string>> parameters)
 {

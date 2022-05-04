@@ -1,6 +1,5 @@
 #include "StartScene.h"
 
-#include <OgreVector.h>
 #include <Entity.h>
 #include <Transform.h>
 #include <LightComponent.h>
@@ -11,8 +10,6 @@
 #include <Rigibody.h>
 #include <Mesh.h>
 #include <AnimatorController.h>
-#include <iostream>
-#include <HornoVector3.h>
 #include <FactoryCreator.h>
 #include <PlayerController.h>
 #include <PlayerInteract.h>

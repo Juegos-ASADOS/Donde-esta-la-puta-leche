@@ -7,8 +7,6 @@
 #include "ElHornoBase.h"
 #include <sstream>
 
-#include <iostream>
-
 El_Horno::Patrol::Patrol(float tspeed, const std::vector<PatrolPos>& pos)
 {
 	for (auto p : pos) {

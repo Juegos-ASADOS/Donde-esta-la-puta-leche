@@ -15,12 +15,11 @@
 
 #include "Patrol.h"
 #include "EntityId.h"
-#include "FoodCartComponent.h"
 #include "PlayerController.h"
 #include "PlayerInteract.h"
-#include "CashRegister.h"
 #include "GameManager.h"
 #include "UIMenus.h"
+//#include "CashRegister.h"
 
 void El_Horno::GameComponentPusher::pushGameComponents()
 {
@@ -37,11 +36,10 @@ void El_Horno::GameComponentPusher::pushGameComponents()
 
 	SceneManager::getInstance()->possibleComponents.emplace("patrol", &SceneManager::getInstance()->createComponent<Patrol>);
 	SceneManager::getInstance()->possibleComponents.emplace("entityId", &SceneManager::getInstance()->createComponent<EntityId>);
-	SceneManager::getInstance()->possibleComponents.emplace("foodCart", &SceneManager::getInstance()->createComponent<FoodCartComponent>);
 	SceneManager::getInstance()->possibleComponents.emplace("playerController", &SceneManager::getInstance()->createComponent<PlayerController>);
 	SceneManager::getInstance()->possibleComponents.emplace("playerInteract", &SceneManager::getInstance()->createComponent<PlayerInteract>);
-	SceneManager::getInstance()->possibleComponents.emplace("cashRegister", &SceneManager::getInstance()->createComponent<CashRegister>);
 	SceneManager::getInstance()->possibleComponents.emplace("gamemanager", &SceneManager::getInstance()->createComponent<GameManager>);
 	SceneManager::getInstance()->possibleComponents.emplace("uimenus", &SceneManager::getInstance()->createComponent<UIMenus>);
+	//SceneManager::getInstance()->possibleComponents.emplace("cashRegister", &SceneManager::getInstance()->createComponent<CashRegister>);
 	//ComponentPusher::pushComponents();
 }
