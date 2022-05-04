@@ -231,6 +231,7 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 			//Dejo el carrito suelto
 			instanciateCart();
 			auto rb = entity_->getComponent<RigidBody>("rigidbody");
+			rb->setScale(HornoVector3(0.5, 0.7, 0.5));
 			rb->setDamping(1.0f, 1.0f);
 			auto pc = entity_->getComponent<PlayerController>("playercontroller");
 			pc->setSpeed(300);
@@ -247,6 +248,8 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 				entity_->getChild("cart")->setActive(true);
 				std::cout << triggerStay_->getParent()->getName() << "\n";
 				SceneManager::getInstance()->getCurrentScene()->deleteEntity(triggerStay_->getParent()->getName());
+
+				entity_->getComponent<RigidBody>("rigidbody")->setScale(HornoVector3(0.5,0.7,1.3));
 
 				int i = 0;
 				bool found = false;

@@ -45,7 +45,7 @@ void El_Horno::PlayerController::update()
 		rb_->setSleepingThresholds(0, 0);
 		//rb_->setFriction(150);
 		//rb_->setDamping(0.7f, 0);
-		rb_->setScale(HornoVector3(0.5, 0.7, 0.5));
+		rb_->setScale(HornoVector3(0.5, 0.7, 1.3));
 	}
 
 	bool left = (input_->getAxis(SDL_CONTROLLER_AXIS_LEFTX) < 0.0f || input_->isKeyDown(SDL_SCANCODE_A));
