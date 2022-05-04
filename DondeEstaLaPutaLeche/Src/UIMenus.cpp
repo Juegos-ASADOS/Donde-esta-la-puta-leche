@@ -37,6 +37,8 @@ namespace El_Horno {
 		menu->getComponent<UILayout>("uilayout")->addLayout("MenuPrincipal_Opciones"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
 		menu->getComponent<UILayout>("uilayout")->addLayout("Pausa"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
 		menu->getComponent<UILayout>("uilayout")->addLayout("Pausa_Opciones"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
+		menu->getComponent<UILayout>("uilayout")->addLayout("Nivel_Ingame"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
+		menu->getComponent<UILayout>("uilayout")->addLayout("Creditos"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
 
 
 		//añadir la funcionalidad a los botones
@@ -94,6 +96,14 @@ namespace El_Horno {
 		helperFunction = std::bind(&UIMenus::salirPausaButton, this, std::placeholders::_1);
 		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("Pausa", "Menu/BotonSalir", helperFunction);
 
+		//Creditos
+
+		helperFunction = std::bind(&UIMenus::volverCreditosButton, this, std::placeholders::_1);
+		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("Creditos", "Boton_Volver", helperFunction);
+
+		show("Nivel_Ingame");
+
+
 		// helperFunction = std::bind(&UIMenus::play_button, this, std::placeholders::_1);
 		//menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("MenuPrincipal", "Menu/Boton3", helperFunction);
 	}
@@ -111,12 +121,6 @@ namespace El_Horno {
 		}
 		else if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_V)) {
 			hide("Pausa");
-		}
-		else if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_O)) {
-			show("Carballo");
-		}
-		else if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_P)) {
-			hide("Carballo");
 		}
 	}
 
@@ -218,6 +222,11 @@ namespace El_Horno {
 
 	bool UIMenus::salirPausaButton(const CEGUI::EventArgs& e) {
 		hide("Pausa");
+		return true;
+	}
+
+	bool UIMenus::volverCreditosButton(const CEGUI::EventArgs& e) {
+		hide("Creditos");
 		return true;
 	}
 

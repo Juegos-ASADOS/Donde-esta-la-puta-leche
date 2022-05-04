@@ -32,6 +32,7 @@ namespace El_Horno {
 		bool opcionesPausaButton(const CEGUI::EventArgs& e);
 
 		bool salirPausaButton(const CEGUI::EventArgs& e);
+		bool volverCreditosButton(const CEGUI::EventArgs& e);
 	private:
 
 		void show(std::string menu);
