@@ -40,7 +40,7 @@ void El_Horno::PlayerInteract::start()
 	meatTimer_ = new Timer();
 	fishTimer_ = new Timer();
 	ticketExpirationTimer_ = new Timer();
-	anim_ = entity_->getComponent<AnimatorController>("animatorController");
+	anim_ = entity_->getComponent<AnimatorController>("animatorcontroller");
 	anim_->setAnimBool("AnyState", "Idle_with_cart", true);
 	LuaManager::getInstance()->pushNumber(maxTicketTime_, "ticketTime");
 	LuaManager::getInstance()->readLuaScript("shop");
