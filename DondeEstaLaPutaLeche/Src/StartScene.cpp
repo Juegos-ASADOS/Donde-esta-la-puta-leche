@@ -26,8 +26,8 @@ namespace El_Horno {
 	void StartScene::init(std::string name)
 	{
 		name_ = name;
-		//testScene();
-		LuaManager::getInstance()->loadScene();
+		testScene();
+		//LuaManager::getInstance()->loadScene();
 	}
 
 	void StartScene::testScene()
@@ -56,7 +56,7 @@ namespace El_Horno {
 		cam->getComponent<CameraComponent>("camera")->setFollow(a->getComponent<Transform>("transform"), 0.2f, HornoVector3(50, 60, 450));
 		a->addComponent<Mesh>("mesh", "pipo");
 		a->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
-		a->addComponent<AudioComponent>("audioComponent");
+		a->addComponent<AudioComponent>("audiocomponent");
 		a->addComponent<PlayerController>("playercontroller", 1500.0f);
 		a->addComponent<PlayerInteract>("playerinteract");
 
@@ -83,7 +83,7 @@ namespace El_Horno {
 		animVector.push_back(std::pair<std::string, std::string>("AnyState", "Idle"));
 		animVector.push_back(std::pair<std::string, std::string>("AnyState", "Idle_with_product"));
 		animVector.push_back(std::pair<std::string, std::string>("AnyState", "Idle_with_cart"));
-		a->addComponent<AnimatorController>("animatorController", animVector);
+		a->addComponent<AnimatorController>("animatorcontroller", animVector);
 
 		//b->addComponent<EstanteryEnter>("estanteryenter");
 		/*Entity* playerChild = addEntity("playerTrigger", "prueba", b);
