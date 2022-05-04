@@ -78,6 +78,8 @@ void El_Horno::Patrol::update()
 
 		rb_->setLinearVelocity(dir.normalized() * speed_);
 
+		tr_->lookAt(HornoVector3(-dir.x_ + tr_->getPosition().x, tr_->getPosition().y, -dir.z_ + tr_->getPosition().z));
+
 		//Animacion
 		if (anim_)
 		{
