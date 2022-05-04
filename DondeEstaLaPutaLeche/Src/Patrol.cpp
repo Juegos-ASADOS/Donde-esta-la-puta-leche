@@ -63,13 +63,15 @@ void El_Horno::Patrol::update()
 
 		PatrolPos pos = positions_.front();
 		if (isClose()) {
+			//Reset de tiempo
+			timer = pos.wait_time;
 			//Nueva posicion
 			positions_.pop();
 			positions_.push(pos);
 			pos = positions_.front();
 
-			//Reset de tiempo
-			timer = 0;
+			rb_->setLinearVelocity({0,0,0});
+			return;
 		}
 
 		HornoVector3 dir =	pos.pos - tr_->getHornoGlobalPosition();
@@ -121,6 +123,7 @@ void El_Horno::Patrol::addPosition(float x, float z, float time)
 bool El_Horno::Patrol::isClose()
 {
 	HornoVector3 diff = tr_->getHornoGlobalPosition() - positions_.front().pos;
+	diff.y_ = 0;
 	float magnitude = diff.magnitude();
 
 	return magnitude <= minRange_;
@@ -128,8 +131,8 @@ bool El_Horno::Patrol::isClose()
 
 bool El_Horno::Patrol::isWaiting()
 {
-	if (timer < positions_.front().wait_time) {
-		timer += ElHornoBase::getInstance()->getDeltaTime();
+	if (timer > 0) {
+		timer -= ElHornoBase::getInstance()->getDeltaTime();
 		return true;
 	}
 	return false;

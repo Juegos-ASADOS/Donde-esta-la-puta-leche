@@ -92,7 +92,7 @@ std::string El_Horno::PlayerInteract::getHandObjectId()
 }
 
 //Eliminamos de la mano el objeto que tenga para a�adirlo al carrito
-void El_Horno::PlayerInteract::deleteAliment()
+void El_Horno::PlayerInteract::deleteAliment(bool ceaseExistence)
 {
 	std::string id = handObject_->getComponent<EntityId>("entityid")->getId();
 	entity_->getComponent<Mesh>("mesh")->detachObject(handObject_);
@@ -102,27 +102,30 @@ void El_Horno::PlayerInteract::deleteAliment()
 	//Transform del jugador
 	Transform* tr = entity_->getComponent<Transform>("transform");
 
-	//if (!carryingCart_) {
-	//	Entity* ob = SceneManager::getInstance()->getCurrentScene()->addEntity("productShot", "prueba");
-	//	ob->addComponent<Transform>("transform", OgreVectorToHorno(tr->getPosition()) /*+ HornoVector3(10, 0, 0)*/,
-	//		HornoVector3(-90, 0, 0), HornoVector3(15, 15, 15));
+	if (!ceaseExistence && !carryingCart_) {
+		Entity* ob = SceneManager::getInstance()->getCurrentScene()->addEntity("productShot", entity_->getScene()->getName());
+		ob->addComponent<Transform>("transform", tr->getHornoGlobalPosition() /*+ HornoVector3(10, 0, 0)*/,
+			HornoVector3(-90, 0, 0), HornoVector3(15, 15, 15));
 
-	//	ob->addComponent<Mesh>("mesh", id);
-	//	ob->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
+		ob->addComponent<Mesh>("mesh", id);
+		ob->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
 
-	//	ob->awake();
-	//	ob->start();
+		ob->awake();
+		ob->start();
 
-	//	//Lanza el objeto
-	//	ob->getComponent<RigidBody>("rigidbody")->applyForce(HornoVector3(100, 0, 0));
-	//}
+		//Lanza el objeto
+		ob->getComponent<RigidBody>("rigidbody")->applyForce(HornoVector3(100, 0, 0));
+	}
 }
 
 void El_Horno::PlayerInteract::processCollisionStay()
 {
 	// Coge Id de la entidad
 
-	if (triggerStay_ != nullptr) {
+	if (triggeredEntities_.size() > 0) {
+
+		triggerStay_ = processTriggerPriority();
+
 		EntityId* idEntity = triggerStay_->getComponent<EntityId>("entityid");
 
 		Type t = idEntity->getType();
@@ -152,9 +155,6 @@ void El_Horno::PlayerInteract::processCollisionStay()
 		case El_Horno::MEATSTATION:
 			manageMeatStation();
 			break;
-		case El_Horno::PUDDLE:
-			managePuddle();
-			break;
 		default:
 			break;
 		}
@@ -178,7 +178,44 @@ void El_Horno::PlayerInteract::processCollisionExit()
 			break;
 		}
 		triggerExit_ = nullptr;
+		for (int i = 0; i < triggeredEntities_.size(); i++) {
+			if (triggeredEntities_[i]->getComponent<EntityId>("entityid")->getType() == Type::PUDDLE) {
+				triggeredEntities_.erase(triggeredEntities_.begin() + i);
+				return;
+			}
+		}
 	}
+}
+
+El_Horno::Entity* El_Horno::PlayerInteract::processTriggerPriority()
+{
+	float minDist = -1;
+	Entity* nearestEnt = nullptr;
+	bool cart = false;
+	int puddle = 0;
+
+	// Buscar entre las entidades trigger
+	for (int i = 0; i < triggeredEntities_.size(); i++) {
+		float dist = (triggeredEntities_[i]->getComponent<Transform>("transform")->getHornoGlobalPosition()
+			- entity_->getComponent<Transform>("transform")->getHornoGlobalPosition()).magnitude();
+
+		// El carro se devuelve con prioridad
+		if (!cart && triggeredEntities_[i]->getComponent<EntityId>("entityid")->getType() == Type::CART) {
+			nearestEnt = triggeredEntities_[i];
+			cart = true;
+		}
+		else if (triggeredEntities_[i]->getComponent<EntityId>("entityid")->getType() == Type::PUDDLE) {
+			managePuddle();
+			puddle = i;
+		}
+		else if (!cart && (minDist == -1 || dist < minDist)) {
+			minDist = dist;
+			nearestEnt = triggeredEntities_[i];
+		}
+	}
+	if (nearestEnt == nullptr)
+		nearestEnt = triggeredEntities_[puddle];
+	return nearestEnt;
 }
 
 void El_Horno::PlayerInteract::manageCart(Entity* entity)
@@ -194,6 +231,7 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 			//Dejo el carrito suelto
 			instanciateCart();
 			auto rb = entity_->getComponent<RigidBody>("rigidbody");
+			rb->setScale(HornoVector3(0.5, 0.7, 0.5));
 			rb->setDamping(1.0f, 1.0f);
 			auto pc = entity_->getComponent<PlayerController>("playercontroller");
 			pc->setSpeed(300);
@@ -210,6 +248,18 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 				entity_->getChild("cart")->setActive(true);
 				std::cout << triggerStay_->getParent()->getName() << "\n";
 				SceneManager::getInstance()->getCurrentScene()->deleteEntity(triggerStay_->getParent()->getName());
+
+				entity_->getComponent<RigidBody>("rigidbody")->setScale(HornoVector3(0.5,0.7,1.3));
+
+				int i = 0;
+				bool found = false;
+				while (!found && i < triggeredEntities_.size()) {
+					if (triggeredEntities_[i]->getComponent<EntityId>("entityid")->getType() == Type::CART) {
+						triggeredEntities_.erase(triggeredEntities_.begin() + i);
+						found = true;
+					}
+					i++;
+				}
 				triggerStay_ = nullptr;
 				//Habr� que ajustar esto para posicionar al carro justo agarrado de la mano del player
 				auto rb = entity_->getComponent<RigidBody>("rigidbody");
@@ -239,13 +289,16 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 				}
 				//Si te has equivocado...
 				else {
-					//TODO reproducir algun sonido de que te has equivocado y por eso tiramos al suelo el objeto
 					std::cout << "Objeto equivocado\n";
 					//Audio
 					entity_->getComponent<AudioComponent>("audioComponent")->playSound("SFX/MalAlimento.mp3");
 				}
 				//TODO añadir uno al FoodCartComponent
-				deleteAliment();
+				deleteAliment(true);
+
+				auto pc = entity_->getComponent<PlayerController>("playercontroller");
+				pc->setPlayerState(El_Horno::PLAYER_DEFAULT);
+				anim_->setAnimBool("AnyState", "Idle", true);
 			}
 			else {
 				//TODO Feedback (audio o UI) para indicar que hay que pesar/limpiar producto antes de poder meterlo al carro
@@ -313,7 +366,11 @@ void El_Horno::PlayerInteract::manageFishCleaner()
 			productLocked_ = false;
 			fishTimerRunning_ = true;
 			fishTimer_->resetTimer();
-			deleteAliment();
+			deleteAliment(true);
+
+			auto pc = entity_->getComponent<PlayerController>("playercontroller");
+			pc->setPlayerState(El_Horno::PLAYER_DEFAULT);
+			anim_->setAnimBool("AnyState", "Idle", true);
 			cout << "pescado dentro\n";
 			//Audio
 			entity_->getComponent<AudioComponent>("audioComponent")->playSound("SFX/CortarAlimento.mp3");
@@ -376,7 +433,7 @@ void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 	handObject_->awake();
 	handObject_->start();
 
-	entity_->getComponent<Mesh>("mesh")->attachObject("Mano.R", handObject_);
+	entity_->getComponent<Mesh>("mesh")->attachObject("Producto", handObject_);
 
 	// Se bloquea la posibilidad de meterlo al carrito hasta que se tomen las acciones pertinentes
 	if (pType == ProductType::FISH || pType == ProductType::FRUIT)
@@ -399,7 +456,7 @@ void El_Horno::PlayerInteract::managePuddle()
 void El_Horno::PlayerInteract::dropItem()
 {
 	if (handObject_ != nullptr) {
-		deleteAliment();
+		deleteAliment(false);
 		productLocked_ = false;
 
 		auto pc = entity_->getComponent<PlayerController>("playercontroller");
@@ -471,4 +528,19 @@ void El_Horno::PlayerInteract::instanciateCart()
 void El_Horno::PlayerInteract::imInCartRegister(bool imIn)
 {
 	inCashRegister_ = imIn;
+}
+
+void El_Horno::PlayerInteract::setEstantery(Entity* e, bool enter)
+{
+	if (enter)
+		triggeredEntities_.push_back(e);
+	else {
+		for (size_t i = 0; i < triggeredEntities_.size(); i++)
+		{
+			if (e == triggeredEntities_[i]) {
+				triggeredEntities_.erase(triggeredEntities_.begin() + i);
+				return;
+			}
+		}
+	}
 }

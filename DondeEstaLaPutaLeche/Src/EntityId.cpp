@@ -45,7 +45,7 @@ bool El_Horno::EntityId::recieveEvent(Event* ev)
 	if (ev->ty_ == EventType::TriggerEnter || ev->ty_ == EventType::TriggerExit) {
 		PlayerInteract* pI = static_cast<rbTriggerStay*>(ev)->other_->getComponent<PlayerInteract>("playerinteract");
 		if (pI != nullptr) {
-			pI->setEstantery(ev->ty_ == EventType::TriggerEnter ? entity_ : nullptr);
+			pI->setEstantery(entity_, ev->ty_ == EventType::TriggerEnter);
 			pI->setPuddleExit(ev->ty_ == EventType::TriggerExit ? entity_ : nullptr);
 			std::cout << "Ha entado/salido " << ev->ty_ << "\n";
 			return true;

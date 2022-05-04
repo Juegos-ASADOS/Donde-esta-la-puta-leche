@@ -4,6 +4,7 @@
 
 #include <Component.h>
 #include <string>
+#include <vector>
 
 namespace El_Horno {
 	class EntityId;	
@@ -22,15 +23,16 @@ namespace El_Horno {
 		void update() override;
 		//Metodo para hallar el ID del objeto que tengo en la mano
 		std::string getHandObjectId();
-		void deleteAliment();
+		void deleteAliment(bool ceaseExistence);
 		void imInCartRegister(bool imIn);
-		inline void setEstantery(Entity* e) { triggerStay_ = e; };
+		void setEstantery(Entity* e, bool enter);
 		inline void setPuddleExit(Entity* e) { triggerExit_ = e; };
 
 	protected:
 		
 		void processCollisionStay();
 		void processCollisionExit();
+		Entity* processTriggerPriority();
 		void manageCart(Entity* entity);
 		void manageCashRegister();
 		void manageMeatTicket();
@@ -62,14 +64,16 @@ namespace El_Horno {
 		AnimatorController* anim_;
 
 		//Variables de triggers
-		Entity* triggerStay_;
-		Entity* triggerExit_;	//Salida del charco
+		std::vector<Entity*> triggeredEntities_;
+		Entity* triggerStay_,
+			  * triggerExit_;	//Salida del charco
 
 		Timer* meatTimer_,
 			* ticketExpirationTimer_,
 			* fishTimer_;
 		float maxTicketTime_,
 			  maxFishTime_;
+
 	};
 }
 #endif 

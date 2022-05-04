@@ -15,10 +15,10 @@ namespace El_Horno {
 
 	private:
 
-		void hide();
-		void show();
+		void show(std::string menu);
+		void hide(std::string menu);
 
-		Entity* menu;
+		Entity* menu = nullptr;
 	};
 }
 #endif _UI_MENUS_H

@@ -11,7 +11,7 @@
 
 namespace El_Horno {
 
-	bool click(const CEGUI::EventArgs& e) {
+	bool click() {
 		std::cout << "CLICK GE EGCGI CKUCJ\n";
 		return true;
 	}
@@ -22,35 +22,50 @@ namespace El_Horno {
 
 	void UIMenus::start()
 	{
-		menu = SceneManager::getInstance()->getCurrentScene()->addEntity("menu", "prueba");
+		menu = entity_->getScene()->addEntity("menudeprueba", entity_->getScene()->getName());
 		menu->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
 		menu->addComponent<UILayout>("uilayout");
 		menu->awake();
 		menu->start();
+		menu->getComponent<UILayout>("uilayout")->loadScheme("GWEN");
+		menu->getComponent<UILayout>("uilayout")->loadScheme("DondeTaLeche");
+		menu->getComponent<UILayout>("uilayout")->loadScheme("TaharezLook");
+		menu->getComponent<UILayout>("uilayout")->loadScheme("Generic");
+		//menu->getComponent<UILayout>("uilayout")->createButton("TaharezLook", "Button", "start");
+		menu->getComponent<UILayout>("uilayout")->addLayout("MenuPrincipal"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
+		menu->getComponent<UILayout>("uilayout")->addLayout("Pausa"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
+		menu->getComponent<UILayout>("uilayout")->addLayout("Carballo"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
 	}
 
 	void UIMenus::update()
 	{
 		if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_M)) {
-			show();
+			show("MenuPrincipal");
 		}
 		else if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_N)) {
-			hide();
+			hide("MenuPrincipal");
+		}
+		else if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_B)) {
+			show("Pausa");
+		}
+		else if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_V)) {
+			hide("Pausa");
+		}
+		else if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_O)) {
+			show("Carballo");
+		}
+		else if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_P)) {
+			hide("Carballo");
 		}
 	}
-
-	void UIMenus::hide()
+	void UIMenus::show(std::string m)
 	{
-		menu->getComponent<UILayout>("uilayout")->setLayoutVisibility("MenuPrincipal", false);
+		menu->getComponent<UILayout>("uilayout")->setLayoutVisibility(m, true);
+	}
+	void UIMenus::hide(std::string m)
+	{
+		menu->getComponent<UILayout>("uilayout")->setLayoutVisibility(m, false);
 	}
 
-	void UIMenus::show()
-	{
-		menu->getComponent<UILayout>("uilayout")->loadScheme("DondeTaLeche");
-		menu->getComponent<UILayout>("uilayout")->loadScheme("GWEN");
-		menu->getComponent<UILayout>("uilayout")->addLayout("MenuPrincipal", "menuPrincipal");
-		menu->getComponent<UILayout>("uilayout")->setLayoutVisibility("MenuPrincipal", true);
-		//menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("MenuPrincipal/Fondo", click);
-	}
 
 }

@@ -58,6 +58,7 @@ namespace El_Horno {
 		int paidFood;
 
 		bool win_;
+		InputManager* input_;
 	};
 }
 #endif 
