@@ -20,6 +20,8 @@ GameManager* GameManager::instance_ = 0;
 
 El_Horno::GameManager::GameManager()
 {
+	LuaManager::getInstance()->readLuaScript("shop");
+	LuaManager::getInstance()->readLuaScript("prefabs");
 	gameTimer_ = new Timer();
 	gameState_ = GameState::MAINMENU;
 }
