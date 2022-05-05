@@ -25,6 +25,7 @@ namespace El_Horno {
 		void setParameters(std::vector<std::pair<std::string, std::string>> parameters) override;
 		void start() override;
 		void update() override;
+		void pauseUpdate() override;
 
 		void setLevel(float maxTime, std::map<std::string, int> list, int proctNum);
 
@@ -45,11 +46,13 @@ namespace El_Horno {
 		void setTicketLimite();
 		void hideTicket();
 		void setList();
+		void resetList();
 		void checkProductUI(std::string productId, int i);
 		void showTutorial(std::string name);
 		void hideTutorial();
 
 	protected:
+		const int MAX_PRODUCTOS = 6; //maximo numero de productos diferentes por lista (que no caben en la UI) de 1 a 6 no de 0 a 6
 		static GameManager* instance_;
 		std::map<std::string, int> list_;
 

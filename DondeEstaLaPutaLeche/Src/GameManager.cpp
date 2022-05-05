@@ -5,6 +5,7 @@
 #include "UIManager.h"
 #include "SecondScene.h"
 #include "SceneManager.h"
+#include "AudioManager.h"
 #include "Rigibody.h"
 #include "Entity.h"
 #include "Timer.h"
@@ -21,6 +22,7 @@ GameManager* GameManager::instance_ = 0;
 
 El_Horno::GameManager::GameManager()
 {
+	LuaManager::getInstance()->readLuaScript("prefabs");
 	gameTimer_ = new Timer();
 	gameState_ = GameState::MAINMENU;
 }
@@ -116,6 +118,9 @@ void El_Horno::GameManager::start()
 		interfaz_->addComponent<UIMenus>("uimenus");
 		interfaz_->getComponent<UIMenus>("uimenus")->init();
 		interfaz_->setDontDestryOnLoad(true);
+
+		resetList();
+		setList();
 	}
 }
 
@@ -131,20 +136,36 @@ void El_Horno::GameManager::update()
 		var = (((tiempo / 60 < 10) ? "0" : "") + to_string(tiempo / 60) + ":" + ((tiempo % 60 < 10) ? "0" : "") + to_string((tiempo % 60)));
 		LuaManager::getInstance()->pushString(var, "hora");
 		LuaManager::getInstance()->callLuaFunction("setLayoutWidgetText");
+
+
+		//comprobacion del pause
+
+		if (input_->getKeyDown(SDL_SCANCODE_ESCAPE)) {
+			togglePaused();
+			UIManager::getInstance()->setLayoutVisibility("Pausa", true);
+		}
+
+
 	}
 
 
 	if (gameState_ == GameState::RUNNING && gameTimer_->getTime() >= maxTime_) {
-		gameState_ = GameState::PAUSED;
+		gameState_ = GameState::MAINMENU;
+		ElHornoBase::getInstance()->pause();
+
 		//Game over
 		endingEggs_ = 0;
 
 		// Escena final sin puntuaci�n
 		UIManager::getInstance()->setLayoutVisibility("Derrota", true);
+		UIManager::getInstance()->showMouseCursor();
 		list_.clear();
 	}
 	else if (gameState_ == GameState::RUNNING && win_) {
-		gameState_ = GameState::PAUSED;
+		gameState_ = GameState::MAINMENU;
+		ElHornoBase::getInstance()->pause();
+
+
 		//Ganar
 		endingEggs_ = 1;
 
@@ -155,6 +176,7 @@ void El_Horno::GameManager::update()
 
 		//Pasar a la escena de score teniendo en cuenta la puntuaci�n (huevos)
 		UIManager::getInstance()->setLayoutVisibility("Victoria", true);
+		UIManager::getInstance()->showMouseCursor();
 		for (int i = 0; i < endingEggs_; i++) {
 			UIManager::getInstance()->subscribeLayoutChildVisibility("Victoria", "Ovo" + to_string(i + 1), true);
 		}
@@ -165,10 +187,22 @@ void El_Horno::GameManager::update()
 	//	//win_ = true;
 	//	gameState_ = GameState::RUNNING;
 	//}
-	if (input_->isKeyDown(SDL_SCANCODE_K)) {
+	/*if (input_->isKeyDown(SDL_SCANCODE_K)) {
 		LuaManager::getInstance()->callLuaFunction("loadNextScene");
 		return;
+	}*/
+}
+
+void El_Horno::GameManager::pauseUpdate()
+{
+
+	//capaz no queremos ahcer esto pero idk
+	if (gameState_ == GameState::PAUSED) {
+		if (input_->getKeyDown(SDL_SCANCODE_ESCAPE))
+			togglePaused();
 	}
+
+
 }
 
 // Establece los parametros iniciales de scene
@@ -211,15 +245,20 @@ bool El_Horno::GameManager::checkObject(std::string objectId)
 // A QUE UTILICE EL DELTATIME)
 void El_Horno::GameManager::togglePaused()
 {
+		ElHornoBase::getInstance()->pause();
 	if (gameState_ == GameState::RUNNING) {
+
+		UIManager::getInstance()->setLayoutVisibility("Pausa", false);
 		gameState_ = GameState::PAUSED;
 
 		maxTime_ -= gameTimer_->getTime();
+		AudioManager::getInstance()->pauseAllChannels();
 	}
 	else if (gameState_ == GameState::PAUSED) {
 		gameState_ = GameState::RUNNING;
 
 		gameTimer_->resetTimer();
+		AudioManager::getInstance()->resumeAllChannels();
 	}
 }
 
@@ -253,17 +292,34 @@ void El_Horno::GameManager::paidFoodMum()
 void El_Horno::GameManager::setList()
 {
 	// Recorremos el mapa de la lista
-	int i = 0;
+	int i = 1;
 	for (auto product : list_)
 	{
 		// Poner imagen del producto
-		UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Producto_" + i, "Image", "DondeTaLeche/" + product.first);
-		cout << product.first;
+		std::string name = "Producto_" + std::to_string(i);
+		UIManager::getInstance()->setChildProperty("Nivel_Ingame", name, "Image", "DondeTaLeche/" + product.first);
 
 		// Poner la cantidad de ese producto
+		std::string cant = "Num_" + std::to_string(i);
 		if (product.second > 0)
-			UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Num_" + i, "Image", "DondeTaLeche/X" + product.second);
+			UIManager::getInstance()->setChildProperty("Nivel_Ingame", cant, "Image", "DondeTaLeche/X" + std::to_string(product.second));
 		i++;
+	}
+
+}
+//Resetea todos los elementos de la lista a vacio
+void El_Horno::GameManager::resetList()
+{
+	// Recorremos el mapa de la lista
+	for (int i = 1; i < MAX_PRODUCTOS; i++)
+	{
+		// Poner imagen vacia
+		std::string name = "Producto_" + std::to_string(i);
+		UIManager::getInstance()->setChildProperty("Nivel_Ingame", name, "Image", "DondeTaLeche/Producto_Vacio");
+
+		// Poner la imagen vacia
+		std::string cant = "Num_" + std::to_string(i);
+		UIManager::getInstance()->setChildProperty("Nivel_Ingame", cant, "Image", "DondeTaLeche/Producto_Vacio");
 	}
 
 }
@@ -297,7 +353,7 @@ void El_Horno::GameManager::hideTicket()
 // Se llama cuando hay que poner un tick en la lista, se le pasa el nombre y la pos en el mapa
 void El_Horno::GameManager::checkProductUI(std::string productId, int i)
 {
-	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Tick_" + i, "Visible", "true");
+	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Tick_" + std::to_string(i), "Visible", "true");
 }
 
 // Se usa para enseñar un tutorial

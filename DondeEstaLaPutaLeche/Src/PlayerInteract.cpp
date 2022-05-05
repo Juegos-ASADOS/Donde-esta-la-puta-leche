@@ -276,7 +276,7 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 				carryingCart_ = true;
 				std::cout << "Coger carrito\n";
 				//Audio
-				entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/Carrito.mp3");
+				//entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/Carrito.mp3");
 			}
 			//Si lo que quiero es meter un objeto...
 			else if (!productLocked_) {
