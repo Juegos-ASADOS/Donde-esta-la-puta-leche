@@ -8,6 +8,10 @@
 #include "Entity.h"
 #include "Timer.h"
 #include "ElHornoBase.h"
+#include <vector>
+#include <string>
+#include <iostream>
+#include <sstream>
 
 using namespace El_Horno;
 
@@ -16,11 +20,6 @@ GameManager* GameManager::instance_ = 0;
 El_Horno::GameManager::GameManager()
 {
 	gameState_ = GameState::STARTSTATE;
-
-	// Esto es para probar 
-	list_.emplace(std::pair<string, int>("Agua", 1));
-	productNum_ = 1;
-	maxProducts_ = productNum_;
 }
 
 GameManager* GameManager::getInstance()
@@ -55,8 +54,22 @@ void El_Horno::GameManager::setParameters(std::vector<std::pair<std::string, std
 			productNum_ = stoi(parameters[i].second);
 			maxProducts_ = productNum_;
 		}
+		else if (parameters[i].first == "maxTime") {
+			maxTime_ = stoi(parameters[i].second);
+		}
+		else if (parameters[i].first == "list") {
+
+			std::istringstream in(parameters[i].second);
+			std::string val;
+			std::vector<std::string> values;
+			while (std::getline(in, val, ','))
+			{ values.push_back(val); }
+
+			for (size_t e = 0; e < values.size(); e+=2) {
+				list_.emplace(std::pair<std::string, int>(values[e], stoi(values[e + 1])));
+			}
+		}
 	}
-	//list_.emplace(std::pair<string, int>("Agua", 1));
 }
 
 void El_Horno::GameManager::start()
