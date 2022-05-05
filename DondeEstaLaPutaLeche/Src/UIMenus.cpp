@@ -27,6 +27,9 @@ namespace El_Horno {
 		UIManager::getInstance()->defineScheme("DondeTaLeche");
 		UIManager::getInstance()->defineScheme("TaharezLook");
 		UIManager::getInstance()->defineScheme("Generic");
+
+		UIManager::getInstance()->setMouseCursor("TaharezLook/MouseArrow");
+		UIManager::getInstance()->showMouseCursor();
 		//UIManager::getInstance()->createButton("TaharezLook", "Button", "start");
 		UIManager::getInstance()->addLayout("MenuPrincipal"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
 		UIManager::getInstance()->addLayout("MenuPrincipal_Opciones"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
@@ -86,6 +89,7 @@ namespace El_Horno {
 
 		//Pausa
 
+
 		helperFunction = std::bind(&UIMenus::reanudarButton, this, std::placeholders::_1);
 		UIManager::getInstance()->subscribeLayoutChildEvent("Pausa", "Menu/BotonReanudar", helperFunction);
 		helperFunction = std::bind(&UIMenus::opcionesPausaButton, this, std::placeholders::_1);
@@ -143,7 +147,7 @@ namespace El_Horno {
 	//menu principal
 	bool UIMenus::play_button(const CEGUI::EventArgs& e) {
 		hide("MenuPrincipal");
-
+		UIManager::getInstance()->hideMouseCursor();
 		this->setActive(false);
 
 		std::string a = "prueba";
@@ -156,13 +160,14 @@ namespace El_Horno {
 
 	bool UIMenus::opciones_button(const CEGUI::EventArgs& e) {
 
+		UIManager::getInstance()->showMouseCursor();
 		hide("MenuPrincipal");
 		show("MenuPrincipal_Opciones");
 		return true;
 	}
 
 	bool UIMenus::creditos_button(const CEGUI::EventArgs& e) {
-
+		UIManager::getInstance()->showMouseCursor();
 		hide("MenuPrincipal");
 		show("Creditos");
 		return true;
@@ -231,7 +236,7 @@ namespace El_Horno {
 	//menu de pausa
 
 	bool UIMenus::reanudarButton(const CEGUI::EventArgs& e) {
-
+		UIManager::getInstance()->hideMouseCursor();
 		hide("Pausa");
 		//devolver el flow del juego
 		return true;
@@ -244,6 +249,7 @@ namespace El_Horno {
 	}
 
 	bool UIMenus::salirPausaButton(const CEGUI::EventArgs& e) {
+		UIManager::getInstance()->hideMouseCursor();
 		hide("Pausa");
 		return true;
 	}
@@ -255,6 +261,7 @@ namespace El_Horno {
 	}
 
 	bool UIMenus::volverVictoriaButton(const CEGUI::EventArgs& e) {
+		UIManager::getInstance()->showMouseCursor();
 		hide("Victoria");
 		show("MenuPrincipal");
 
@@ -267,6 +274,7 @@ namespace El_Horno {
 	}
 
 	bool UIMenus::volverDerrotaButton(const CEGUI::EventArgs& e) {
+		UIManager::getInstance()->showMouseCursor();
 		hide("Derrota");
 		show("MenuPrincipal");
 

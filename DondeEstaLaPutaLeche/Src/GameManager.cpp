@@ -126,50 +126,28 @@ void El_Horno::GameManager::update()
 {
 	//actualizar la ui del reloj
 	if (gameState_ == GameState::RUNNING) {
-
-
 		string var = "Nivel_Ingame";
-
 		LuaManager::getInstance()->pushString(var, "layout");
-
 		var = "Reloj/Texto_Reloj";
-
 		LuaManager::getInstance()->pushString(var, "child");
-
-
-
-
-
 		int tiempo = maxTime_ - gameTimer_->getTime();
-
-
-
 		var = (((tiempo / 60 < 10) ? "0" : "") + to_string(tiempo / 60) + ":" + ((tiempo % 60 < 10) ? "0" : "") + to_string((tiempo % 60)));
-
-
-
-		//std::cout << var <<"\n";
-
-
-
 		LuaManager::getInstance()->pushString(var, "hora");
-
-
-
 		LuaManager::getInstance()->callLuaFunction("setLayoutWidgetText");
 	}
 
 
 	if (gameState_ == GameState::RUNNING && gameTimer_->getTime() >= maxTime_) {
+		gameState_ = GameState::PAUSED;
 		//Game over
 		endingEggs_ = 0;
 
 		// Escena final sin puntuaci�n
 		UIManager::getInstance()->setLayoutVisibility("Derrota", true);
-		gameState_ == GameState::MAINMENU;
 		list_.clear();
 	}
 	else if (gameState_ == GameState::RUNNING && win_) {
+		gameState_ = GameState::PAUSED;
 		//Ganar
 		endingEggs_ = 1;
 
@@ -179,20 +157,17 @@ void El_Horno::GameManager::update()
 			endingEggs_++;
 
 		//Pasar a la escena de score teniendo en cuenta la puntuaci�n (huevos)
-
 		UIManager::getInstance()->setLayoutVisibility("Victoria", true);
-
 		for (int i = 0; i < endingEggs_; i++) {
 			UIManager::getInstance()->subscribeLayoutChildVisibility("Victoria", "Ovo" + to_string(i + 1), true);
 		}
-		gameState_ == GameState::MAINMENU;
 		//win_ = false;
 		list_.clear();
 	}
-	if (input_->isKeyDown(SDL_SCANCODE_J)) {
-		//win_ = true;
-		gameState_ = GameState::RUNNING;
-	}
+	//if (input_->isKeyDown(SDL_SCANCODE_J)) {
+	//	//win_ = true;
+	//	gameState_ = GameState::RUNNING;
+	//}
 	if (input_->isKeyDown(SDL_SCANCODE_K)) {
 		LuaManager::getInstance()->callLuaFunction("loadNextScene");
 		return;
