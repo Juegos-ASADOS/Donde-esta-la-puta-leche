@@ -116,6 +116,9 @@ void El_Horno::GameManager::start()
 		interfaz_->addComponent<UIMenus>("uimenus");
 		interfaz_->getComponent<UIMenus>("uimenus")->init();
 		interfaz_->setDontDestryOnLoad(true);
+
+		resetList();
+		setList();
 	}
 }
 
@@ -278,17 +281,34 @@ void El_Horno::GameManager::paidFoodMum()
 void El_Horno::GameManager::setList()
 {
 	// Recorremos el mapa de la lista
-	int i = 0;
+	int i = 1;
 	for (auto product : list_)
 	{
 		// Poner imagen del producto
-		UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Producto_" + i, "Image", "DondeTaLeche/" + product.first);
-		cout << product.first;
+		std::string name = "Producto_" + std::to_string(i);
+		UIManager::getInstance()->setChildProperty("Nivel_Ingame", name, "Image", "DondeTaLeche/" + product.first);
 
 		// Poner la cantidad de ese producto
+		std::string cant = "Num_" + std::to_string(i);
 		if (product.second > 0)
-			UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Num_" + i, "Image", "DondeTaLeche/X" + product.second);
+			UIManager::getInstance()->setChildProperty("Nivel_Ingame", cant, "Image", "DondeTaLeche/X" + std::to_string(product.second));
 		i++;
+	}
+
+}
+//Resetea todos los elementos de la lista a vacio
+void El_Horno::GameManager::resetList()
+{
+	// Recorremos el mapa de la lista
+	for (int i = 1; i < MAX_PRODUCTOS; i++)
+	{
+		// Poner imagen vacia
+		std::string name = "Producto_" + std::to_string(i);
+		UIManager::getInstance()->setChildProperty("Nivel_Ingame", name, "Image", "DondeTaLeche/Producto_Vacio");
+
+		// Poner la imagen vacia
+		std::string cant = "Num_" + std::to_string(i);
+		UIManager::getInstance()->setChildProperty("Nivel_Ingame", cant, "Image", "DondeTaLeche/Producto_Vacio");
 	}
 
 }
@@ -322,7 +342,7 @@ void El_Horno::GameManager::hideTicket()
 // Se llama cuando hay que poner un tick en la lista, se le pasa el nombre y la pos en el mapa
 void El_Horno::GameManager::checkProductUI(std::string productId, int i)
 {
-	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Tick_" + i, "Visible", "true");
+	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Tick_" + std::to_string(i), "Visible", "true");
 }
 
 // Se usa para enseñar un tutorial
