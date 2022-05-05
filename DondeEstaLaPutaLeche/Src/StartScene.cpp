@@ -26,8 +26,8 @@ namespace El_Horno {
 	void StartScene::init(std::string name)
 	{
 		name_ = name;
-		//testScene();
-		LuaManager::getInstance()->loadScene();
+		testScene();
+		//LuaManager::getInstance()->loadScene();
 	}
 
 	void StartScene::testScene()
@@ -56,7 +56,7 @@ namespace El_Horno {
 		cam->getComponent<CameraComponent>("camera")->setFollow(a->getComponent<Transform>("transform"), 0.2f, HornoVector3(50, 60, 450));
 		a->addComponent<Mesh>("mesh", "pipo");
 		a->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
-		a->addComponent<AudioComponent>("audioComponent");
+		a->addComponent<AudioComponent>("audiocomponent");
 		a->addComponent<PlayerController>("playercontroller", 1500.0f);
 		a->addComponent<PlayerInteract>("playerinteract");
 
@@ -83,7 +83,7 @@ namespace El_Horno {
 		animVector.push_back(std::pair<std::string, std::string>("AnyState", "Idle"));
 		animVector.push_back(std::pair<std::string, std::string>("AnyState", "Idle_with_product"));
 		animVector.push_back(std::pair<std::string, std::string>("AnyState", "Idle_with_cart"));
-		a->addComponent<AnimatorController>("animatorController", animVector);
+		a->addComponent<AnimatorController>("animatorcontroller", animVector);
 
 		//b->addComponent<EstanteryEnter>("estanteryenter");
 		/*Entity* playerChild = addEntity("playerTrigger", "prueba", b);
@@ -141,19 +141,19 @@ namespace El_Horno {
 
 		// NPC
 		a = addEntity("moneco", "prueba");
-		a->addComponent<Transform>("transform", HornoVector3(-100, 10, 0), HornoVector3(0, 0, 0), HornoVector3(0.5, 0.5, 0.5));
-		a->addComponent<Mesh>("mesh", "penguin");
+		a->addComponent<Transform>("transform", HornoVector3(-100, 10, 0), HornoVector3(0, 0, 0), HornoVector3(10, 10, 10));
+		a->addComponent<Mesh>("mesh", "abuela1");
 		a->addComponent<RigidBody>("rigidbody", 3.0f, false, false, 0);
 		a->addComponent<Patrol>("patrol", 50, patata);
 
 		a = addEntity("menu", "prueba");
 		a->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
 		a->addComponent<UIMenus>("uimenus");
-		/*std::vector<std::pair<std::string, std::string>> animVectorNpc;
-		animVectorNpc.push_back(std::pair<std::string, std::string>("Idle", "npc_walk"));
-		animVectorNpc.push_back(std::pair<std::string, std::string>("npc_walk", "Idle"));
-		animVectorNpc.push_back(std::pair<std::string, std::string>("AnyState", "Idle"));
-		b->addComponent<AnimatorController>("animatorController", animVectorNpc);*/
+		//std::vector<std::pair<std::string, std::string>> animVectorNpc;
+		//animVectorNpc.push_back(std::pair<std::string, std::string>("Idle", "npc_walk"));
+		//animVectorNpc.push_back(std::pair<std::string, std::string>("npc_walk", "Idle"));
+		//animVectorNpc.push_back(std::pair<std::string, std::string>("AnyState", "Idle"));
+		//a->addComponent<AnimatorController>("animatorcontroller", animVectorNpc);
 
 		//b = addEntity("button1", "prueba");
 		//b->addComponent<Transform>("transform", HornoVector3(0,0,0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));

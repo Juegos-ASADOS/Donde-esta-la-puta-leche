@@ -23,7 +23,7 @@ void El_Horno::PlayerController::setParameters(std::vector<std::pair<std::string
 void El_Horno::PlayerController::start()
 {
 	input_ = ElHornoBase::getInstance()->getInputManager();
-	anim_ = entity_->getComponent<AnimatorController>("animatorController");
+	anim_ = entity_->getComponent<AnimatorController>("animatorcontroller");
 	walking_ = false;
 	offset_ = 60;
 	pState_ = El_Horno::PLAYER_CART;
