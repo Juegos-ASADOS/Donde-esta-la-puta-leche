@@ -11,6 +11,7 @@ namespace El_Horno {
 		//StartScene() : Scene() {};
 		virtual void init(std::string name) override;
 		void testScene();
+		void menuPrincipal();
 	};
 }
 

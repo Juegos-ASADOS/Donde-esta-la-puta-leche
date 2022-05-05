@@ -1,11 +1,11 @@
 #include "GameFactories.h"
 #include "Entity.h"
 #include "ElHornoBase.h"
-#include "LuaManager.h"
 #include "PlayerInteract.h"
 #include "PlayerController.h"
 #include "Event.h"
 #include "InputManager.h"
+#include "UIManager.h"
 #include <EntityId.h>
 #include <HornoVector3.h>
 #include <Transform.h>
@@ -340,12 +340,12 @@ void El_Horno::PlayerInteract::manageMeatTicket()
 	if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 		cout << "carne\n";
 		meatTimer_->resetTimer();
-		int i = 3;
-		LuaManager::getInstance()->callLuaFunction("getMeatTicket", 3);
 		ticketTimerRunning_ = true;
 		cout << maxTicketTime_ << "\n";
 		//Audio
 		entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/Ticket.mp3");
+
+		//UIManager::getInstance()->setLayoutChildVisibility()
 	}
 }
 
@@ -359,7 +359,7 @@ void El_Horno::PlayerInteract::manageWheighingMachine()
 			productLocked_ = false;
 			cout << "fruta dentro\n";
 			//TODO Poner feedback de que el producto ha sido pesado
-			//!Audio
+			entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/ComidaLista.mp3");
 		}
 	}
 }
