@@ -28,9 +28,9 @@ namespace El_Horno {
 	void StartScene::init(std::string name)
 	{
 		name_ = name;
-		testScene();
+		//testScene();
 		//menuPrincipal();
-		//LuaManager::getInstance()->loadScene();
+		LuaManager::getInstance()->loadScene();
 		AudioManager::getInstance()->playSound("Musica/Menu.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)), 50.0f, true);
 	}
 

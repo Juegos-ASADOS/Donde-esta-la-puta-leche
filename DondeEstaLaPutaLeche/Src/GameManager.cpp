@@ -20,21 +20,21 @@ GameManager* GameManager::instance_ = 0;
 
 El_Horno::GameManager::GameManager()
 {
-	gameState_ = GameState::STARTSTATE;
 	gameTimer_ = new Timer();
-}
-
-El_Horno::GameManager::~GameManager()
-{
-	if (this == instance_) {
-		instance_ = nullptr;
-	}
-	else {
-		delete instance_;
-	}
-	
-	if (gameTimer_ != nullptr)
-		delete gameTimer_; gameTimer_ = nullptr;
+	gameState_ = GameState::MAINMENU;
+}
+
+El_Horno::GameManager::~GameManager()
+{
+	if (this == instance_) {
+		instance_ = nullptr;
+	}
+	else {
+		delete instance_;
+	}
+	
+	if (gameTimer_ != nullptr)
+		delete gameTimer_; gameTimer_ = nullptr;
 }
 
 GameManager* GameManager::getInstance()
@@ -91,27 +91,32 @@ void El_Horno::GameManager::start()
 {
 	input_ = ElHornoBase::getInstance()->getInputManager();
 	setupInstance();
+
+	wrongProducts_ = 0;
+	win_ = false;
+
+	gameTimer_->resetTimer();
 }
 
 void El_Horno::GameManager::update()
 {
 	//actualizar la ui del reloj
 	if (gameState_ == GameState::RUNNING) {
-
-		string var = "Nivel_Ingame";
-		LuaManager::getInstance()->pushString(var, "layout");
-		var = "Reloj/Texto_Reloj";
-		LuaManager::getInstance()->pushString(var, "child");
-
-
-		int tiempo = maxTime_ - gameTimer_->getTime();
-
-		var = (((tiempo / 60 < 10) ? "0" : "") + to_string(tiempo / 60) + ":" + ((tiempo % 60 < 10) ? "0" : "") + to_string((tiempo % 60)));
-
-		//std::cout << var <<"\n";
-
-		LuaManager::getInstance()->pushString(var, "hora");
-
+
+		string var = "Nivel_Ingame";
+		LuaManager::getInstance()->pushString(var, "layout");
+		var = "Reloj/Texto_Reloj";
+		LuaManager::getInstance()->pushString(var, "child");
+
+
+		int tiempo = maxTime_ - gameTimer_->getTime();
+
+		var = (((tiempo / 60 < 10) ? "0" : "") + to_string(tiempo / 60) + ":" + ((tiempo % 60 < 10) ? "0" : "") + to_string((tiempo % 60)));
+
+		//std::cout << var <<"\n";
+
+		LuaManager::getInstance()->pushString(var, "hora");
+
 		LuaManager::getInstance()->callLuaFunction("setLayoutWidgetText");
 	}
 
@@ -120,9 +125,10 @@ void El_Horno::GameManager::update()
 		//Game over
 		endingEggs_ = 0;
 
-		// Escena final sin puntuación
+		// Escena final sin puntuaciï¿½n
 		UIManager::getInstance()->setLayoutVisibility("Derrota", true);
 		gameState_ == GameState::MAINMENU;
+		list_.clear();
 	}
 	else if (gameState_ == GameState::RUNNING && win_) {
 		//Ganar
@@ -133,7 +139,7 @@ void El_Horno::GameManager::update()
 		if (wrongProducts_ <= maxProducts_ / 4)
 			endingEggs_++;
 
-		//Pasar a la escena de score teniendo en cuenta la puntuación (huevos)
+		//Pasar a la escena de score teniendo en cuenta la puntuaciï¿½n (huevos)
 
 		UIManager::getInstance()->setLayoutVisibility("Victoria", true);
 
@@ -141,7 +147,8 @@ void El_Horno::GameManager::update()
 			UIManager::getInstance()->subscribeLayoutChildVisibility("Victoria", "Ovo" + to_string(i + 1), true);
 		}
 		gameState_ == GameState::MAINMENU;
-		win_ = false;
+		//win_ = false;
+		list_.clear();
 	}
 	if (input_->isKeyDown(SDL_SCANCODE_J)) {
 		//win_ = true;
@@ -173,8 +180,8 @@ void El_Horno::GameManager::setLevel(float maxTime, std::map<std::string, int> l
 		gameState_ = GameState::MAINMENU;
 }
 
-// Busca la id en la lista, si está, resta uno a second. Si no está
-// o está a 0 devuelve false y añade un producto erroneo
+// Busca la id en la lista, si estï¿½, resta uno a second. Si no estï¿½
+// o estï¿½ a 0 devuelve false y aï¿½ade un producto erroneo
 bool El_Horno::GameManager::checkObject(std::string objectId)
 {
 	auto it = list_.find(objectId);
@@ -205,7 +212,7 @@ void El_Horno::GameManager::togglePaused()
 	}
 }
 
-// Comprueba si están todos los objetos en el carro
+// Comprueba si estï¿½n todos los objetos en el carro
 // para dar por valida la victoria
 void El_Horno::GameManager::checkEnd()
 {
