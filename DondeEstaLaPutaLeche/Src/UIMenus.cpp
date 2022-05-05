@@ -151,9 +151,6 @@ namespace El_Horno {
 		LuaManager::getInstance()->pushString(a, "scene");
 		LuaManager::getInstance()->callLuaFunction("loadNextScene");
 
-
-
-
 		return true;
 	}
 
