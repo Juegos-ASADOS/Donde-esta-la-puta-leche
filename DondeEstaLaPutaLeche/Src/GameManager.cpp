@@ -5,6 +5,7 @@
 #include "UIManager.h"
 #include "SecondScene.h"
 #include "SceneManager.h"
+#include "AudioManager.h"
 #include "Rigibody.h"
 #include "Entity.h"
 #include "Timer.h"
@@ -21,6 +22,7 @@ GameManager* GameManager::instance_ = 0;
 
 El_Horno::GameManager::GameManager()
 {
+	LuaManager::getInstance()->readLuaScript("prefabs");
 	gameTimer_ = new Timer();
 	gameState_ = GameState::MAINMENU;
 }
@@ -138,8 +140,10 @@ void El_Horno::GameManager::update()
 
 		//comprobacion del pause
 
-		if (input_->getKeyDown(SDL_SCANCODE_ESCAPE))
+		if (input_->getKeyDown(SDL_SCANCODE_ESCAPE)) {
 			togglePaused();
+			UIManager::getInstance()->setLayoutVisibility("Pausa", true);
+		}
 
 
 	}
@@ -154,6 +158,7 @@ void El_Horno::GameManager::update()
 
 		// Escena final sin puntuaci�n
 		UIManager::getInstance()->setLayoutVisibility("Derrota", true);
+		UIManager::getInstance()->showMouseCursor();
 		list_.clear();
 	}
 	else if (gameState_ == GameState::RUNNING && win_) {
@@ -171,6 +176,7 @@ void El_Horno::GameManager::update()
 
 		//Pasar a la escena de score teniendo en cuenta la puntuaci�n (huevos)
 		UIManager::getInstance()->setLayoutVisibility("Victoria", true);
+		UIManager::getInstance()->showMouseCursor();
 		for (int i = 0; i < endingEggs_; i++) {
 			UIManager::getInstance()->subscribeLayoutChildVisibility("Victoria", "Ovo" + to_string(i + 1), true);
 		}
@@ -241,14 +247,18 @@ void El_Horno::GameManager::togglePaused()
 {
 		ElHornoBase::getInstance()->pause();
 	if (gameState_ == GameState::RUNNING) {
+
+		UIManager::getInstance()->setLayoutVisibility("Pausa", false);
 		gameState_ = GameState::PAUSED;
 
 		maxTime_ -= gameTimer_->getTime();
+		AudioManager::getInstance()->pauseAllChannels();
 	}
 	else if (gameState_ == GameState::PAUSED) {
 		gameState_ = GameState::RUNNING;
 
 		gameTimer_->resetTimer();
+		AudioManager::getInstance()->resumeAllChannels();
 	}
 }
 
