@@ -17,7 +17,7 @@ extern "C"
 		El_Horno::SceneManager::getInstance()->setScene(start);
 		El_Horno::GameComponentPusher::pushGameComponents();
 		El_Horno::ScenePusher::pushScenes();
-		start->init("inicio");
+		start->init("importante");
 		//start->testScene();
 		return start;
 	}
