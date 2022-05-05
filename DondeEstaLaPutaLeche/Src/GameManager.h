@@ -39,6 +39,16 @@ namespace El_Horno {
 		//Se llama cuando vas a darle la compra a la madre
 		void paidFoodMum();
 
+		//Metodos para modificar la UI ingame
+		void setTicketIntro();
+		void setTicketTurno();
+		void setTicketLimite();
+		void hideTicket();
+		void setList();
+		void checkProductUI(std::string productId, int i);
+		void showTutorial(std::string name);
+		void hideTutorial();
+
 	protected:
 		static GameManager* instance_;
 		std::map<std::string, int> list_;
@@ -61,6 +71,9 @@ namespace El_Horno {
 
 		bool win_;
 		InputManager* input_;
+
+
+		std::string actualTuto_ = "";
 	};
 }
 #endif 

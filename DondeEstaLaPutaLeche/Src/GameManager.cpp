@@ -22,19 +22,32 @@ El_Horno::GameManager::GameManager()
 {
 	gameTimer_ = new Timer();
 	gameState_ = GameState::MAINMENU;
-}
-
-El_Horno::GameManager::~GameManager()
-{
-	if (this == instance_) {
-		instance_ = nullptr;
-	}
-	else {
-		delete instance_;
-	}
-	
-	if (gameTimer_ != nullptr)
-		delete gameTimer_; gameTimer_ = nullptr;
+}
+
+
+
+El_Horno::GameManager::~GameManager()
+
+{
+
+	if (this == instance_) {
+
+		instance_ = nullptr;
+
+	}
+
+	else {
+
+		delete instance_;
+
+	}
+
+	
+
+	if (gameTimer_ != nullptr)
+
+		delete gameTimer_; gameTimer_ = nullptr;
+
 }
 
 GameManager* GameManager::getInstance()
@@ -102,21 +115,36 @@ void El_Horno::GameManager::update()
 {
 	//actualizar la ui del reloj
 	if (gameState_ == GameState::RUNNING) {
-
-		string var = "Nivel_Ingame";
-		LuaManager::getInstance()->pushString(var, "layout");
-		var = "Reloj/Texto_Reloj";
-		LuaManager::getInstance()->pushString(var, "child");
-
-
-		int tiempo = maxTime_ - gameTimer_->getTime();
-
-		var = (((tiempo / 60 < 10) ? "0" : "") + to_string(tiempo / 60) + ":" + ((tiempo % 60 < 10) ? "0" : "") + to_string((tiempo % 60)));
-
-		//std::cout << var <<"\n";
-
-		LuaManager::getInstance()->pushString(var, "hora");
-
+
+
+		string var = "Nivel_Ingame";
+
+		LuaManager::getInstance()->pushString(var, "layout");
+
+		var = "Reloj/Texto_Reloj";
+
+		LuaManager::getInstance()->pushString(var, "child");
+
+
+
+
+
+		int tiempo = maxTime_ - gameTimer_->getTime();
+
+
+
+		var = (((tiempo / 60 < 10) ? "0" : "") + to_string(tiempo / 60) + ":" + ((tiempo % 60 < 10) ? "0" : "") + to_string((tiempo % 60)));
+
+
+
+		//std::cout << var <<"\n";
+
+
+
+		LuaManager::getInstance()->pushString(var, "hora");
+
+
+
 		LuaManager::getInstance()->callLuaFunction("setLayoutWidgetText");
 	}
 
@@ -231,5 +259,76 @@ void El_Horno::GameManager::paidFoodMum()
 {
 	//Todos los que hay - los que te faltan por comprar = los que has llevado a la madre
 	paidFood = maxProducts_ - productNum_;
+}
+
+
+
+
+// UI //
+// METODOS PARA MODIFICAR LA UI
+// UI //
+void El_Horno::GameManager::setList()
+{
+	// Recorremos el mapa de la lista
+	int i = 0;
+	for (auto product : list_)
+	{
+		// Poner imagen del producto
+		UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Producto_" + i, "Image", "DondeTaLeche/" + product.first);
+		cout << product.first;
+
+		// Poner la cantidad de ese producto
+		if (product.second > 0)
+			UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Num_" + i, "Image", "DondeTaLeche/X" + product.second);
+		i++;
+	}
+
+}
+
+// Sacamos el ticket de espera
+void El_Horno::GameManager::setTicketIntro()
+{
+	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Ticket_Espera", "Visible", "true");
+}
+
+// Tu turno
+void El_Horno::GameManager::setTicketTurno()
+{
+	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Ticket_Espera", "Visible", "false");
+	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Ticket", "Visible", "true");
+}
+
+// Tu turno
+void El_Horno::GameManager::setTicketLimite()
+{
+	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Ticket", "Visible", "false");
+	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Ticket_Paso", "Visible", "true");
+}
+
+// Esconder tickets
+void El_Horno::GameManager::hideTicket()
+{
+	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Ticket_Paso", "Visible", "false");
+}
+
+// Se llama cuando hay que poner un tick en la lista, se le pasa el nombre y la pos en el mapa
+void El_Horno::GameManager::checkProductUI(std::string productId, int i)
+{
+	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Tick_" + i, "Visible", "true");
+}
+
+// Se usa para enseñar un tutorial
+// strings =  Inicio, Baldas, Fruta, Pescado, Carne 
+void El_Horno::GameManager::showTutorial(std::string name)
+{
+	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Tutorial_" + name, "Visible", "true");
+	actualTuto_ = name;
+}
+
+// Se usa para esconder el tutorial actual
+void El_Horno::GameManager::hideTutorial()
+{
+	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Tutorial_" + actualTuto_, "Visible", "false");
+	actualTuto_ = "";
 }
 
