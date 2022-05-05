@@ -1,7 +1,6 @@
 #include "GameFactories.h"
 #include "Entity.h"
 #include "ElHornoBase.h"
-#include "LuaManager.h"
 #include "PlayerInteract.h"
 #include "PlayerController.h"
 #include "Event.h"
@@ -340,8 +339,6 @@ void El_Horno::PlayerInteract::manageMeatTicket()
 	if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 		cout << "carne\n";
 		meatTimer_->resetTimer();
-		int i = 3;
-		LuaManager::getInstance()->callLuaFunction("getMeatTicket", 3);
 		ticketTimerRunning_ = true;
 		cout << maxTicketTime_ << "\n";
 		//Audio
