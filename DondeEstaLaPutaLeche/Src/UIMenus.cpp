@@ -257,12 +257,24 @@ namespace El_Horno {
 	bool UIMenus::volverVictoriaButton(const CEGUI::EventArgs& e) {
 		hide("Victoria");
 		show("MenuPrincipal");
+
+
+		std::string a = "inicio";
+		LuaManager::getInstance()->pushString(a, "scene");
+		LuaManager::getInstance()->callLuaFunction("loadNextScene");
+
 		return true;
 	}
 
 	bool UIMenus::volverDerrotaButton(const CEGUI::EventArgs& e) {
 		hide("Derrota");
 		show("MenuPrincipal");
+
+
+		std::string a = "inicio";
+		LuaManager::getInstance()->pushString(a, "scene");
+		LuaManager::getInstance()->callLuaFunction("loadNextScene");
+
 		return true;
 	}
 
