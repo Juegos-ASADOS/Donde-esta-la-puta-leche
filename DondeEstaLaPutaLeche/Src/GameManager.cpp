@@ -139,8 +139,10 @@ void El_Horno::GameManager::update()
 
 		//comprobacion del pause
 
-		if (input_->getKeyDown(SDL_SCANCODE_ESCAPE))
+		if (input_->getKeyDown(SDL_SCANCODE_ESCAPE)) {
 			togglePaused();
+			UIManager::getInstance()->setLayoutVisibility("Pausa", true);
+		}
 
 
 	}
@@ -244,6 +246,8 @@ void El_Horno::GameManager::togglePaused()
 {
 		ElHornoBase::getInstance()->pause();
 	if (gameState_ == GameState::RUNNING) {
+
+		UIManager::getInstance()->setLayoutVisibility("Pausa", false);
 		gameState_ = GameState::PAUSED;
 
 		maxTime_ -= gameTimer_->getTime();

@@ -6,6 +6,7 @@
 #include <Transform.h>
 #include <Entity.h>
 #include <ElHornoBase.h>
+#include "GameManager.h"
 
 #include "InputManager.h"
 #include <iostream>
@@ -147,7 +148,7 @@ namespace El_Horno {
 	//menu principal
 	bool UIMenus::play_button(const CEGUI::EventArgs& e) {
 		hide("MenuPrincipal");
-		UIManager::getInstance()->hideMouseCursor();
+		//UIManager::getInstance()->hideMouseCursor();
 		this->setActive(false);
 
 		std::string a = "prueba";
@@ -178,6 +179,8 @@ namespace El_Horno {
 	//Exit 
 	bool UIMenus::salir_button(const CEGUI::EventArgs& e) {
 		//pues decirle a todo el cacharro que se salga no tiene mas
+
+		ElHornoBase::getInstance()->setExit();
 		hide("MenuPrincipal");
 		return true;
 
@@ -236,7 +239,8 @@ namespace El_Horno {
 	//menu de pausa
 
 	bool UIMenus::reanudarButton(const CEGUI::EventArgs& e) {
-		UIManager::getInstance()->hideMouseCursor();
+		//UIManager::getInstance()->hideMouseCursor();
+		GameManager::getInstance()->togglePaused();
 		hide("Pausa");
 		//devolver el flow del juego
 		return true;
@@ -249,8 +253,19 @@ namespace El_Horno {
 	}
 
 	bool UIMenus::salirPausaButton(const CEGUI::EventArgs& e) {
-		UIManager::getInstance()->hideMouseCursor();
+		//te devuelve al menu principal
+		GameManager::getInstance()->togglePaused();
+
+		//UIManager::getInstance()->hideMouseCursor();
 		hide("Pausa");
+		show("MenuPrincipal");
+
+
+		std::string a = "inicio";
+		LuaManager::getInstance()->pushString(a, "scene");
+		LuaManager::getInstance()->callLuaFunction("loadNextScene");
+
+
 		return true;
 	}
 
@@ -261,7 +276,7 @@ namespace El_Horno {
 	}
 
 	bool UIMenus::volverVictoriaButton(const CEGUI::EventArgs& e) {
-		UIManager::getInstance()->showMouseCursor();
+		//UIManager::getInstance()->showMouseCursor();
 		hide("Victoria");
 		show("MenuPrincipal");
 		ElHornoBase::getInstance()->pause();
@@ -275,7 +290,7 @@ namespace El_Horno {
 	}
 
 	bool UIMenus::volverDerrotaButton(const CEGUI::EventArgs& e) {
-		UIManager::getInstance()->showMouseCursor();
+		//UIManager::getInstance()->showMouseCursor();
 		hide("Derrota");
 		show("MenuPrincipal");
 		ElHornoBase::getInstance()->pause();
