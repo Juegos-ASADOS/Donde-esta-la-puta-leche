@@ -26,8 +26,8 @@ namespace El_Horno {
 	void StartScene::init(std::string name)
 	{
 		name_ = name;
-		//testScene();
-		LuaManager::getInstance()->loadScene();
+		testScene();
+		//LuaManager::getInstance()->loadScene();
 	}
 
 	void StartScene::testScene()

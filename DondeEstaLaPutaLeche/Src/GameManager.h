@@ -14,7 +14,7 @@ namespace El_Horno {
 	{
 	public:
 		GameManager();
-		~GameManager() {};
+		~GameManager();
 
 		static GameManager* getInstance();
 		static bool setupInstance();
@@ -44,7 +44,7 @@ namespace El_Horno {
 		GameState gameState_;
 
 		// Time
-		Timer* gameTimer_;
+		Timer* gameTimer_ = nullptr;
 		float maxTime_,
 			objectiveTime_;
 
