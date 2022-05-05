@@ -101,6 +101,7 @@ void El_Horno::GameManager::update()
 
 		// Escena final sin puntuación
 		UIManager::getInstance()->setLayoutVisibility("Derrota", true);
+		gameState_ == GameState::MAINMENU;
 	}
 	else if (gameState_ == GameState::RUNNING && win_) {
 		//Ganar
@@ -118,6 +119,8 @@ void El_Horno::GameManager::update()
 		for (int i = 0; i < endingEggs_; i++) {
 			UIManager::getInstance()->subscribeLayoutChildVisibility("Victoria", "Ovo" + to_string(i + 1), true);
 		}
+		gameState_ == GameState::MAINMENU;
+		win_ = false;
 	}
 	if (input_->isKeyDown(SDL_SCANCODE_J)) {
 		win_ = true;

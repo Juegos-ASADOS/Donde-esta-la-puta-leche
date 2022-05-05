@@ -28,8 +28,8 @@ namespace El_Horno {
 	void StartScene::init(std::string name)
 	{
 		name_ = name;
-		//testScene();
-		menuPrincipal();
+		testScene();
+		//menuPrincipal();
 		//LuaManager::getInstance()->loadScene();
 		AudioManager::getInstance()->playSound("Musica/Menu.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)), 50.0f, true);
 	}
@@ -255,10 +255,10 @@ namespace El_Horno {
 		a->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
 		a->addComponent<EntityId>("entityid", Type::PUDDLE);
 
-		//UI Ingame
-		a = addEntity("uigame", "prueba");
-		a->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
-		a->addComponent<UIGame>("uigame");
+		////UI Ingame
+		//a = addEntity("uigame", "prueba");
+		//a->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
+		//a->addComponent<UIGame>("uigame");
 
 		//LuaManager::getInstance()->loadScene();
 

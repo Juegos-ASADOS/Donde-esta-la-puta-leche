@@ -428,20 +428,7 @@ void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 {
 	cout << "CREO PRODUCTO UO\n";
 
-	Scene* scene = entity_->getScene();
-	Transform* playerTr = entity_->getComponent<Transform>("transform");
-
-	handObject_ = scene->addEntity("product", scene->getName());
-	handObject_->addComponent<Transform>("transform", HornoVector3(0, 0, 0),
-		HornoVector3(-90, 0, 0), HornoVector3(25, 25, 25), true);
-
-	handObject_->addComponent<Mesh>("mesh", id);
-	handObject_->addComponent<EntityId>("entityid", Type::PRODUCT, pType, id);
-
-	handObject_->awake();
-	handObject_->start();
-
-	entity_->getComponent<Mesh>("mesh")->attachObject("Producto", handObject_);
+	handObject_ = LuaManager::getInstance()->loadPrefab(id);
 
 	// Se bloquea la posibilidad de meterlo al carrito hasta que se tomen las acciones pertinentes
 	if (pType == ProductType::FISH || pType == ProductType::FRUIT)
