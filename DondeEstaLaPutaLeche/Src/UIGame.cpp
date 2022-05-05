@@ -21,7 +21,7 @@ namespace El_Horno {
 	void UIGame::start()
 	{
 		menu = entity_->getScene()->addEntity("menudeprueba", entity_->getScene()->getName());
-		menu->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
+		//menu->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
 		menu->addComponent<UILayout>("uilayout");
 		menu->awake();
 		menu->start();
@@ -45,12 +45,10 @@ namespace El_Horno {
 		//menu->getComponent<UILayout>("uilayout")->setChildProperty("Nivel_Ingame", "Fruta", "AspectRatio", "1"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
 
 
-		//setList();
+		//NO SETEIS COSAS ARRIBA DE ESTO QUE NO CARGAN
 		show("Nivel_Ingame");
+		//SETEARLAS AQUI
 
-
-		// helperFunction = std::bind(&UIMenus::play_button, this, std::placeholders::_1);
-		//menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("MenuPrincipal", "Menu/Boton3", helperFunction);
 	}
 
 	void UIGame::update()
@@ -90,6 +88,32 @@ namespace El_Horno {
 			i++;
 		}
 
+	}
+
+	// Sacamos el ticket de espera
+	void UIGame::setTicketIntro()
+	{
+		menu->getComponent<UILayout>("uilayout")->setChildProperty("Nivel_Ingame", "Ticket_Espera", "Visible", "true");
+	}
+
+	// Tu turno
+	void UIGame::setTicketTurno()
+	{
+		menu->getComponent<UILayout>("uilayout")->setChildProperty("Nivel_Ingame", "Ticket_Espera", "Visible", "false");
+		menu->getComponent<UILayout>("uilayout")->setChildProperty("Nivel_Ingame", "Ticket", "Visible", "true");
+	}
+
+	// Tu turno
+	void UIGame::setTicketLimite()
+	{
+		menu->getComponent<UILayout>("uilayout")->setChildProperty("Nivel_Ingame", "Ticket", "Visible", "false");
+		menu->getComponent<UILayout>("uilayout")->setChildProperty("Nivel_Ingame", "Ticket_Paso", "Visible", "true");
+	}
+
+	// Esconder tickets
+	void UIGame::hideTicket()
+	{
+		menu->getComponent<UILayout>("uilayout")->setChildProperty("Nivel_Ingame", "Ticket_Paso", "Visible", "false");
 	}
 
 

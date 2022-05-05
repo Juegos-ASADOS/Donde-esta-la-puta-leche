@@ -15,11 +15,16 @@ namespace El_Horno {
 		void start() override;
 		void update() override;
 
+		void setTicketIntro();
+		void setTicketTurno();
+		void setTicketLimite();
+		void hideTicket();
+		void setList();
+
 	private:
 
 		void show(std::string menu);
 		void hide(std::string menu);
-		void setList();
 
 		Entity* menu = nullptr;
 	};
