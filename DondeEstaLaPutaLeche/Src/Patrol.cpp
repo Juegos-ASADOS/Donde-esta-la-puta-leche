@@ -111,9 +111,6 @@ void El_Horno::Patrol::update()
 
 		tr_->lookAt(HornoVector3(-dir.x_ + tr_->getPosition().x, tr_->getPosition().y, -dir.z_ + tr_->getPosition().z));
 
-		std::cout << rb_->getHornoLinearVelocity().magnitude();
-
-
 		//Animacion
 		if (anim_)
 		{
@@ -126,8 +123,6 @@ void El_Horno::Patrol::update()
 				}
 			}
 		}
-		else
-			std::cout << "pendejo";
 	}
 }
 

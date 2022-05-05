@@ -19,6 +19,7 @@
 #include "PlayerInteract.h"
 #include "GameManager.h"
 #include "UIMenus.h"
+#include "UIGame.h"
 //#include "CashRegister.h"
 
 void El_Horno::GameComponentPusher::pushGameComponents()
@@ -40,6 +41,7 @@ void El_Horno::GameComponentPusher::pushGameComponents()
 	SceneManager::getInstance()->possibleComponents.emplace("playerinteract", &SceneManager::getInstance()->createComponent<PlayerInteract>);
 	SceneManager::getInstance()->possibleComponents.emplace("gamemanager", &SceneManager::getInstance()->createComponent<GameManager>);
 	SceneManager::getInstance()->possibleComponents.emplace("uimenus", &SceneManager::getInstance()->createComponent<UIMenus>);
+	SceneManager::getInstance()->possibleComponents.emplace("uigame", &SceneManager::getInstance()->createComponent<UIGame>);
 	//SceneManager::getInstance()->possibleComponents.emplace("cashRegister", &SceneManager::getInstance()->createComponent<CashRegister>);
 	//ComponentPusher::pushComponents();
 }

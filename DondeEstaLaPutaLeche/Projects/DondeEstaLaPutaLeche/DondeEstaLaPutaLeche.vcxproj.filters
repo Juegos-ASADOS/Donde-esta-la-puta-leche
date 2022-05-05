@@ -57,6 +57,9 @@
     <ClCompile Include="..\..\Src\ScenesPusher.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Src\UIGame.cpp">
+      <Filter>Archivos de origen</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Src\StartScene.h">
@@ -93,6 +96,9 @@
       <Filter>Archivos de encabezado\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Src\ScenesPusher.h">
+      <Filter>Archivos de encabezado</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Src\UIGame.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
   </ItemGroup>

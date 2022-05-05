@@ -30,6 +30,7 @@
     <ClCompile Include="..\..\Src\ScenesPusher.cpp" />
     <ClCompile Include="..\..\Src\SecondScene.cpp" />
     <ClCompile Include="..\..\Src\StartScene.cpp" />
+    <ClCompile Include="..\..\Src\UIGame.cpp" />
     <ClCompile Include="..\..\Src\UIMenus.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -44,6 +45,7 @@
     <ClInclude Include="..\..\Src\ScenesPusher.h" />
     <ClInclude Include="..\..\Src\SecondScene.h" />
     <ClInclude Include="..\..\Src\StartScene.h" />
+    <ClInclude Include="..\..\Src\UIGame.h" />
     <ClInclude Include="..\..\Src\UIMenus.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

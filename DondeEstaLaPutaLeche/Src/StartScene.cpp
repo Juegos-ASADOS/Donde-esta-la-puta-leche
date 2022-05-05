@@ -21,6 +21,7 @@
 #include <SceneManager.h>
 #include <GameManager.h>
 #include "UIMenus.h"
+#include "UIGame.h"
 
 namespace El_Horno {
 	void StartScene::init(std::string name)
@@ -249,6 +250,11 @@ namespace El_Horno {
 		a->addComponent<Transform>("transform", HornoVector3(300, 10, 20), HornoVector3(0, 0, 0), HornoVector3(5, 5, 5));
 		a->addComponent<RigidBody>("rigidbody", 0.0f, true, false, 0);
 		a->addComponent<EntityId>("entityid", Type::PUDDLE);
+
+		//UI Ingame
+		a = addEntity("uigame", "prueba");
+		a->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
+		a->addComponent<UIGame>("uigame");
 
 		//LuaManager::getInstance()->loadScene();
 

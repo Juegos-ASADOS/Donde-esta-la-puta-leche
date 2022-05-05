@@ -8,6 +8,7 @@
 namespace El_Horno {
 	class RigidBody;
 	class Timer;
+	class InputManager;
 	enum GameState { RUNNING, PAUSED, MAINMENU, STARTSTATE };
 
 	class GameManager : public Component
@@ -33,6 +34,7 @@ namespace El_Horno {
 		inline const bool hasWon() { return win_; };
 		inline const int getWrongProductNumber() { return wrongProducts_; };
 		const float getProductCompletionPercentaje();
+		inline const std::map<std::string, int> getList() { return list_; };
 
 		//Se llama cuando vas a darle la compra a la madre
 		void paidFoodMum();

@@ -37,7 +37,6 @@ namespace El_Horno {
 		menu->getComponent<UILayout>("uilayout")->addLayout("MenuPrincipal_Opciones"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
 		menu->getComponent<UILayout>("uilayout")->addLayout("Pausa"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
 		menu->getComponent<UILayout>("uilayout")->addLayout("Pausa_Opciones"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
-		menu->getComponent<UILayout>("uilayout")->addLayout("Nivel_Ingame"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
 		menu->getComponent<UILayout>("uilayout")->addLayout("Creditos"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
 
 
@@ -101,7 +100,6 @@ namespace El_Horno {
 		helperFunction = std::bind(&UIMenus::volverCreditosButton, this, std::placeholders::_1);
 		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("Creditos", "Boton_Volver", helperFunction);
 
-		show("Nivel_Ingame");
 
 
 		// helperFunction = std::bind(&UIMenus::play_button, this, std::placeholders::_1);

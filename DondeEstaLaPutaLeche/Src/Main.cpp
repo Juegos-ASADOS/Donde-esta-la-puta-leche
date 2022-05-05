@@ -18,6 +18,7 @@ extern "C"
 		El_Horno::GameComponentPusher::pushGameComponents();
 		El_Horno::ScenePusher::pushScenes();
 		start->init("prueba");
+		//start->testScene();
 		return start;
 	}
 }
