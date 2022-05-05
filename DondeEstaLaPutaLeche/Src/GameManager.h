@@ -54,6 +54,7 @@ namespace El_Horno {
 		std::map<std::string, int> list_;
 
 		GameState gameState_;
+		Entity* interfaz_;
 
 		// Time
 		Timer* gameTimer_ = nullptr;

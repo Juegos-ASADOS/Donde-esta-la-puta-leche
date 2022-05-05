@@ -8,6 +8,7 @@
 #include "Rigibody.h"
 #include "Entity.h"
 #include "Timer.h"
+#include "UIMenus.h"
 #include "ElHornoBase.h"
 #include <vector>
 #include <string>
@@ -109,6 +110,13 @@ void El_Horno::GameManager::start()
 	win_ = false;
 
 	gameTimer_->resetTimer();
+
+	if (interfaz_ == nullptr) {
+		interfaz_ = SceneManager::getInstance()->getCurrentScene()->addEntity("interfaz", "interfaces");
+		interfaz_->addComponent<UIMenus>("uimenus");
+		interfaz_->getComponent<UIMenus>("uimenus")->init();
+		interfaz_->setDontDestryOnLoad(true);
+	}
 }
 
 void El_Horno::GameManager::update()

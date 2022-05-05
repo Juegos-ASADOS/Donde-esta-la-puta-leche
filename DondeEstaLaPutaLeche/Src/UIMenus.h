@@ -12,8 +12,10 @@ namespace El_Horno {
     public:
         UIMenus();
 
+
         void start() override;
         void update() override;
+        void init();
 
         //botones de los menus que deberian de ir por LUA
         bool play_button(const CEGUI::EventArgs& e);
@@ -35,6 +37,10 @@ namespace El_Horno {
         bool volverCreditosButton(const CEGUI::EventArgs& e);
         bool volverVictoriaButton(const CEGUI::EventArgs& e);
         bool volverDerrotaButton(const CEGUI::EventArgs& e);
+
+        void onEnable() override;
+        void onDisable() override;
+
     private:
 
         void show(std::string menu);
