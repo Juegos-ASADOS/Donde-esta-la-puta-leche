@@ -86,6 +86,7 @@ namespace El_Horno {
 
 		//Pausa
 
+
 		helperFunction = std::bind(&UIMenus::reanudarButton, this, std::placeholders::_1);
 		UIManager::getInstance()->subscribeLayoutChildEvent("Pausa", "Menu/BotonReanudar", helperFunction);
 		helperFunction = std::bind(&UIMenus::opcionesPausaButton, this, std::placeholders::_1);
