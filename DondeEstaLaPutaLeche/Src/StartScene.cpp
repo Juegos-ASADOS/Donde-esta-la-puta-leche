@@ -30,7 +30,6 @@ namespace El_Horno {
 		//testScene();
 		menuPrincipal();
 		//LuaManager::getInstance()->loadScene();
-		AudioManager::getInstance()->playSound("Musica/Menu.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)), 50.0f, true);
 	}
 
 	void StartScene::testScene()

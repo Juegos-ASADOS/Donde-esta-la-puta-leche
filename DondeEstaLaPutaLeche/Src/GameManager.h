@@ -44,7 +44,7 @@ namespace El_Horno {
 		GameState gameState_;
 
 		// Time
-		Timer* gameTimer_;
+		Timer* gameTimer_ = nullptr;
 		float maxTime_,
 			objectiveTime_;
 

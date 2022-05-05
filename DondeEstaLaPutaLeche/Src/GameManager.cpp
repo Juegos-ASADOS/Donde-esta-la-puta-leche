@@ -20,11 +20,20 @@ GameManager* GameManager::instance_ = 0;
 El_Horno::GameManager::GameManager()
 {
 	gameState_ = GameState::STARTSTATE;
+	gameTimer_ = new Timer();
 }
 
 El_Horno::GameManager::~GameManager()
 {
-	delete gameTimer_;
+	if (this == instance_) {
+		instance_ = nullptr;
+	}
+	else {
+		delete instance_;
+	}
+	
+	if (gameTimer_ != nullptr)
+		delete gameTimer_; gameTimer_ = nullptr;
 }
 
 GameManager* GameManager::getInstance()
