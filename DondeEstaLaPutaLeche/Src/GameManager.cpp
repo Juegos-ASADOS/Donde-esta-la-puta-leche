@@ -95,6 +95,27 @@ void El_Horno::GameManager::start()
 
 void El_Horno::GameManager::update()
 {
+	//actualizar la ui del reloj
+	if (gameState_ == GameState::RUNNING) {
+
+		string var = "Nivel_Ingame";
+		LuaManager::getInstance()->pushString(var, "layout");
+		var = "Reloj/Texto_Reloj";
+		LuaManager::getInstance()->pushString(var, "child");
+
+
+		int tiempo = maxTime_ - gameTimer_->getTime();
+
+		var = (((tiempo / 60 < 10) ? "0" : "") + to_string(tiempo / 60) + ":" + ((tiempo % 60 < 10) ? "0" : "") + to_string((tiempo % 60)));
+
+		//std::cout << var <<"\n";
+
+		LuaManager::getInstance()->pushString(var, "hora");
+
+		LuaManager::getInstance()->callLuaFunction("setLayoutWidgetText");
+	}
+
+
 	if (gameState_ == GameState::RUNNING && gameTimer_->getTime() >= maxTime_) {
 		//Game over
 		endingEggs_ = 0;
@@ -123,7 +144,7 @@ void El_Horno::GameManager::update()
 		win_ = false;
 	}
 	if (input_->isKeyDown(SDL_SCANCODE_J)) {
-		win_ = true;
+		//win_ = true;
 		gameState_ = GameState::RUNNING;
 	}
 	if (input_->isKeyDown(SDL_SCANCODE_K)) {
