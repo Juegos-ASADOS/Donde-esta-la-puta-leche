@@ -131,11 +131,21 @@ void El_Horno::GameManager::update()
 		var = (((tiempo / 60 < 10) ? "0" : "") + to_string(tiempo / 60) + ":" + ((tiempo % 60 < 10) ? "0" : "") + to_string((tiempo % 60)));
 		LuaManager::getInstance()->pushString(var, "hora");
 		LuaManager::getInstance()->callLuaFunction("setLayoutWidgetText");
+
+
+		//comprobacion del pause
+
+		if (input_->getKeyDown(SDL_SCANCODE_ESCAPE))
+			togglePaused();
+
+
 	}
 
 
 	if (gameState_ == GameState::RUNNING && gameTimer_->getTime() >= maxTime_) {
-		gameState_ = GameState::PAUSED;
+		gameState_ = GameState::MAINMENU;
+		ElHornoBase::getInstance()->pause();
+
 		//Game over
 		endingEggs_ = 0;
 
@@ -144,7 +154,10 @@ void El_Horno::GameManager::update()
 		list_.clear();
 	}
 	else if (gameState_ == GameState::RUNNING && win_) {
-		gameState_ = GameState::PAUSED;
+		gameState_ = GameState::MAINMENU;
+		ElHornoBase::getInstance()->pause();
+
+
 		//Ganar
 		endingEggs_ = 1;
 
@@ -165,10 +178,22 @@ void El_Horno::GameManager::update()
 	//	//win_ = true;
 	//	gameState_ = GameState::RUNNING;
 	//}
-	if (input_->isKeyDown(SDL_SCANCODE_K)) {
+	/*if (input_->isKeyDown(SDL_SCANCODE_K)) {
 		LuaManager::getInstance()->callLuaFunction("loadNextScene");
 		return;
+	}*/
+}
+
+void El_Horno::GameManager::pauseUpdate()
+{
+
+	//capaz no queremos ahcer esto pero idk
+	if (gameState_ == GameState::PAUSED) {
+		if (input_->getKeyDown(SDL_SCANCODE_ESCAPE))
+			togglePaused();
 	}
+
+
 }
 
 // Establece los parametros iniciales de scene
@@ -211,6 +236,7 @@ bool El_Horno::GameManager::checkObject(std::string objectId)
 // A QUE UTILICE EL DELTATIME)
 void El_Horno::GameManager::togglePaused()
 {
+		ElHornoBase::getInstance()->pause();
 	if (gameState_ == GameState::RUNNING) {
 		gameState_ = GameState::PAUSED;
 

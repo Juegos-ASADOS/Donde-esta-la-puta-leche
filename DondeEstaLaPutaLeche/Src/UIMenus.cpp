@@ -121,7 +121,7 @@ namespace El_Horno {
 
 	void UIMenus::update()
 	{
-		if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_M)) {
+		/*if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_M)) {
 			show("MenuPrincipal");
 		}
 		else if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_N)) {
@@ -132,11 +132,11 @@ namespace El_Horno {
 		}
 		else if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_V)) {
 			hide("Pausa");
-		}
+		}*/
 		//Si pulsas el escape...
-		else if (InputManager::getInstance()->isKeyDown(SDL_SCANCODE_ESCAPE)) {
+		/*else if (InputManager::getInstance()->isKeyDown(SDL_SCANCODE_ESCAPE)) {
 			ElHornoBase::getInstance()->setExit();
-		}
+		}*/
 	}
 
 	//botones que deberian ir en LUA
@@ -258,6 +258,7 @@ namespace El_Horno {
 	bool UIMenus::volverVictoriaButton(const CEGUI::EventArgs& e) {
 		hide("Victoria");
 		show("MenuPrincipal");
+		ElHornoBase::getInstance()->pause();
 
 
 		std::string a = "inicio";
@@ -270,6 +271,7 @@ namespace El_Horno {
 	bool UIMenus::volverDerrotaButton(const CEGUI::EventArgs& e) {
 		hide("Derrota");
 		show("MenuPrincipal");
+		ElHornoBase::getInstance()->pause();
 
 
 		std::string a = "inicio";
