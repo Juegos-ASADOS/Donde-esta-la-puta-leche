@@ -5,15 +5,18 @@
 #include "Rigibody.h"
 #include "AnimatorController.h"
 #include "ElHornoBase.h"
+#include "Mesh.h"
 #include <sstream>
 
-El_Horno::Patrol::Patrol(float tspeed, const std::vector<PatrolPos>& pos)
+El_Horno::Patrol::Patrol(float tspeed, int type, const std::vector<PatrolPos>& pos)
 {
 	for (auto p : pos) {
 		positions_.push(p);
 	}
 
 	speed_ = tspeed;
+
+	type_ = type;
 }
 
 El_Horno::Patrol::Patrol()
@@ -26,6 +29,9 @@ void El_Horno::Patrol::setParameters(std::vector<std::pair<std::string, std::str
 	for (int i = 0; i < parameters.size(); i++) {
 		if (parameters[i].first == "speed") {
 			speed_ = stof(parameters[i].second);
+		}
+		else if (parameters[i].first == "type") {
+			type_ = stof(parameters[i].second);
 		}
 		else {
 			std::istringstream in(parameters[i].second);
@@ -49,7 +55,25 @@ void El_Horno::Patrol::start()
 {
 	rb_ = entity_->getComponent<RigidBody>("rigidbody");
 	tr_ = entity_->getComponent<Transform>("transform");
-	anim_ = entity_->getComponent<AnimatorController>("animatorController");
+	anim_ = entity_->getComponent<AnimatorController>("animatorcontroller");
+
+
+	//Type 0 = man, 1 = vieja, 2 = vieja carro
+	if (type_ == 0)
+	{
+		idleName = "Idle";
+		walkName = "npc_walk";
+	}
+	else if (type_ == 1)
+	{
+		idleName = "npc_idle_abuela";
+		walkName = "npc_walk_abuela";
+	}
+	else
+	{
+		idleName = "npc_idle_abuela_with_cart";
+		walkName = "npc_walk_abuela_with_cart";
+	}
 }
 
 void El_Horno::Patrol::update()
@@ -57,7 +81,14 @@ void El_Horno::Patrol::update()
 	if (!positions_.empty()) {
 
 		if (isWaiting())
+		{
+			if (walking_)
+			{
+				anim_->setAnimBool(walkName, idleName, true);
+				walking_ = false;
+			}
 			return;
+		}
 
 		PatrolPos pos = positions_.front();
 		if (isClose()) {
@@ -80,23 +111,23 @@ void El_Horno::Patrol::update()
 
 		tr_->lookAt(HornoVector3(-dir.x_ + tr_->getPosition().x, tr_->getPosition().y, -dir.z_ + tr_->getPosition().z));
 
+		std::cout << rb_->getHornoLinearVelocity().magnitude();
+
+
 		//Animacion
 		if (anim_)
 		{
-			if (rb_->getHornoLinearVelocity().magnitude() > 1)
+			if (rb_->getHornoLinearVelocity().magnitude() > 0)
 			{
 				if (!walking_)
 				{
-					anim_->setAnimBool("Idle", "npc_walk", true);
+					anim_->setAnimBool(idleName, walkName, true);
 					walking_ = true;
 				}
 			}
-			else if (walking_)
-			{
-				anim_->setAnimBool("npc_walk", "Idle", true);
-				walking_ = false;
-			}
 		}
+		else
+			std::cout << "pendejo";
 	}
 }
 

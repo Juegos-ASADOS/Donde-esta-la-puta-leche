@@ -133,27 +133,44 @@ namespace El_Horno {
 		trigger->addComponent<EntityId>("entityid", Type::ESTANTERY, ProductType::FRUIT, "Agua");
 
 		std::vector<PatrolPos> patata;
-
 		patata.push_back({ HornoVector3(-150, 10, 0), 1 });
 		patata.push_back({ HornoVector3(-250, 10, 0), 1 });
 		patata.push_back({ HornoVector3(-250, 10, -100), 1 });
 		patata.push_back({ HornoVector3(-150, 10, -100), 1 });
 
-		// NPC
+		std::vector<PatrolPos> poteito;
+		poteito.push_back({ HornoVector3(150, 10, 0), 1 });
+		poteito.push_back({ HornoVector3(250, 10, 0), 1 });
+		poteito.push_back({ HornoVector3(250, 10, -100), 1 });
+		poteito.push_back({ HornoVector3(150, 10, -100), 1 });
+
+		// NPC MAN
 		a = addEntity("moneco", "prueba");
 		a->addComponent<Transform>("transform", HornoVector3(-100, 10, 0), HornoVector3(0, 0, 0), HornoVector3(10, 10, 10));
+		a->addComponent<Mesh>("mesh", "hombre1");
+		a->addComponent<RigidBody>("rigidbody", 3.0f, false, false, 0);
+		a->addComponent<Patrol>("patrol", 30, 0, patata);
+		std::vector<std::pair<std::string, std::string>> animVectorNpc;
+		animVectorNpc.push_back(std::pair<std::string, std::string>("Idle", "npc_walk"));
+		animVectorNpc.push_back(std::pair<std::string, std::string>("npc_walk", "Idle"));
+		animVectorNpc.push_back(std::pair<std::string, std::string>("AnyState", "Idle"));
+		a->addComponent<AnimatorController>("animatorcontroller", animVectorNpc);
+
+		// NPC VIEJA
+		a = addEntity("vieja", "prueba");
+		a->addComponent<Transform>("transform", HornoVector3(100, 10, 0), HornoVector3(0, 0, 0), HornoVector3(10, 10, 10));
 		a->addComponent<Mesh>("mesh", "abuela1");
 		a->addComponent<RigidBody>("rigidbody", 3.0f, false, false, 0);
-		a->addComponent<Patrol>("patrol", 50, patata);
+		a->addComponent<Patrol>("patrol", 20, 1, poteito);
+		std::vector<std::pair<std::string, std::string>> animVectorNpcVieja;
+		animVectorNpcVieja.push_back(std::pair<std::string, std::string>("npc_idle_abuela", "npc_walk_abuela"));
+		animVectorNpcVieja.push_back(std::pair<std::string, std::string>("npc_walk_abuela", "npc_idle_abuela"));
+		animVectorNpcVieja.push_back(std::pair<std::string, std::string>("AnyState", "npc_idle_abuela"));
+		a->addComponent<AnimatorController>("animatorcontroller", animVectorNpcVieja);
 
 		a = addEntity("menu", "prueba");
 		a->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
 		a->addComponent<UIMenus>("uimenus");
-		//std::vector<std::pair<std::string, std::string>> animVectorNpc;
-		//animVectorNpc.push_back(std::pair<std::string, std::string>("Idle", "npc_walk"));
-		//animVectorNpc.push_back(std::pair<std::string, std::string>("npc_walk", "Idle"));
-		//animVectorNpc.push_back(std::pair<std::string, std::string>("AnyState", "Idle"));
-		//a->addComponent<AnimatorController>("animatorcontroller", animVectorNpc);
 
 		//b = addEntity("button1", "prueba");
 		//b->addComponent<Transform>("transform", HornoVector3(0,0,0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));

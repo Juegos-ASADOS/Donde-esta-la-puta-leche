@@ -19,7 +19,7 @@ namespace El_Horno {
 	class Patrol : public Component
 	{
 	public:
-		Patrol(float tspeed, const std::vector<PatrolPos>& pos = std::vector<PatrolPos>());
+		Patrol(float tspeed, int type, const std::vector<PatrolPos>& pos = std::vector<PatrolPos>());
 		Patrol();
 
 		void setParameters(std::vector<std::pair<std::string, std::string>> parameters) override;
@@ -46,6 +46,10 @@ namespace El_Horno {
 		double timer = 0.0;
 
 		bool walking_ = false;
+
+		int type_ = 0;
+		std::string idleName;
+		std::string walkName;
 	};
 }
 #endif 
