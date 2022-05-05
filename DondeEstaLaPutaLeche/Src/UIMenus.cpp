@@ -148,9 +148,10 @@ namespace El_Horno {
 		return true;
 	}
 
-
+	//LuaManager::getInstance()->callLuaFunction("setPause");   PARA PAUSAR
+	//LuaManager::getInstance()->callLuaFunction("setExit");    PARA SALIR
+	//Exit 
 	bool UIMenus::salir_button(const CEGUI::EventArgs& e) {
-
 		//pues decirle a todo el cacharro que se salga no tiene mas
 		hide("MenuPrincipal");
 		return true;
@@ -159,40 +160,42 @@ namespace El_Horno {
 
 	//menu opciones, para los dos salvo que sea el del opciones pausa
 	bool UIMenus::restaMusica(const CEGUI::EventArgs& e) {
-
+		LuaManager::getInstance()->callLuaFunction("setMusicDown");
 		std::cout << "resta musica\n";
 		return true;
 	}
 
 	bool UIMenus::sumaMusica(const CEGUI::EventArgs& e) {
-
+		LuaManager::getInstance()->callLuaFunction("setMusicUp");
 		std::cout << "suma musica\n";
 		return true;
 	}
 
 	bool UIMenus::restaEfectos(const CEGUI::EventArgs& e) {
-
+		LuaManager::getInstance()->callLuaFunction("setFxDown");
 		std::cout << "resta sonido efectos\n";
 		return true;
 	}
 
 	bool UIMenus::sumaEfectos(const CEGUI::EventArgs& e) {
-
+		LuaManager::getInstance()->callLuaFunction("setFxUp");
 		std::cout << "suma sonido efectos\n";
 		return true;
 	}
 
 	bool UIMenus::restaResolucion(const CEGUI::EventArgs& e) {
+		LuaManager::getInstance()->callLuaFunction("setResolutionUp");
 		std::cout << "baja resolucion\n";
 		return true;
 	}
 
 	bool UIMenus::sumaResolucion(const CEGUI::EventArgs& e) {
-
+		LuaManager::getInstance()->callLuaFunction("setResolutionDown");
 		std::cout << "sube resolucion\n";
 		return true;
 	}
 
+	//pausa (ElHornoBase)
 	bool UIMenus::vuelveOpcionesMenu(const CEGUI::EventArgs& e) {
 		hide("MenuPrincipal_Opciones");
 		show("MenuPrincipal");
