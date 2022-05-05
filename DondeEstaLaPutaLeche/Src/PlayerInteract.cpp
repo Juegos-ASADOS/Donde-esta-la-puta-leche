@@ -5,6 +5,7 @@
 #include "PlayerController.h"
 #include "Event.h"
 #include "InputManager.h"
+#include "UIManager.h"
 #include <EntityId.h>
 #include <HornoVector3.h>
 #include <Transform.h>
@@ -343,6 +344,8 @@ void El_Horno::PlayerInteract::manageMeatTicket()
 		cout << maxTicketTime_ << "\n";
 		//Audio
 		entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/Ticket.mp3");
+
+		//UIManager::getInstance()->setLayoutChildVisibility()
 	}
 }
 
@@ -356,7 +359,7 @@ void El_Horno::PlayerInteract::manageWheighingMachine()
 			productLocked_ = false;
 			cout << "fruta dentro\n";
 			//TODO Poner feedback de que el producto ha sido pesado
-			//!Audio
+			entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/ComidaLista.mp3");
 		}
 	}
 }

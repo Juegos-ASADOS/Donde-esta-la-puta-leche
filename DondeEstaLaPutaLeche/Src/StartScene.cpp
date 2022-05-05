@@ -19,6 +19,7 @@
 #include <vector>
 #include <LuaManager.h>
 #include <SceneManager.h>
+#include <AudioManager.h>
 #include <GameManager.h>
 #include "UIMenus.h"
 

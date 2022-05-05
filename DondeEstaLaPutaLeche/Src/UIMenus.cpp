@@ -3,9 +3,9 @@
 #include <Scene.h>
 #include <LuaManager.h>
 #include <SceneManager.h>
-#include <UILayout.h>
 #include <Transform.h>
 #include <Entity.h>
+#include <ElHornoBase.h>
 
 #include "InputManager.h"
 #include <iostream>
@@ -25,87 +25,88 @@ namespace El_Horno {
 	{
 		menu = entity_->getScene()->addEntity("menudeprueba", entity_->getScene()->getName());
 		menu->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
-		menu->addComponent<UILayout>("uilayout");
+		//menu->addComponent<UILayout>("uilayout");
 		menu->awake();
 		menu->start();
-		menu->getComponent<UILayout>("uilayout")->loadScheme("GWEN");
-		menu->getComponent<UILayout>("uilayout")->loadScheme("DondeTaLeche");
-		menu->getComponent<UILayout>("uilayout")->loadScheme("TaharezLook");
-		menu->getComponent<UILayout>("uilayout")->loadScheme("Generic");
-		//menu->getComponent<UILayout>("uilayout")->createButton("TaharezLook", "Button", "start");
-		menu->getComponent<UILayout>("uilayout")->addLayout("MenuPrincipal"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
-		menu->getComponent<UILayout>("uilayout")->addLayout("MenuPrincipal_Opciones"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
-		menu->getComponent<UILayout>("uilayout")->addLayout("Pausa"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
-		menu->getComponent<UILayout>("uilayout")->addLayout("Pausa_Opciones"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
-		menu->getComponent<UILayout>("uilayout")->addLayout("Nivel_Ingame"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
-		menu->getComponent<UILayout>("uilayout")->addLayout("Creditos"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
+		UIManager::getInstance()->defineScheme("GWEN");
+		UIManager::getInstance()->defineScheme("DondeTaLeche");
+		UIManager::getInstance()->defineScheme("TaharezLook");
+		UIManager::getInstance()->defineScheme("Generic");
+		//UIManager::getInstance()->createButton("TaharezLook", "Button", "start");
+		UIManager::getInstance()->addLayout("MenuPrincipal"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
+		UIManager::getInstance()->addLayout("MenuPrincipal_Opciones"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
+		UIManager::getInstance()->addLayout("Pausa"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
+		UIManager::getInstance()->addLayout("Pausa_Opciones"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
+		UIManager::getInstance()->addLayout("Nivel_Ingame"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
+		UIManager::getInstance()->addLayout("Creditos"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
 
 
 		//añadir la funcionalidad a los botones
 
 		//menu principal
 		auto helperFunction = std::bind(&UIMenus::play_button, this, std::placeholders::_1);
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("MenuPrincipal", "Menu/Boton", helperFunction);
+		UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal", "Menu/Boton", helperFunction);
 		helperFunction = std::bind(&UIMenus::opciones_button, this, std::placeholders::_1);
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("MenuPrincipal", "Menu/Boton2", helperFunction);
+		UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal", "Menu/Boton2", helperFunction);
 		helperFunction = std::bind(&UIMenus::creditos_button, this, std::placeholders::_1);
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("MenuPrincipal", "Menu/Boton3", helperFunction);
+		UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal", "Menu/Boton3", helperFunction);
 		helperFunction = std::bind(&UIMenus::salir_button, this, std::placeholders::_1);
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("MenuPrincipal", "Menu/Boton4", helperFunction);
+		UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal", "Menu/Boton4", helperFunction);
 
 		//menu opciones desde principal
 
 		helperFunction = std::bind(&UIMenus::restaMusica, this, std::placeholders::_1);
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("MenuPrincipal_Opciones", "Menu/RestaMusica", helperFunction);
+		UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal_Opciones", "Menu/RestaMusica", helperFunction);
 		helperFunction = std::bind(&UIMenus::sumaMusica, this, std::placeholders::_1);
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("MenuPrincipal_Opciones", "Menu/SumaMusica", helperFunction);
+		UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal_Opciones", "Menu/SumaMusica", helperFunction);
 		helperFunction = std::bind(&UIMenus::restaEfectos, this, std::placeholders::_1);
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("MenuPrincipal_Opciones", "Menu/RestaEfectos", helperFunction);
+		UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal_Opciones", "Menu/RestaEfectos", helperFunction);
 		helperFunction = std::bind(&UIMenus::sumaEfectos, this, std::placeholders::_1);
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("MenuPrincipal_Opciones", "Menu/SumaEfectos", helperFunction);
+		UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal_Opciones", "Menu/SumaEfectos", helperFunction);
 		helperFunction = std::bind(&UIMenus::restaResolucion, this, std::placeholders::_1);
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("MenuPrincipal_Opciones", "Menu/FlechaIz", helperFunction);
+		UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal_Opciones", "Menu/FlechaIz", helperFunction);
 		helperFunction = std::bind(&UIMenus::sumaResolucion, this, std::placeholders::_1);
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("MenuPrincipal_Opciones", "Menu/FlechaDer", helperFunction);
+		UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal_Opciones", "Menu/FlechaDer", helperFunction);
 		helperFunction = std::bind(&UIMenus::vuelveOpcionesMenu, this, std::placeholders::_1);
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("MenuPrincipal_Opciones", "Menu/BotonVolver", helperFunction);
+		UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal_Opciones", "Menu/BotonVolver", helperFunction);
 
 		//menu opciones desde la pausa
 
 		helperFunction = std::bind(&UIMenus::restaMusica, this, std::placeholders::_1);
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("Pausa_Opciones", "Menu/RestaMusica", helperFunction);
+		UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/RestaMusica", helperFunction);
 		helperFunction = std::bind(&UIMenus::sumaMusica, this, std::placeholders::_1);
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("Pausa_Opciones", "Menu/SumaMusica", helperFunction);
+		UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/SumaMusica", helperFunction);
 		helperFunction = std::bind(&UIMenus::restaEfectos, this, std::placeholders::_1);
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("Pausa_Opciones", "Menu/RestaEfectos", helperFunction);
+		UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/RestaEfectos", helperFunction);
 		helperFunction = std::bind(&UIMenus::sumaEfectos, this, std::placeholders::_1);
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("Pausa_Opciones", "Menu/SumaEfectos", helperFunction);
+		UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/SumaEfectos", helperFunction);
 		helperFunction = std::bind(&UIMenus::restaResolucion, this, std::placeholders::_1);
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("Pausa_Opciones", "Menu/FlechaIz", helperFunction);
+		UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/FlechaIz", helperFunction);
 		helperFunction = std::bind(&UIMenus::sumaResolucion, this, std::placeholders::_1);
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("Pausa_Opciones", "Menu/FlechaDer", helperFunction);
+		UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/FlechaDer", helperFunction);
 		helperFunction = std::bind(&UIMenus::vuelveOpcionesPausa, this, std::placeholders::_1);
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("Pausa_Opciones", "Menu/BotonVolver", helperFunction);
+		UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/BotonVolver", helperFunction);
 
 		//Pausa
 
 		helperFunction = std::bind(&UIMenus::reanudarButton, this, std::placeholders::_1);
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("Pausa", "Menu/BotonReanudar", helperFunction);
+		UIManager::getInstance()->subscribeLayoutChildEvent("Pausa", "Menu/BotonReanudar", helperFunction);
 		helperFunction = std::bind(&UIMenus::opcionesPausaButton, this, std::placeholders::_1);
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("Pausa", "Menu/BotonOpciones", helperFunction);
+		UIManager::getInstance()->subscribeLayoutChildEvent("Pausa", "Menu/BotonOpciones", helperFunction);
 		helperFunction = std::bind(&UIMenus::salirPausaButton, this, std::placeholders::_1);
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("Pausa", "Menu/BotonSalir", helperFunction);
+		UIManager::getInstance()->subscribeLayoutChildEvent("Pausa", "Menu/BotonSalir", helperFunction);
 
 		//Creditos
 
 		helperFunction = std::bind(&UIMenus::volverCreditosButton, this, std::placeholders::_1);
-		menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("Creditos", "Boton_Volver", helperFunction);
+		UIManager::getInstance()->subscribeLayoutChildEvent("Creditos", "Boton_Volver", helperFunction);
 
 		show("Nivel_Ingame");
+		show("MenuPrincipal");
 
 
 		// helperFunction = std::bind(&UIMenus::play_button, this, std::placeholders::_1);
-		//menu->getComponent<UILayout>("uilayout")->subscribeChildEvent("MenuPrincipal", "Menu/Boton3", helperFunction);
+		//UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal", "Menu/Boton3", helperFunction);
 	}
 
 	void UIMenus::update()
@@ -121,6 +122,10 @@ namespace El_Horno {
 		}
 		else if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_V)) {
 			hide("Pausa");
+		}
+		//Si pulsas el escape...
+		else if (InputManager::getInstance()->isKeyDown(SDL_SCANCODE_ESCAPE)) {
+			ElHornoBase::getInstance()->setExit();
 		}
 	}
 
@@ -230,18 +235,26 @@ namespace El_Horno {
 
 	bool UIMenus::volverCreditosButton(const CEGUI::EventArgs& e) {
 		hide("Creditos");
+		show("MenuPrincipal");
 		return true;
 	}
 
 
 	void UIMenus::show(std::string m)
 	{
-		menu->getComponent<UILayout>("uilayout")->setLayoutVisibility(m, true);
+		bool vis = true;
+		LuaManager::getInstance()->pushString(m, "button");
+		LuaManager::getInstance()->pushBool(vis, "vis");
+		LuaManager::getInstance()->callLuaFunction("setLayoutVisibility");
 	}
 	void UIMenus::hide(std::string m)
 	{
-		menu->getComponent<UILayout>("uilayout")->setLayoutVisibility(m, false);
+		bool vis = false;
+		LuaManager::getInstance()->pushString(m, "button");
+		LuaManager::getInstance()->pushBool(vis, "vis");
+		LuaManager::getInstance()->callLuaFunction("setLayoutVisibility");
 	}
+
 
 
 }

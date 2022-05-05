@@ -36,6 +36,11 @@ El_Horno::GameManager::~GameManager()
 		delete gameTimer_; gameTimer_ = nullptr;
 }
 
+El_Horno::GameManager::~GameManager()
+{
+	delete gameTimer_;
+}
+
 GameManager* GameManager::getInstance()
 {
 	if (instance_ == 0)
