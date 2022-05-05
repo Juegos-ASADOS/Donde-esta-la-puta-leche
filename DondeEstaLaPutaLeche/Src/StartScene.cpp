@@ -27,7 +27,8 @@ namespace El_Horno {
 	void StartScene::init(std::string name)
 	{
 		name_ = name;
-		testScene();
+		//testScene();
+		menuPrincipal();
 		//LuaManager::getInstance()->loadScene();
 		AudioManager::getInstance()->playSound("Musica/Menu.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)), 50.0f, true);
 	}
@@ -35,13 +36,13 @@ namespace El_Horno {
 	void StartScene::testScene()
 	{
 		// GameManager
-		Entity* a = addEntity("gamemanager", "prueba");
+	/*	Entity* a = addEntity("gamemanager", "prueba");
 		a->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
 		a->addComponent<GameManager>("gamemanager");
-		a->setDontDestryOnLoad(true);
+		a->setDontDestryOnLoad(true);*/
 
 		// Light
-		a = addEntity("light", "prueba");
+		Entity* a = addEntity("light", "prueba");
 		a->addComponent<Transform>("transform", HornoVector3(0, 1000, 0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
 		a->addComponent<LightComponent>("light", 0, HornoVector3(0, 100, 0));
 
@@ -170,9 +171,10 @@ namespace El_Horno {
 		animVectorNpcVieja.push_back(std::pair<std::string, std::string>("AnyState", "npc_idle_abuela"));
 		a->addComponent<AnimatorController>("animatorcontroller", animVectorNpcVieja);
 
-		a = addEntity("menu", "prueba");
+	/*	a = addEntity("menu", "prueba");
 		a->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
 		a->addComponent<UIMenus>("uimenus");
+		a->setDontDestryOnLoad(true);*/
 
 		//b = addEntity("button1", "prueba");
 		//b->addComponent<Transform>("transform", HornoVector3(0,0,0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
@@ -255,5 +257,20 @@ namespace El_Horno {
 		//LuaManager::getInstance()->loadScene();
 
 		std::cout << "ESCENA CARGADA\n";
+	}
+
+
+	void StartScene::menuPrincipal() {
+		// GameManager
+		Entity* a = addEntity("gamemanager", "prueba");
+		a->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
+		a->addComponent<GameManager>("gamemanager");
+		a->setDontDestryOnLoad(true);
+
+		a = addEntity("menu", "prueba");
+		a->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
+		a->addComponent<UIMenus>("uimenus");
+		a->setDontDestryOnLoad(true);
+
 	}
 }

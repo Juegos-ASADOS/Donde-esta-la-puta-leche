@@ -129,13 +129,19 @@ namespace El_Horno {
 		}
 	}
 
-
-
 	//botones que deberian ir en LUA
 
 	//menu principal
 	bool UIMenus::play_button(const CEGUI::EventArgs& e) {
 		hide("MenuPrincipal");
+
+		std::string a = "ayuda";
+		LuaManager::getInstance()->pushString(a, "scene");
+		LuaManager::getInstance()->callLuaFunction("loadNextScene");
+
+
+
+
 		return true;
 	}
 
