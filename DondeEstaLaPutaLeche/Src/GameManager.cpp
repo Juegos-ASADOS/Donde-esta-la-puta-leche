@@ -2,6 +2,7 @@
 #include "GameManager.h"
 #include "InputManager.h"
 #include "LuaManager.h"
+#include "UIManager.h"
 #include "SecondScene.h"
 #include "SceneManager.h"
 #include "Rigibody.h"
@@ -99,6 +100,7 @@ void El_Horno::GameManager::update()
 		endingEggs_ = 0;
 
 		// Escena final sin puntuación
+		UIManager::getInstance()->setLayoutVisibility("Derrota", true);
 	}
 	else if (gameState_ == GameState::RUNNING && win_) {
 		//Ganar
@@ -110,6 +112,16 @@ void El_Horno::GameManager::update()
 			endingEggs_++;
 
 		//Pasar a la escena de score teniendo en cuenta la puntuación (huevos)
+
+		UIManager::getInstance()->setLayoutVisibility("Victoria", true);
+
+		for (int i = 0; i < endingEggs_; i++) {
+			UIManager::getInstance()->subscribeLayoutChildVisibility("Victoria", "Ovo" + to_string(i + 1), true);
+		}
+	}
+	if (input_->isKeyDown(SDL_SCANCODE_J)) {
+		win_ = true;
+		gameState_ = GameState::RUNNING;
 	}
 	if (input_->isKeyDown(SDL_SCANCODE_K)) {
 		LuaManager::getInstance()->callLuaFunction("loadNextScene");
