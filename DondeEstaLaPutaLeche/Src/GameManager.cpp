@@ -20,8 +20,8 @@ GameManager* GameManager::instance_ = 0;
 
 El_Horno::GameManager::GameManager()
 {
-	gameState_ = GameState::STARTSTATE;
 	gameTimer_ = new Timer();
+	gameState_ = GameState::MAINMENU;
 }
 
 El_Horno::GameManager::~GameManager()
@@ -91,6 +91,11 @@ void El_Horno::GameManager::start()
 {
 	input_ = ElHornoBase::getInstance()->getInputManager();
 	setupInstance();
+
+	wrongProducts_ = 0;
+	win_ = false;
+
+	gameTimer_->resetTimer();
 }
 
 void El_Horno::GameManager::update()
@@ -123,6 +128,7 @@ void El_Horno::GameManager::update()
 		// Escena final sin puntuación
 		UIManager::getInstance()->setLayoutVisibility("Derrota", true);
 		gameState_ == GameState::MAINMENU;
+		list_.clear();
 	}
 	else if (gameState_ == GameState::RUNNING && win_) {
 		//Ganar
@@ -141,7 +147,8 @@ void El_Horno::GameManager::update()
 			UIManager::getInstance()->subscribeLayoutChildVisibility("Victoria", "Ovo" + to_string(i + 1), true);
 		}
 		gameState_ == GameState::MAINMENU;
-		win_ = false;
+		//win_ = false;
+		list_.clear();
 	}
 	if (input_->isKeyDown(SDL_SCANCODE_J)) {
 		//win_ = true;
