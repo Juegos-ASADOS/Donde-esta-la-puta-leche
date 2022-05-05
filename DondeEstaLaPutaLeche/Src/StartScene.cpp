@@ -19,6 +19,7 @@
 #include <vector>
 #include <LuaManager.h>
 #include <SceneManager.h>
+#include <AudioManager.h>
 #include <GameManager.h>
 #include "UIMenus.h"
 
@@ -26,8 +27,9 @@ namespace El_Horno {
 	void StartScene::init(std::string name)
 	{
 		name_ = name;
-		//testScene();
-		LuaManager::getInstance()->loadScene();
+		testScene();
+		//LuaManager::getInstance()->loadScene();
+		AudioManager::getInstance()->playSound("Musica/Menu.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)), 50.0f, true);
 	}
 
 	void StartScene::testScene()
