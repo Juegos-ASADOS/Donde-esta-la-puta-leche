@@ -130,7 +130,12 @@ namespace El_Horno {
 
 	//menu principal
 	bool UIMenus::play_button(const CEGUI::EventArgs& e) {
-		hide("MenuPrincipal");
+		string s = "MenuPrincipal";
+		bool vis = false;
+		LuaManager::getInstance()->pushString(s, "button");
+		LuaManager::getInstance()->pushBool(vis, "vis");
+		LuaManager::getInstance()->callLuaFunction("setLayoutVisibility");
+		//hide("MenuPrincipal");
 		return true;
 	}
 
