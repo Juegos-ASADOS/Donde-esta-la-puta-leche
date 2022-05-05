@@ -14,7 +14,7 @@ namespace El_Horno {
 	{
 	public:
 		GameManager();
-		~GameManager() {};
+		~GameManager();
 
 		static GameManager* getInstance();
 		static bool setupInstance();

@@ -6,6 +6,7 @@
 #include <UILayout.h>
 #include <Transform.h>
 #include <Entity.h>
+#include <ElHornoBase.h>
 
 #include "InputManager.h"
 #include <iostream>
@@ -121,6 +122,10 @@ namespace El_Horno {
 		}
 		else if (InputManager::getInstance()->getKeyDown(SDL_SCANCODE_V)) {
 			hide("Pausa");
+		}
+		//Si pulsas el escape...
+		else if (InputManager::getInstance()->isKeyDown(SDL_SCANCODE_ESCAPE)) {
+			ElHornoBase::getInstance()->setExit();
 		}
 	}
 

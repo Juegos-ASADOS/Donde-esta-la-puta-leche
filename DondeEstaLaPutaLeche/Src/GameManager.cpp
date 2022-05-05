@@ -22,6 +22,11 @@ El_Horno::GameManager::GameManager()
 	gameState_ = GameState::STARTSTATE;
 }
 
+El_Horno::GameManager::~GameManager()
+{
+	delete gameTimer_;
+}
+
 GameManager* GameManager::getInstance()
 {
 	if (instance_ == 0)
