@@ -28,19 +28,22 @@ namespace El_Horno {
 		//menu->addComponent<UILayout>("uilayout");
 		menu->awake();
 		menu->start();
-		menu->getComponent<UILayout>("uilayout")->loadScheme("GWEN");
-		menu->getComponent<UILayout>("uilayout")->loadScheme("DondeTaLeche");
-		menu->getComponent<UILayout>("uilayout")->loadScheme("TaharezLook");
-		menu->getComponent<UILayout>("uilayout")->loadScheme("Generic");
-		//menu->getComponent<UILayout>("uilayout")->createButton("TaharezLook", "Button", "start");
-		menu->getComponent<UILayout>("uilayout")->addLayout("MenuPrincipal"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
-		menu->getComponent<UILayout>("uilayout")->addLayout("MenuPrincipal_Opciones"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
-		menu->getComponent<UILayout>("uilayout")->addLayout("Pausa"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
-		menu->getComponent<UILayout>("uilayout")->addLayout("Pausa_Opciones"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
-		menu->getComponent<UILayout>("uilayout")->addLayout("Creditos"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
+		UIManager::getInstance()->defineScheme("GWEN");
+		UIManager::getInstance()->defineScheme("DondeTaLeche");
+		UIManager::getInstance()->defineScheme("TaharezLook");
+		UIManager::getInstance()->defineScheme("Generic");
+		//UIManager::getInstance()->createButton("TaharezLook", "Button", "start");
+		UIManager::getInstance()->addLayout("MenuPrincipal"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
+		UIManager::getInstance()->addLayout("MenuPrincipal_Opciones"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
+		UIManager::getInstance()->addLayout("Pausa"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
+		UIManager::getInstance()->addLayout("Pausa_Opciones"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
+		UIManager::getInstance()->addLayout("Nivel_Ingame"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
+		UIManager::getInstance()->addLayout("Creditos"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
+		UIManager::getInstance()->addLayout("Victoria"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
+		UIManager::getInstance()->addLayout("Derrota"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
 
 
-		//a�adir la funcionalidad a los botones
+		//añadir la funcionalidad a los botones
 
 		//menu principal
 		auto helperFunction = std::bind(&UIMenus::play_button, this, std::placeholders::_1);
@@ -100,6 +103,17 @@ namespace El_Horno {
 		helperFunction = std::bind(&UIMenus::volverCreditosButton, this, std::placeholders::_1);
 		UIManager::getInstance()->subscribeLayoutChildEvent("Creditos", "Boton_Volver", helperFunction);
 
+		//victoria
+
+		helperFunction = std::bind(&UIMenus::volverVictoriaButton, this, std::placeholders::_1);
+		UIManager::getInstance()->subscribeLayoutChildEvent("Victoria", "Boton_Volver", helperFunction);
+
+		//derrota
+
+		helperFunction = std::bind(&UIMenus::volverDerrotaButton, this, std::placeholders::_1);
+		UIManager::getInstance()->subscribeLayoutChildEvent("Derrota", "Boton_Volver", helperFunction);
+
+		show("Nivel_Ingame");
 		show("MenuPrincipal");
 
 
@@ -133,7 +147,7 @@ namespace El_Horno {
 	bool UIMenus::play_button(const CEGUI::EventArgs& e) {
 		hide("MenuPrincipal");
 
-		std::string a = "ayuda";
+		std::string a = "prueba";
 		LuaManager::getInstance()->pushString(a, "scene");
 		LuaManager::getInstance()->callLuaFunction("loadNextScene");
 
@@ -239,6 +253,18 @@ namespace El_Horno {
 
 	bool UIMenus::volverCreditosButton(const CEGUI::EventArgs& e) {
 		hide("Creditos");
+		show("MenuPrincipal");
+		return true;
+	}
+
+	bool UIMenus::volverVictoriaButton(const CEGUI::EventArgs& e) {
+		hide("Victoria");
+		show("MenuPrincipal");
+		return true;
+	}
+
+	bool UIMenus::volverDerrotaButton(const CEGUI::EventArgs& e) {
+		hide("Derrota");
 		show("MenuPrincipal");
 		return true;
 	}
