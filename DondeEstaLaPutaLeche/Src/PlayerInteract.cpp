@@ -351,8 +351,7 @@ void El_Horno::PlayerInteract::manageCashRegister()
 
 void El_Horno::PlayerInteract::manageMeatTicket()
 {
-	// TODO Mostrar tecla E en la UI
-	if (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
+	if (!ticketTimerRunning_ && !meatObtainable_ && (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X))) {
 		meatTimer_->resetTimer();
 		ticketTimerRunning_ = true;
 		//Audio
