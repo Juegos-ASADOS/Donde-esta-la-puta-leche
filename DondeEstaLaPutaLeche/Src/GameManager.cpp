@@ -81,6 +81,8 @@ void El_Horno::GameManager::setParameters(std::vector<std::pair<std::string, std
 	for (int i = 0; i < parameters.size(); i++) {
 		if (parameters[i].first == "state") {
 			gameState_ = (GameState)stoi(parameters[i].second);
+
+			tutorialShown_ = 3;
 		}
 		else if (parameters[i].first == "productNum") {
 			productNum_ = stoi(parameters[i].second);
@@ -134,8 +136,23 @@ void El_Horno::GameManager::start()
 
 void El_Horno::GameManager::update()
 {
-	//actualizar la ui del reloj
 	if (gameState_ == GameState::RUNNING) {
+		if (tutorialShown_ == 3) {
+			showTutorial("Inico");
+			tutorialShown_--;
+		}
+		else if (tutorialShown_ == 2 && (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X))) {
+			hideTutorial();
+			showTutorial("Baldas");
+			tutorialShown_--;
+		}
+		else if (tutorialShown_ == 1 && (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X))) {
+			hideTutorial();
+			tutorialShown_--;
+		}
+
+	//actualizar la ui del reloj
+
 		string var = "Nivel_Ingame";
 		LuaManager::getInstance()->pushString(var, "layout");
 		var = "Reloj/Texto_Reloj";
@@ -196,10 +213,10 @@ void El_Horno::GameManager::update()
 		}
 		//win_ = false;
 	}
-	//if (input_->isKeyDown(SDL_SCANCODE_J)) {
-	//	//win_ = true;
-	//	gameState_ = GameState::RUNNING;
-	//}
+	if (input_->isKeyDown(SDL_SCANCODE_J)) {
+		win_ = true;
+		gameState_ = GameState::RUNNING;
+	}
 	/*if (input_->isKeyDown(SDL_SCANCODE_K)) {
 		LuaManager::getInstance()->callLuaFunction("loadNextScene");
 		return;
@@ -301,8 +318,6 @@ void El_Horno::GameManager::paidFoodMum()
 	//Todos los que hay - los que te faltan por comprar = los que has llevado a la madre
 	paidFood = maxProducts_ - productNum_;
 }
-
-
 
 
 // UI //
