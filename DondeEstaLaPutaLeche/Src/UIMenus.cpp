@@ -151,7 +151,7 @@ namespace El_Horno {
 		//UIManager::getInstance()->hideMouseCursor();
 		this->setActive(false);
 
-		std::string a = "prueba";
+		std::string a = "importante";
 		LuaManager::getInstance()->pushString(a, "scene");
 		LuaManager::getInstance()->callLuaFunction("loadNextScene");
 
