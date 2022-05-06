@@ -25,6 +25,7 @@ namespace El_Horno {
 		void setParameters(std::vector<std::pair<std::string, std::string>> parameters) override;
 		void start() override;
 		void update() override;
+		void pauseUpdate() override;
 
 		void setLevel(float maxTime, std::map<std::string, int> list, int proctNum);
 
