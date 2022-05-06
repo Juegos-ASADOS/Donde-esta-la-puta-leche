@@ -285,7 +285,7 @@ void El_Horno::GameManager::togglePaused()
 
 		UIManager::getInstance()->setLayoutVisibility("Pausa", true);
 		gameState_ = GameState::PAUSED;
-
+		UIManager::getInstance()->showMouseCursor();
 		maxTime_ -= gameTimer_->getTime();
 		AudioManager::getInstance()->pauseAllChannels();
 	}
