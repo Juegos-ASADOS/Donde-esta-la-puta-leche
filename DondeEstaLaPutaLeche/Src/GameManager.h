@@ -68,7 +68,8 @@ namespace El_Horno {
 			maxProducts_,
 			minWrongProducts_,
 			wrongProducts_,
-			endingEggs_;
+			endingEggs_,
+			tutorialShown_;
 
 		//Por si vas a la madre y das los alimentos que tengas en el carrito sin que esten todos
 		int paidFood;
