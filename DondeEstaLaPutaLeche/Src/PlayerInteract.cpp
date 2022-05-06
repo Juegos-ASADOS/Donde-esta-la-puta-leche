@@ -435,9 +435,9 @@ void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 
 void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 {
+	handObject_ = LuaManager::getInstance()->loadPrefab(id, true);
 	entity_->getComponent<Mesh>("mesh")->attachObject("Base_Productos", handObject_);
 	//handObject_ = LuaManager::getInstance()->loadPrefab(id);
-	handObject_ = LuaManager::getInstance()->loadPrefab(id, true);
 
 	ProductType typeId = handObject_->getComponent<EntityId>("entityid")->getProdType();
 

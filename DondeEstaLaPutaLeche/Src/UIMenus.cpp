@@ -212,13 +212,13 @@ namespace El_Horno {
 	}
 
 	bool UIMenus::restaResolucion(const CEGUI::EventArgs& e) {
-		LuaManager::getInstance()->callLuaFunction("setResolutionUp");
+		LuaManager::getInstance()->callLuaFunction("setResolutionDown");
 		std::cout << "baja resolucion\n";
 		return true;
 	}
 
 	bool UIMenus::sumaResolucion(const CEGUI::EventArgs& e) {
-		LuaManager::getInstance()->callLuaFunction("setResolutionDown");
+		LuaManager::getInstance()->callLuaFunction("setResolutionUp");
 		std::cout << "sube resolucion\n";
 		return true;
 	}
