@@ -413,6 +413,11 @@ void El_Horno::PlayerInteract::manageMeatStation()
 			ticketTimerRunning_ = false;
 		}
 	}
+	else if (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
+		
+		GameManager::getInstance()->showTutorial("Carne");
+		tutorialShown_ = true;
+	}
 }
 
 void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
@@ -422,7 +427,6 @@ void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 		//No ocurre nada
 		return;
 
-	// TODO Mostrar tecla E en la UI 
 	if (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 		// Crear entidad producto
 		createProduct(idEntity->getId(), idEntity->getProdType());
@@ -436,7 +440,6 @@ void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 	handObject_ = LuaManager::getInstance()->loadPrefab(id, true);
 
 	ProductType typeId = handObject_->getComponent<EntityId>("entityid")->getProdType();
-	cout << typeId << "\n";
 
 	// Se bloquea la posibilidad de meterlo al carrito hasta que se tomen las acciones pertinentes
 	if (typeId == ProductType::FISH) {
@@ -445,7 +448,6 @@ void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 		GameManager::getInstance()->showTutorial("Pescado");
 	}
 	else if (typeId == ProductType::FRUIT) {
-		cout << "ES FRUTA BRODER\n";
 		productLocked_ = true;
 		tutorialShown_ = true;
 		GameManager::getInstance()->showTutorial("Fruta");
