@@ -38,9 +38,6 @@ namespace El_Horno {
         bool volverVictoriaButton(const CEGUI::EventArgs& e);
         bool volverDerrotaButton(const CEGUI::EventArgs& e);
 
-        void onEnable() override;
-        void onDisable() override;
-
     private:
 
         void show(std::string menu);

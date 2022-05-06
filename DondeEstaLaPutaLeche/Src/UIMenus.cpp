@@ -65,10 +65,6 @@ namespace El_Horno {
 		UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal_Opciones", "Menu/RestaEfectos", helperFunction);
 		helperFunction = std::bind(&UIMenus::sumaEfectos, this, std::placeholders::_1);
 		UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal_Opciones", "Menu/SumaEfectos", helperFunction);
-		helperFunction = std::bind(&UIMenus::restaResolucion, this, std::placeholders::_1);
-		UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal_Opciones", "Menu/FlechaIz", helperFunction);
-		helperFunction = std::bind(&UIMenus::sumaResolucion, this, std::placeholders::_1);
-		UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal_Opciones", "Menu/FlechaDer", helperFunction);
 		helperFunction = std::bind(&UIMenus::vuelveOpcionesMenu, this, std::placeholders::_1);
 		UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal_Opciones", "Menu/BotonVolver", helperFunction);
 
@@ -82,10 +78,6 @@ namespace El_Horno {
 		UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/RestaEfectos", helperFunction);
 		helperFunction = std::bind(&UIMenus::sumaEfectos, this, std::placeholders::_1);
 		UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/SumaEfectos", helperFunction);
-		helperFunction = std::bind(&UIMenus::restaResolucion, this, std::placeholders::_1);
-		UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/FlechaIz", helperFunction);
-		helperFunction = std::bind(&UIMenus::sumaResolucion, this, std::placeholders::_1);
-		UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/FlechaDer", helperFunction);
 		helperFunction = std::bind(&UIMenus::vuelveOpcionesPausa, this, std::placeholders::_1);
 		UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/BotonVolver", helperFunction);
 
@@ -205,25 +197,15 @@ namespace El_Horno {
 
 	bool UIMenus::restaEfectos(const CEGUI::EventArgs& e) {
 		LuaManager::getInstance()->callLuaFunction("setFxDown");
+		AudioManager::getInstance()->playSound("SFX/CogerObjeto.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)), 50.0f, true);
 		std::cout << "resta sonido efectos\n";
 		return true;
 	}
 
 	bool UIMenus::sumaEfectos(const CEGUI::EventArgs& e) {
 		LuaManager::getInstance()->callLuaFunction("setFxUp");
+		AudioManager::getInstance()->playSound("SFX/CogerObjeto.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)), 50.0f, true);
 		std::cout << "suma sonido efectos\n";
-		return true;
-	}
-
-	bool UIMenus::restaResolucion(const CEGUI::EventArgs& e) {
-		LuaManager::getInstance()->callLuaFunction("setResolutionDown");
-		std::cout << "baja resolucion\n";
-		return true;
-	}
-
-	bool UIMenus::sumaResolucion(const CEGUI::EventArgs& e) {
-		LuaManager::getInstance()->callLuaFunction("setResolutionUp");
-		std::cout << "sube resolucion\n";
 		return true;
 	}
 
@@ -308,110 +290,6 @@ namespace El_Horno {
 
 		return true;
 	}
-
-	void UIMenus::onEnable()
-	{
-		//UIManager::getInstance()->defineScheme("GWEN");
-		//UIManager::getInstance()->defineScheme("DondeTaLeche");
-		//UIManager::getInstance()->defineScheme("TaharezLook");
-		//UIManager::getInstance()->defineScheme("Generic");
-		////UIManager::getInstance()->createButton("TaharezLook", "Button", "start");
-		//UIManager::getInstance()->addLayout("MenuPrincipal"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
-		//UIManager::getInstance()->addLayout("MenuPrincipal_Opciones"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
-		//UIManager::getInstance()->addLayout("Pausa"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
-		//UIManager::getInstance()->addLayout("Pausa_Opciones"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
-		//UIManager::getInstance()->addLayout("Nivel_Ingame"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
-		//UIManager::getInstance()->addLayout("Creditos"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
-		//UIManager::getInstance()->addLayout("Victoria"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
-		//UIManager::getInstance()->addLayout("Derrota"); //Nombre del layout, y nombre interno cualquiera(que no se repita)
-
-
-		////añadir la funcionalidad a los botones
-
-		////menu principal
-		//auto helperFunction = std::bind(&UIMenus::play_button, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal", "Menu/Boton", helperFunction);
-		//helperFunction = std::bind(&UIMenus::opciones_button, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal", "Menu/Boton2", helperFunction);
-		//helperFunction = std::bind(&UIMenus::creditos_button, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal", "Menu/Boton3", helperFunction);
-		//helperFunction = std::bind(&UIMenus::salir_button, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal", "Menu/Boton4", helperFunction);
-
-		////menu opciones desde principal
-
-		//helperFunction = std::bind(&UIMenus::restaMusica, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal_Opciones", "Menu/RestaMusica", helperFunction);
-		//helperFunction = std::bind(&UIMenus::sumaMusica, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal_Opciones", "Menu/SumaMusica", helperFunction);
-		//helperFunction = std::bind(&UIMenus::restaEfectos, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal_Opciones", "Menu/RestaEfectos", helperFunction);
-		//helperFunction = std::bind(&UIMenus::sumaEfectos, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal_Opciones", "Menu/SumaEfectos", helperFunction);
-		//helperFunction = std::bind(&UIMenus::restaResolucion, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal_Opciones", "Menu/FlechaIz", helperFunction);
-		//helperFunction = std::bind(&UIMenus::sumaResolucion, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal_Opciones", "Menu/FlechaDer", helperFunction);
-		//helperFunction = std::bind(&UIMenus::vuelveOpcionesMenu, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal_Opciones", "Menu/BotonVolver", helperFunction);
-
-		////menu opciones desde la pausa
-
-		//helperFunction = std::bind(&UIMenus::restaMusica, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/RestaMusica", helperFunction);
-		//helperFunction = std::bind(&UIMenus::sumaMusica, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/SumaMusica", helperFunction);
-		//helperFunction = std::bind(&UIMenus::restaEfectos, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/RestaEfectos", helperFunction);
-		//helperFunction = std::bind(&UIMenus::sumaEfectos, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/SumaEfectos", helperFunction);
-		//helperFunction = std::bind(&UIMenus::restaResolucion, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/FlechaIz", helperFunction);
-		//helperFunction = std::bind(&UIMenus::sumaResolucion, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/FlechaDer", helperFunction);
-		//helperFunction = std::bind(&UIMenus::vuelveOpcionesPausa, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/BotonVolver", helperFunction);
-
-		////Pausa
-
-		//helperFunction = std::bind(&UIMenus::reanudarButton, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("Pausa", "Menu/BotonReanudar", helperFunction);
-		//helperFunction = std::bind(&UIMenus::opcionesPausaButton, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("Pausa", "Menu/BotonOpciones", helperFunction);
-		//helperFunction = std::bind(&UIMenus::salirPausaButton, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("Pausa", "Menu/BotonSalir", helperFunction);
-
-		////Creditos
-
-		//helperFunction = std::bind(&UIMenus::volverCreditosButton, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("Creditos", "Boton_Volver", helperFunction);
-
-		////victoria
-
-		//helperFunction = std::bind(&UIMenus::volverVictoriaButton, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("Victoria", "Boton_Volver", helperFunction);
-
-		////derrota
-
-		//helperFunction = std::bind(&UIMenus::volverDerrotaButton, this, std::placeholders::_1);
-		//UIManager::getInstance()->subscribeLayoutChildEvent("Derrota", "Boton_Volver", helperFunction);
-
-		//show("Nivel_Ingame");
-		//show("MenuPrincipal");
-	}
-
-	void UIMenus::onDisable()
-	{
-	   /* hide("menuPrincipal");
-		hide("MenuPrincipal_Opciones"); 
-		hide("Pausa"); 
-		hide("Pausa_Opciones");
-		hide("Nivel_Ingame"); 
-		hide("Creditos"); 
-		hide("Victoria"); 
-		hide("Derrota");*/
-	}
-
 
 	void UIMenus::show(std::string m)
 	{
