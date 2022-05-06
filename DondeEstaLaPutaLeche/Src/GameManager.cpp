@@ -293,6 +293,7 @@ void El_Horno::GameManager::togglePaused()
 	else if (gameState_ == GameState::PAUSED || gameState_ == GameState::MAINMENU) {
 		gameState_ = GameState::RUNNING;
 		UIManager::getInstance()->setLayoutVisibility("Pausa", false);
+		UIManager::getInstance()->setLayoutVisibility("Pausa_Opciones", false);
 		gameTimer_->resetTimer();
 		AudioManager::getInstance()->resumeAllChannels();
 	}
