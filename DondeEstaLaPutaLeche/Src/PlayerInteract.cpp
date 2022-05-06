@@ -537,6 +537,7 @@ void El_Horno::PlayerInteract::instanciateCart()
 	trig->addComponent<EntityId>("entityid", Type::CART);
 	trig->awake();
 	trig->start();
+	cart->getComponent<Transform>("transform")->setRotation(entity_->getComponent<Transform>("transform")->getRotation());
 }
 
 void El_Horno::PlayerInteract::imInCartRegister(bool imIn)
