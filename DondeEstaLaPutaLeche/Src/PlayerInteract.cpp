@@ -121,7 +121,7 @@ void El_Horno::PlayerInteract::deleteAliment(bool ceaseExistence)
 	if (!ceaseExistence && !carryingCart_) {
 		Entity* ob = SceneManager::getInstance()->getCurrentScene()->addEntity("productShot", entity_->getScene()->getName());
 		ob->addComponent<Transform>("transform", tr->getHornoGlobalPosition(),
-			HornoVector3(-90, 0, 0), HornoVector3(1, 1, 1));
+			HornoVector3(-90, 0, 0), HornoVector3(2, 2, 2));
 
 		ob->addComponent<Mesh>("mesh", id);
 		ob->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
@@ -432,7 +432,6 @@ void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 {
 	handObject_ = LuaManager::getInstance()->loadPrefab(id, true);
 	entity_->getComponent<Mesh>("mesh")->attachObject("Base_Productos", handObject_);
-	//handObject_ = LuaManager::getInstance()->loadPrefab(id);
 
 	ProductType typeId = handObject_->getComponent<EntityId>("entityid")->getProdType();
 
@@ -457,6 +456,7 @@ void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 	auto pc = entity_->getComponent<PlayerController>("playercontroller");
 	pc->setPlayerState(El_Horno::PLAYER_PRODUCT);
 	anim_->setAnimBool("AnyState", "Idle_with_product", true);
+	entity_->getComponent<RigidBody>("rigidbody")->setLinearVelocity(HornoVector3(0, 0, 0));
 
 	//Audio
 	entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/CogerObjerto.mp3");
