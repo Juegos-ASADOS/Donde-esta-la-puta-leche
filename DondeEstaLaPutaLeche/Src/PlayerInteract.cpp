@@ -314,7 +314,6 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 					//Audio
 					entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/MalAlimento.mp3");
 				}
-				//TODO añadir uno al FoodCartComponent
 				deleteAliment(true);
 
 				auto pc = entity_->getComponent<PlayerController>("playercontroller");
@@ -352,7 +351,6 @@ void El_Horno::PlayerInteract::manageCashRegister()
 
 void El_Horno::PlayerInteract::manageMeatTicket()
 {
-	// TODO Mostrar tecla E en la UI
 	if (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 		meatTimer_->resetTimer();
 		ticketTimerRunning_ = true;
@@ -369,7 +367,6 @@ void El_Horno::PlayerInteract::manageWheighingMachine()
 
 		if (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 			productLocked_ = false;
-			//TODO Poner feedback de que el producto ha sido pesado
 			entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/ComidaLista.mp3");
 		}
 	}
@@ -393,7 +390,6 @@ void El_Horno::PlayerInteract::manageFishCleaner()
 		}
 	}
 	else if (fishObtainable_ && handObject_ == nullptr) {
-		// TODO Mostrar tecla E en la UI 
 		// Si el pescado esta limpio
 		if (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 			createProduct("PezRosa", ProductType::DEFAULT);
