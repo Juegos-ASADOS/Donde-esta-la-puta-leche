@@ -357,6 +357,7 @@ void El_Horno::GameManager::setTicketLimite()
 void El_Horno::GameManager::hideTicket()
 {
 	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Ticket_Paso", "Visible", "false");
+	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Ticket_Espera", "Visible", "false");
 }
 
 // Se llama cuando hay que poner un tick en la lista, se le pasa el nombre y la pos en el mapa
