@@ -93,6 +93,8 @@ void El_Horno::GameManager::setParameters(std::vector<std::pair<std::string, std
 		}
 		else if (parameters[i].first == "list") {
 
+			list_.clear();
+
 			std::istringstream in(parameters[i].second);
 			std::string val;
 			std::vector<std::string> values;
@@ -104,6 +106,11 @@ void El_Horno::GameManager::setParameters(std::vector<std::pair<std::string, std
 			for (size_t e = 0; e < values.size(); e += 2) {
 				list_.emplace(std::pair<std::string, int>(values[e], stoi(values[e + 1])));
 			}
+
+			gameTimer_->resetTimer();
+
+			resetList();
+			setList();
 		}
 	}
 }
@@ -114,17 +121,13 @@ void El_Horno::GameManager::start()
 
 		input_ = ElHornoBase::getInstance()->getInputManager();
 
-		gameTimer_->resetTimer();
-
 		if (interfaz_ == nullptr) {
 			interfaz_ = SceneManager::getInstance()->getCurrentScene()->addEntity("interfaz", "interfaces");
 			interfaz_->addComponent<UIMenus>("uimenus");
 			interfaz_->getComponent<UIMenus>("uimenus")->init();
 			interfaz_->setDontDestryOnLoad(true);
-
-			resetList();
-			setList();
 		}
+
 	}
 }
 
@@ -159,7 +162,6 @@ void El_Horno::GameManager::update()
 		// Escena final sin puntuaci�n
 		UIManager::getInstance()->setLayoutVisibility("Derrota", true);
 		UIManager::getInstance()->showMouseCursor();
-		list_.clear();
 	}
 	else if (gameState_ == GameState::RUNNING && win_) {
 		gameState_ = GameState::MAINMENU;
@@ -181,7 +183,6 @@ void El_Horno::GameManager::update()
 			UIManager::getInstance()->subscribeLayoutChildVisibility("Victoria", "Ovo" + to_string(i + 1), true);
 		}
 		//win_ = false;
-		list_.clear();
 	}
 	//if (input_->isKeyDown(SDL_SCANCODE_J)) {
 	//	//win_ = true;
@@ -235,8 +236,9 @@ bool El_Horno::GameManager::checkObject(std::string objectId)
 		it->second -= 1;
 		productNum_--;
 
+		// Tacha de la lista
 		if (it->second <= 0) {
-			checkProductUI(objectId, 1);
+			checkProductUI(objectId, distance(list_.begin(), list_.find(objectId)) + 1);
 		}
 
 		return true;
