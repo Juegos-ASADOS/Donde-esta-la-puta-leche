@@ -432,11 +432,12 @@ void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 {
 	entity_->getComponent<Mesh>("mesh")->attachObject("Base_Productos", handObject_);
-	handObject_ = LuaManager::getInstance()->loadPrefab(id);
+	//handObject_ = LuaManager::getInstance()->loadPrefab(id);
 	handObject_ = LuaManager::getInstance()->loadPrefab(id, true);
 
-	cout << typeId << "\n";
 	ProductType typeId = handObject_->getComponent<EntityId>("entityid")->getProdType();
+	cout << typeId << "\n";
+
 	// Se bloquea la posibilidad de meterlo al carrito hasta que se tomen las acciones pertinentes
 	if (typeId == ProductType::FISH) {
 		productLocked_ = true;
