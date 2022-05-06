@@ -303,6 +303,7 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 				if (GameManager::getInstance()->checkObject(idName)) {
 					//Y cambio el carrito d tama�o
 					changeCartSize(entity);
+					changeCartSize(entity_->getChild("cart"));
 					std::cout << "Objeto correcto\n";
 					//Audio //Meter objeto en el carro
 					entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/SoltarObjeto.mp3");
@@ -485,37 +486,24 @@ void El_Horno::PlayerInteract::dropItem()
 void El_Horno::PlayerInteract::changeCartSize(Entity* entity)
 {
 	//Cambio el mesh por un carrito que pese m�s
+	string nCarrito;
 	auto porcentaje = GameManager::getInstance()->getProductCompletionPercentaje();
-	if (porcentaje == 100) {
-		//Cambia a lleno
+	if (porcentaje == 100)
+		nCarrito = "4";
+	else if (porcentaje >= 66)
+		nCarrito = "3";
+	else if (porcentaje >= 33)
+		nCarrito = "2";
+	else
+		nCarrito = "1";
 
+	//Cambia a medio vacio
 		//Eliminamos el mesh
-		entity->removeComponent("mesh");
-		//Y metemos el nuevo
-		entity->addComponent<Mesh>("mesh", "cube");
-		entity->getComponent<Mesh>("mesh")->awake();
-		entity->getComponent<Mesh>("mesh")->start();
-	}
-	else if (porcentaje >= 50) {
-		//Cambia a medio lleno
-		//Eliminamos el mesh
-		entity->removeComponent("mesh");
-		//Y metemos el nuevo
-		entity->addComponent<Mesh>("mesh", "cube");
-		entity->getComponent<Mesh>("mesh")->awake();
-		entity->getComponent<Mesh>("mesh")->start();
-
-	}
-	else if (porcentaje > 0) {
-		//Cambia a medio vacio
-		//Eliminamos el mesh
-		entity->removeComponent("mesh");
-		//Y metemos el nuevo
-		entity->addComponent<Mesh>("mesh", "cube");
-		entity->getComponent<Mesh>("mesh")->awake();
-		entity->getComponent<Mesh>("mesh")->start();
-
-	}
+	entity->removeComponent("mesh");
+	//Y metemos el nuevo
+	entity->addComponent<Mesh>("mesh", "Carrito_" + nCarrito);
+	entity->getComponent<Mesh>("mesh")->awake();
+	entity->getComponent<Mesh>("mesh")->start();
 }
 
 void El_Horno::PlayerInteract::instanciateCart()
@@ -524,11 +512,23 @@ void El_Horno::PlayerInteract::instanciateCart()
 	Transform* tr = entity_->getChild("cart")->getComponent<Transform>("transform");
 	Entity* cart = SceneManager::getInstance()->getCurrentScene()->addEntity("cartInstance", "prueba");
 	cart->addComponent<Transform>("transform", OgreVectorToHorno(tr->getGlobalPosition()),
-		HornoVector3(0, 0, 0), HornoVector3(0.2, 0.2, 0.2));
-	cart->addComponent<Mesh>("mesh", "cube");
-	cart->addComponent<RigidBody>("rigidbody", 100.0f, false, false, 0);
+		HornoVector3(0, 0, 0), HornoVector3(1.2, 1.2, 1.2));
+	float p = GameManager::getInstance()->getProductCompletionPercentaje();
+	if (p == 100) 
+		cart->addComponent<Mesh>("mesh", "Carrito_4");
+	else if(p >= 66)
+		cart->addComponent<Mesh>("mesh", "Carrito_3");
+	else if(p >= 33)
+		cart->addComponent<Mesh>("mesh", "Carrito_2");
+	else if(p > 0)
+		cart->addComponent<Mesh>("mesh", "Carrito_1");
+	else
+		cart->addComponent<Mesh>("mesh", "Carrito_0");
+
+	cart->addComponent<RigidBody>("rigidbody", 100.0f, false, false, 0); //las amtes
 	cart->awake();
 	cart->start();
+	cart->getComponent<RigidBody>("rigidbody")->setScale(HornoVector3(0.3, 0.1, 0.3));
 	cart->getComponent<RigidBody>("rigidbody")->setAngularFactor(0);
 	//Trigger del carrito
 	Entity* trig = SceneManager::getInstance()->getCurrentScene()->addEntity("cartTriggerInstance", "prueba", cart);
@@ -537,6 +537,7 @@ void El_Horno::PlayerInteract::instanciateCart()
 	trig->addComponent<EntityId>("entityid", Type::CART);
 	trig->awake();
 	trig->start();
+	cart->getComponent<Transform>("transform")->setRotation(entity_->getComponent<Transform>("transform")->getRotation());
 }
 
 void El_Horno::PlayerInteract::imInCartRegister(bool imIn)

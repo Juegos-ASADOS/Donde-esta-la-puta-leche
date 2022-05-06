@@ -9,6 +9,7 @@
 #include "GameManager.h"
 
 #include "InputManager.h"
+#include "AudioManager.h"
 #include <iostream>
 
 namespace El_Horno {
@@ -150,6 +151,9 @@ namespace El_Horno {
 		hide("MenuPrincipal");
 		//UIManager::getInstance()->hideMouseCursor();
 		this->setActive(false);
+
+		AudioManager::getInstance()->stopMusic();
+		AudioManager::getInstance()->playSound("Musica/Nivel.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)), 50.0f, true);
 
 		std::string a = "importante";
 		LuaManager::getInstance()->pushString(a, "scene");

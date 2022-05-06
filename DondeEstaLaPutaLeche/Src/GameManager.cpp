@@ -7,6 +7,7 @@
 #include "SceneManager.h"
 #include "AudioManager.h"
 #include "Rigibody.h"
+#include "Transform.h"
 #include "Entity.h"
 #include "Timer.h"
 #include "UIMenus.h"
@@ -164,8 +165,19 @@ void El_Horno::GameManager::update()
 
 		//comprobacion del pause
 
-		if (input_->getKeyDown(SDL_SCANCODE_ESCAPE))
-			togglePaused();
+		if (input_->getKeyDown(SDL_SCANCODE_ESCAPE)) 
+			togglePaused();	
+		//AudioManager::getInstance()->SetChannel3dPosition(AudioManager::getInstance()->getMusicChannel(), SceneManager::getInstance()->getCurrentScene()->getEntity("camera")->getComponent<Transform>("transform")->getPosition())
+		/*if (tiempo == (maxTime_ / 3.0f*2))
+		{
+			AudioManager::getInstance()->stopMusic();
+			AudioManager::getInstance()->playSound("Musica/Nivel.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)), 50.0f, true);
+
+		}
+		else if (tiempo == maxTime_ / 3.0f) {
+			AudioManager::getInstance()->stopMusic();
+			AudioManager::getInstance()->playSound("Musica/Nivel.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)), 50.0f, true);
+		}*/
 	}
 
 
