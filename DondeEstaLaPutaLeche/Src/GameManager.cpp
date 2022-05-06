@@ -130,7 +130,6 @@ void El_Horno::GameManager::start()
 			interfaz_->getComponent<UIMenus>("uimenus")->init();
 			interfaz_->setDontDestryOnLoad(true);
 		}
-
 	}
 }
 
