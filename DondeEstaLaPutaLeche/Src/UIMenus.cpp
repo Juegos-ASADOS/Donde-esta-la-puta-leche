@@ -149,7 +149,7 @@ namespace El_Horno {
 	//menu principal
 	bool UIMenus::play_button(const CEGUI::EventArgs& e) {
 		hide("MenuPrincipal");
-		//UIManager::getInstance()->hideMouseCursor();
+		UIManager::getInstance()->hideMouseCursor();
 		this->setActive(false);
 
 		AudioManager::getInstance()->stopMusic();
@@ -243,7 +243,7 @@ namespace El_Horno {
 	//menu de pausa
 
 	bool UIMenus::reanudarButton(const CEGUI::EventArgs& e) {
-		//UIManager::getInstance()->hideMouseCursor();
+		UIManager::getInstance()->hideMouseCursor();
 		GameManager::getInstance()->togglePaused();
 		hide("Pausa");
 		//devolver el flow del juego
