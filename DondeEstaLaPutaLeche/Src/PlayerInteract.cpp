@@ -23,7 +23,7 @@
 El_Horno::PlayerInteract::PlayerInteract() : carryingCart_(true), triggerStay_(nullptr), handObject_(nullptr), fishTimer_(nullptr),
 ticketTimerRunning_(false), fishTimerRunning_(false), productLocked_(false), meatTimer_(nullptr), maxTicketTime_(7), maxFishTime_(7),
 meatObtainable_(false), fishObtainable_(false), ticketExpirationTimer_(nullptr), ticketExpirationTimerRunning_(false), tutorialShown_(false),
-lowTimeTicket_(false)
+lowTimeTicket_(false), fishTut_(false), meatTut_(false), fruitTut_(false)
 {
 }
 
@@ -32,6 +32,7 @@ El_Horno::PlayerInteract::~PlayerInteract()
 	delete fishTimer_; fishTimer_ = nullptr;
 	delete meatTimer_; meatTimer_ = nullptr;
 	delete ticketExpirationTimer_; ticketExpirationTimer_ = nullptr;
+	GameManager::getInstance()->hideTicket();
 }
 
 void El_Horno::PlayerInteract::start()
@@ -75,7 +76,7 @@ void El_Horno::PlayerInteract::update()
 	}
 
 	// Empieza a quedarse sin tiempo
-	if (lowTimeTicket_ && ticketExpirationTimerRunning_ && ticketExpirationTimer_->getTime() >= 2*(maxTicketTime_/3)) {
+	if (lowTimeTicket_ && ticketExpirationTimerRunning_ && ticketExpirationTimer_->getTime() >= 2 * (maxTicketTime_ / 3)) {
 		GameManager::getInstance()->setTicketLimite();
 		lowTimeTicket_ = false;
 	}
@@ -258,7 +259,6 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 			pc->setPlayerState(El_Horno::PLAYER_DEFAULT);
 			anim_->setAnimBool("AnyState", "Idle", true);
 			carryingCart_ = false;
-			std::cout << "Soltar carrito\n";
 		}
 		else {
 			//Si no tiene nada en la mano...
@@ -266,10 +266,9 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 
 				//Hago hijo al carrito para que se mueva junto con el player. Carrito kinematico
 				entity_->getChild("cart")->setActive(true);
-				std::cout << triggerStay_->getParent()->getName() << "\n";
 				SceneManager::getInstance()->getCurrentScene()->deleteEntity(triggerStay_->getParent()->getName());
 
-				entity_->getComponent<RigidBody>("rigidbody")->setScale(HornoVector3(0.5,0.7,1.3));
+				entity_->getComponent<RigidBody>("rigidbody")->setScale(HornoVector3(0.5, 0.7, 1.3));
 
 				int i = 0;
 				bool found = false;
@@ -409,8 +408,8 @@ void El_Horno::PlayerInteract::manageMeatStation()
 			ticketTimerRunning_ = false;
 		}
 	}
-	else if (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
-		
+	else if (!meatTut_ && input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
+		meatTut_ = true;
 		GameManager::getInstance()->showTutorial("Carne");
 		tutorialShown_ = true;
 	}
@@ -440,13 +439,19 @@ void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 	// Se bloquea la posibilidad de meterlo al carrito hasta que se tomen las acciones pertinentes
 	if (typeId == ProductType::FISH) {
 		productLocked_ = true;
-		tutorialShown_ = true;
-		GameManager::getInstance()->showTutorial("Pescado");
+		if (!fishTut_) {
+			tutorialShown_ = true;
+			fishTut_ = true;
+			GameManager::getInstance()->showTutorial("Pescado");
+		}
 	}
 	else if (typeId == ProductType::FRUIT) {
 		productLocked_ = true;
-		tutorialShown_ = true;
-		GameManager::getInstance()->showTutorial("Fruta");
+		if (!fruitTut_) {
+			tutorialShown_ = true;
+			fruitTut_ = true;
+			GameManager::getInstance()->showTutorial("Fruta");
+		}
 	}
 
 	auto pc = entity_->getComponent<PlayerController>("playercontroller");
@@ -509,13 +514,13 @@ void El_Horno::PlayerInteract::instanciateCart()
 	cart->addComponent<Transform>("transform", OgreVectorToHorno(tr->getGlobalPosition()),
 		HornoVector3(0, 0, 0), HornoVector3(1.2, 1.2, 1.2));
 	float p = GameManager::getInstance()->getProductCompletionPercentaje();
-	if (p == 100) 
+	if (p == 100)
 		cart->addComponent<Mesh>("mesh", "Carrito_4");
-	else if(p >= 66)
+	else if (p >= 66)
 		cart->addComponent<Mesh>("mesh", "Carrito_3");
-	else if(p >= 33)
+	else if (p >= 33)
 		cart->addComponent<Mesh>("mesh", "Carrito_2");
-	else if(p > 0)
+	else if (p > 0)
 		cart->addComponent<Mesh>("mesh", "Carrito_1");
 	else
 		cart->addComponent<Mesh>("mesh", "Carrito_0");

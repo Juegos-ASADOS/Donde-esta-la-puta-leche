@@ -60,7 +60,10 @@ namespace El_Horno {
 			fishObtainable_,
 			lowTimeTicket_,
 			productLocked_,
-			tutorialShown_;
+			tutorialShown_,
+			fruitTut_,
+			fishTut_,
+			meatTut_;
 
 		InputManager* input_;
 		AnimatorController* anim_;
