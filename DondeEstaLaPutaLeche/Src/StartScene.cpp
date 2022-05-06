@@ -31,6 +31,7 @@ namespace El_Horno {
 		//testScene();
 		//menuPrincipal();
 		LuaManager::getInstance()->loadScene();
+		AudioManager::getInstance()->stopMusic();
 		AudioManager::getInstance()->playSound("Musica/Menu.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)), 50.0f, true);
 	}
 
@@ -172,16 +173,16 @@ namespace El_Horno {
 		animVectorNpcVieja.push_back(std::pair<std::string, std::string>("AnyState", "npc_idle_abuela"));
 		a->addComponent<AnimatorController>("animatorcontroller", animVectorNpcVieja);
 
-	/*	a = addEntity("menu", "prueba");
-		a->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
-		a->addComponent<UIMenus>("uimenus");
-		a->setDontDestryOnLoad(true);*/
+		/*	a = addEntity("menu", "prueba");
+			a->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(1, 1, 1));
+			a->addComponent<UIMenus>("uimenus");
+			a->setDontDestryOnLoad(true);*/
 
-		//b = addEntity("button1", "prueba");
-		//b->addComponent<Transform>("transform", HornoVector3(0,0,0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
-		//b->addComponent<UIPushButton>("pushbutton", "TaharezLook", 0.05f, 0.05f, 0.2f, 0.1f, "push1");
+			//b = addEntity("button1", "prueba");
+			//b->addComponent<Transform>("transform", HornoVector3(0,0,0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
+			//b->addComponent<UIPushButton>("pushbutton", "TaharezLook", 0.05f, 0.05f, 0.2f, 0.1f, "push1");
 
-		// Caja Registradora
+			// Caja Registradora
 		a = addEntity("cashRegister", "prueba");
 		a->addComponent<Transform>("transform", HornoVector3(0, 15, -300), HornoVector3(0, 0, 0), HornoVector3(0.5, 1.5, 0.25));
 		a->addComponent<Mesh>("mesh", "cube");
