@@ -260,6 +260,8 @@ namespace El_Horno {
 		//te devuelve al menu principal
 		GameManager::getInstance()->togglePaused();
 
+		AudioManager::getInstance()->StopAllChannels();
+
 		//UIManager::getInstance()->hideMouseCursor();
 		hide("Pausa");
 		show("MenuPrincipal");

@@ -120,7 +120,7 @@ void El_Horno::PlayerInteract::deleteAliment(bool ceaseExistence)
 	if (!ceaseExistence && !carryingCart_) {
 		Entity* ob = SceneManager::getInstance()->getCurrentScene()->addEntity("productShot", entity_->getScene()->getName());
 		ob->addComponent<Transform>("transform", tr->getHornoGlobalPosition() /*+ HornoVector3(10, 0, 0)*/,
-			HornoVector3(-90, 0, 0), HornoVector3(15, 15, 15));
+			HornoVector3(-90, 0, 0), HornoVector3(1, 1, 1));
 
 		ob->addComponent<Mesh>("mesh", id);
 		ob->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
