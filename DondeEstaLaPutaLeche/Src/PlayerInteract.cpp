@@ -428,7 +428,9 @@ void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 {
 	cout << "CREO PRODUCTO UO\n";
 
-	handObject_ = LuaManager::getInstance()->loadPrefab(id);
+	handObject_ = LuaManager::getInstance()->loadPrefab(id, true);
+	entity_->getComponent<Mesh>("mesh")->attachObject("Base_Productos", handObject_);
+
 
 	// Se bloquea la posibilidad de meterlo al carrito hasta que se tomen las acciones pertinentes
 	if (pType == ProductType::FISH || pType == ProductType::FRUIT)
