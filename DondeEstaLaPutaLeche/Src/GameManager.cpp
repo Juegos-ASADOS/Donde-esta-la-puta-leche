@@ -63,7 +63,7 @@ GameManager* GameManager::getInstance()
 bool GameManager::setupInstance()
 {
 	if (instance_ == 0) {
-		instance_ = new GameManager();
+		instance_ = SceneManager::getInstance()->getCurrentScene()->getEntity("gamemanager")->getComponent<GameManager>("gamemanager");
 		return true;
 	}
 	return false;
@@ -139,12 +139,8 @@ void El_Horno::GameManager::update()
 
 		//comprobacion del pause
 
-		if (input_->getKeyDown(SDL_SCANCODE_ESCAPE)) {
-			togglePaused();
-			UIManager::getInstance()->setLayoutVisibility("Pausa", true);
-		}
-
-
+		if (input_->getKeyDown(SDL_SCANCODE_ESCAPE)) 
+			togglePaused();	
 	}
 
 
@@ -247,15 +243,15 @@ void El_Horno::GameManager::togglePaused()
 		ElHornoBase::getInstance()->pause();
 	if (gameState_ == GameState::RUNNING) {
 
-		UIManager::getInstance()->setLayoutVisibility("Pausa", false);
+		UIManager::getInstance()->setLayoutVisibility("Pausa", true);
 		gameState_ = GameState::PAUSED;
 
 		maxTime_ -= gameTimer_->getTime();
 		AudioManager::getInstance()->pauseAllChannels();
 	}
-	else if (gameState_ == GameState::PAUSED) {
+	else if (gameState_ == GameState::PAUSED || gameState_ == GameState::MAINMENU) {
 		gameState_ = GameState::RUNNING;
-
+		UIManager::getInstance()->setLayoutVisibility("Pausa", false);
 		gameTimer_->resetTimer();
 		AudioManager::getInstance()->resumeAllChannels();
 	}
