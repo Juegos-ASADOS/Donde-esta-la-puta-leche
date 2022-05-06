@@ -366,6 +366,7 @@ void El_Horno::GameManager::checkProductUI(std::string productId, int i)
 // strings =  Inicio, Baldas, Fruta, Pescado, Carne 
 void El_Horno::GameManager::showTutorial(std::string name)
 {
+	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Tutorial", "Visible", "true");
 	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Tutorial_" + name, "Visible", "true");
 	actualTuto_ = name;
 }
@@ -373,6 +374,7 @@ void El_Horno::GameManager::showTutorial(std::string name)
 // Se usa para esconder el tutorial actual
 void El_Horno::GameManager::hideTutorial()
 {
+	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Tutorial", "Visible", "false");
 	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Tutorial_" + actualTuto_, "Visible", "false");
 	actualTuto_ = "";
 }
