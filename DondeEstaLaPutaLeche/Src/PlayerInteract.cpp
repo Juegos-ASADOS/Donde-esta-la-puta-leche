@@ -22,7 +22,8 @@
 
 El_Horno::PlayerInteract::PlayerInteract() : carryingCart_(true), triggerStay_(nullptr), handObject_(nullptr), fishTimer_(nullptr),
 ticketTimerRunning_(false), fishTimerRunning_(false), productLocked_(false), meatTimer_(nullptr), maxTicketTime_(7), maxFishTime_(7),
-meatObtainable_(false), fishObtainable_(false), ticketExpirationTimer_(nullptr), ticketExpirationTimerRunning_(false)
+meatObtainable_(false), fishObtainable_(false), ticketExpirationTimer_(nullptr), ticketExpirationTimerRunning_(false), tutorialShown_(false),
+lowTimeTicket_(false)
 {
 }
 
@@ -53,6 +54,11 @@ void El_Horno::PlayerInteract::update()
 		dropItem();
 	}
 
+	if (tutorialShown_ && input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
+		tutorialShown_ = false;
+		GameManager::getInstance()->hideTutorial();
+	}
+
 	// Se puede obtener la carne
 	if (ticketTimerRunning_ && meatTimer_->getTime() >= maxTicketTime_) {
 		cout << "timer carne terminao\n";
@@ -60,17 +66,26 @@ void El_Horno::PlayerInteract::update()
 		ticketExpirationTimerRunning_ = true;
 		ticketExpirationTimer_->resetTimer();
 		meatObtainable_ = true;
+		lowTimeTicket_ = true;
+
+		GameManager::getInstance()->setTicketTurno();
+
 		//Audio
 		entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/ComidaLista.mp3");
 	}
 
+	// Empieza a quedarse sin tiempo
+	if (lowTimeTicket_ && ticketExpirationTimerRunning_ && ticketExpirationTimer_->getTime() >= 2*(maxTicketTime_/3)) {
+		GameManager::getInstance()->setTicketLimite();
+		lowTimeTicket_ = false;
+	}
 	// Se deja de poder obtener la carne
 	if (ticketExpirationTimerRunning_ && ticketExpirationTimer_->getTime() >= maxTicketTime_) {
 		cout << "timer ticket expirao\n";
 		ticketExpirationTimerRunning_ = false;
 		meatObtainable_ = false;
 		//!Audio 
-
+		GameManager::getInstance()->hideTicket();
 	}
 
 	// Se puede obtener el pescado
@@ -338,26 +353,21 @@ void El_Horno::PlayerInteract::manageMeatTicket()
 {
 	// TODO Mostrar tecla E en la UI
 	if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
-		cout << "carne\n";
 		meatTimer_->resetTimer();
 		ticketTimerRunning_ = true;
-		cout << maxTicketTime_ << "\n";
 		//Audio
 		entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/Ticket.mp3");
 
-		//UIManager::getInstance()->setLayoutChildVisibility()
+		GameManager::getInstance()->setTicketIntro();
 	}
 }
 
 void El_Horno::PlayerInteract::manageWheighingMachine()
 {
 	if (productLocked_ && handObject_ != nullptr && handObject_->getComponent<EntityId>("entityid")->getProdType() == ProductType::FRUIT) {
-		cout << "fruta fuera\n";
-		// TODO Mostrar tecla E en la UI
 
 		if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 			productLocked_ = false;
-			cout << "fruta dentro\n";
 			//TODO Poner feedback de que el producto ha sido pesado
 			entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/ComidaLista.mp3");
 		}
@@ -367,8 +377,6 @@ void El_Horno::PlayerInteract::manageWheighingMachine()
 void El_Horno::PlayerInteract::manageFishCleaner()
 {
 	if (handObject_ != nullptr && handObject_->getComponent<EntityId>("entityid")->getProdType() == ProductType::FISH) {
-		// TODO Mostrar tecla E en la UI 
-		cout << "pescado fuera\n";
 		// Si se presiona la E se inicia el timer de limpieza de pescado
 		if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 			productLocked_ = false;
@@ -379,7 +387,6 @@ void El_Horno::PlayerInteract::manageFishCleaner()
 			auto pc = entity_->getComponent<PlayerController>("playercontroller");
 			pc->setPlayerState(El_Horno::PLAYER_DEFAULT);
 			anim_->setAnimBool("AnyState", "Idle", true);
-			cout << "pescado dentro\n";
 			//Audio
 			entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/CortarAlimento.mp3");
 		}
@@ -388,8 +395,7 @@ void El_Horno::PlayerInteract::manageFishCleaner()
 		// TODO Mostrar tecla E en la UI 
 		// Si el pescado esta limpio
 		if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
-			cout << "pescado en mano\n";
-			createProduct("Agua", ProductType::DEFAULT);
+			createProduct("PezRosa", ProductType::DEFAULT);
 			fishObtainable_ = false;
 		}
 	}
@@ -398,14 +404,13 @@ void El_Horno::PlayerInteract::manageFishCleaner()
 void El_Horno::PlayerInteract::manageMeatStation()
 {
 	if (meatObtainable_ && handObject_ == nullptr) {
-		cout << "Se puede obtener carne\n";
-		// TODO Mostrar tecla E en la UI 
-		if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
-			cout << "Se obtuvo carne\n";
 
-			// ESTO SERA "carne" CUANDO TENGAMOS EL MESH
-			createProduct("Agua", ProductType::DEFAULT);
+		if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
+			createProduct("Carne_0", ProductType::DEFAULT);
 			meatObtainable_ = false;
+			GameManager::getInstance()->hideTicket();
+			ticketExpirationTimerRunning_ = false;
+			ticketTimerRunning_ = false;
 		}
 	}
 }
@@ -426,13 +431,19 @@ void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 
 void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 {
-	cout << "CREO PRODUCTO UO\n";
-
 	handObject_ = LuaManager::getInstance()->loadPrefab(id);
 
 	// Se bloquea la posibilidad de meterlo al carrito hasta que se tomen las acciones pertinentes
-	if (pType == ProductType::FISH || pType == ProductType::FRUIT)
+	if (pType == ProductType::FISH) {
 		productLocked_ = true;
+		tutorialShown_ = true;
+		GameManager::getInstance()->showTutorial("Pescado");
+	}
+	else if (pType == ProductType::FRUIT) {
+		productLocked_ = true;
+		tutorialShown_ = true;
+		GameManager::getInstance()->showTutorial("Fruta");
+	}
 
 	auto pc = entity_->getComponent<PlayerController>("playercontroller");
 	pc->setPlayerState(El_Horno::PLAYER_PRODUCT);

@@ -58,7 +58,9 @@ namespace El_Horno {
 			fishTimerRunning_,
 			meatObtainable_,
 			fishObtainable_,
-			productLocked_;
+			lowTimeTicket_,
+			productLocked_,
+			tutorialShown_;
 
 		InputManager* input_;
 		AnimatorController* anim_;

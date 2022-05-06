@@ -45,7 +45,7 @@ El_Horno::GameManager::~GameManager()
 
 	}
 
-	
+
 
 	if (gameTimer_ != nullptr)
 
@@ -84,6 +84,9 @@ void El_Horno::GameManager::setParameters(std::vector<std::pair<std::string, std
 		else if (parameters[i].first == "productNum") {
 			productNum_ = stoi(parameters[i].second);
 			maxProducts_ = productNum_;
+
+			wrongProducts_ = 0;
+			win_ = false;
 		}
 		else if (parameters[i].first == "maxTime") {
 			maxTime_ = stoi(parameters[i].second);
@@ -94,9 +97,11 @@ void El_Horno::GameManager::setParameters(std::vector<std::pair<std::string, std
 			std::string val;
 			std::vector<std::string> values;
 			while (std::getline(in, val, ','))
-			{ values.push_back(val); }
+			{
+				values.push_back(val);
+			}
 
-			for (size_t e = 0; e < values.size(); e+=2) {
+			for (size_t e = 0; e < values.size(); e += 2) {
 				list_.emplace(std::pair<std::string, int>(values[e], stoi(values[e + 1])));
 			}
 		}
@@ -105,22 +110,21 @@ void El_Horno::GameManager::setParameters(std::vector<std::pair<std::string, std
 
 void El_Horno::GameManager::start()
 {
-	input_ = ElHornoBase::getInstance()->getInputManager();
-	setupInstance();
+	if (setupInstance()) {
 
-	wrongProducts_ = 0;
-	win_ = false;
+		input_ = ElHornoBase::getInstance()->getInputManager();
 
-	gameTimer_->resetTimer();
+		gameTimer_->resetTimer();
 
-	if (interfaz_ == nullptr) {
-		interfaz_ = SceneManager::getInstance()->getCurrentScene()->addEntity("interfaz", "interfaces");
-		interfaz_->addComponent<UIMenus>("uimenus");
-		interfaz_->getComponent<UIMenus>("uimenus")->init();
-		interfaz_->setDontDestryOnLoad(true);
+		if (interfaz_ == nullptr) {
+			interfaz_ = SceneManager::getInstance()->getCurrentScene()->addEntity("interfaz", "interfaces");
+			interfaz_->addComponent<UIMenus>("uimenus");
+			interfaz_->getComponent<UIMenus>("uimenus")->init();
+			interfaz_->setDontDestryOnLoad(true);
 
-		resetList();
-		setList();
+			resetList();
+			setList();
+		}
 	}
 }
 
@@ -169,7 +173,7 @@ void El_Horno::GameManager::update()
 		//Ganar
 		endingEggs_ = 1;
 
-		if (gameTimer_->getTime() <= (maxTime_/3)*2)
+		if (gameTimer_->getTime() <= (maxTime_ / 3) * 2)
 			endingEggs_++;
 		if (wrongProducts_ <= maxProducts_ / 4)
 			endingEggs_++;
@@ -234,6 +238,11 @@ bool El_Horno::GameManager::checkObject(std::string objectId)
 		//Lo puedo meter
 		it->second -= 1;
 		productNum_--;
+
+		if (it->second <= 0) {
+			checkProductUI(objectId, 1);
+		}
+
 		return true;
 	}
 	wrongProducts_++;
@@ -245,7 +254,7 @@ bool El_Horno::GameManager::checkObject(std::string objectId)
 // A QUE UTILICE EL DELTATIME)
 void El_Horno::GameManager::togglePaused()
 {
-		ElHornoBase::getInstance()->pause();
+	ElHornoBase::getInstance()->pause();
 	if (gameState_ == GameState::RUNNING) {
 
 		UIManager::getInstance()->setLayoutVisibility("Pausa", false);
