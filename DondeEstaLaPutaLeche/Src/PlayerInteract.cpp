@@ -50,11 +50,11 @@ void El_Horno::PlayerInteract::start()
 void El_Horno::PlayerInteract::update()
 {
 	//Si pulsas la tecla R...
-	if (input_->isKeyDown(SDL_SCANCODE_R) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_B)) {
+	if (input_->getKeyDown(SDL_SCANCODE_R) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_B)) {
 		dropItem();
 	}
 
-	if (tutorialShown_ && input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
+	if (tutorialShown_ && input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 		tutorialShown_ = false;
 		GameManager::getInstance()->hideTutorial();
 	}
@@ -331,7 +331,7 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 void El_Horno::PlayerInteract::manageCashRegister()
 {
 	//Si pulsas la tecla E...
-	if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
+	if (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 
 		//Si tengo el carrito agarrado...
 		if (carryingCart_) {
@@ -352,7 +352,7 @@ void El_Horno::PlayerInteract::manageCashRegister()
 void El_Horno::PlayerInteract::manageMeatTicket()
 {
 	// TODO Mostrar tecla E en la UI
-	if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
+	if (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 		meatTimer_->resetTimer();
 		ticketTimerRunning_ = true;
 		//Audio
@@ -366,7 +366,7 @@ void El_Horno::PlayerInteract::manageWheighingMachine()
 {
 	if (productLocked_ && handObject_ != nullptr && handObject_->getComponent<EntityId>("entityid")->getProdType() == ProductType::FRUIT) {
 
-		if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
+		if (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 			productLocked_ = false;
 			//TODO Poner feedback de que el producto ha sido pesado
 			entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/ComidaLista.mp3");
@@ -378,7 +378,7 @@ void El_Horno::PlayerInteract::manageFishCleaner()
 {
 	if (handObject_ != nullptr && handObject_->getComponent<EntityId>("entityid")->getProdType() == ProductType::FISH) {
 		// Si se presiona la E se inicia el timer de limpieza de pescado
-		if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
+		if (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 			productLocked_ = false;
 			fishTimerRunning_ = true;
 			fishTimer_->resetTimer();
@@ -394,7 +394,7 @@ void El_Horno::PlayerInteract::manageFishCleaner()
 	else if (fishObtainable_ && handObject_ == nullptr) {
 		// TODO Mostrar tecla E en la UI 
 		// Si el pescado esta limpio
-		if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
+		if (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 			createProduct("PezRosa", ProductType::DEFAULT);
 			fishObtainable_ = false;
 		}
@@ -405,7 +405,7 @@ void El_Horno::PlayerInteract::manageMeatStation()
 {
 	if (meatObtainable_ && handObject_ == nullptr) {
 
-		if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
+		if (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 			createProduct("Carne_0", ProductType::DEFAULT);
 			meatObtainable_ = false;
 			GameManager::getInstance()->hideTicket();
@@ -423,7 +423,7 @@ void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 		return;
 
 	// TODO Mostrar tecla E en la UI 
-	if (input_->isKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
+	if (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
 		// Crear entidad producto
 		createProduct(idEntity->getId(), idEntity->getProdType());
 	}
@@ -433,13 +433,18 @@ void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 {
 	handObject_ = LuaManager::getInstance()->loadPrefab(id);
 
+	ProductType typeId = handObject_->getComponent<EntityId>("entityid")->getProdType();
+
+	cout << typeId << "\n";
+
 	// Se bloquea la posibilidad de meterlo al carrito hasta que se tomen las acciones pertinentes
-	if (pType == ProductType::FISH) {
+	if (typeId == ProductType::FISH) {
 		productLocked_ = true;
 		tutorialShown_ = true;
 		GameManager::getInstance()->showTutorial("Pescado");
 	}
-	else if (pType == ProductType::FRUIT) {
+	else if (typeId == ProductType::FRUIT) {
+		cout << "ES FRUTA BRODER\n";
 		productLocked_ = true;
 		tutorialShown_ = true;
 		GameManager::getInstance()->showTutorial("Fruta");
