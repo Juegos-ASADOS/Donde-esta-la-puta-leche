@@ -354,6 +354,10 @@ void El_Horno::GameManager::resetList()
 		// Poner la imagen vacia
 		std::string cant = "Num_" + std::to_string(i);
 		UIManager::getInstance()->setChildProperty("Nivel_Ingame", cant, "Image", "DondeTaLeche/Producto_Vacio");
+
+		// Poner la imagen vacia
+		std::string tick = "Tick_" + std::to_string(i);
+		UIManager::getInstance()->setChildProperty("Nivel_Ingame", tick, "Image", "DondeTaLeche/Producto_Vacio");
 	}
 
 }
