@@ -130,7 +130,6 @@ void El_Horno::GameManager::start()
 			interfaz_->getComponent<UIMenus>("uimenus")->init();
 			interfaz_->setDontDestryOnLoad(true);
 		}
-
 	}
 }
 
@@ -311,7 +310,7 @@ void El_Horno::GameManager::checkEnd()
 // la cantidad mostrada en la mesh
 const float El_Horno::GameManager::getProductCompletionPercentaje()
 {
-	return 100 - ((productNum_ - paidFood) / maxProducts_ * 100);
+	return 100 - (((float)productNum_ - (float)paidFood) / (float)maxProducts_ * 100);
 }
 
 void El_Horno::GameManager::paidFoodMum()

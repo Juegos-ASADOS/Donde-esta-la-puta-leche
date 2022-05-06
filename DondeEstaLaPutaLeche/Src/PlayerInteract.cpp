@@ -119,8 +119,8 @@ void El_Horno::PlayerInteract::deleteAliment(bool ceaseExistence)
 
 	if (!ceaseExistence && !carryingCart_) {
 		Entity* ob = SceneManager::getInstance()->getCurrentScene()->addEntity("productShot", entity_->getScene()->getName());
-		ob->addComponent<Transform>("transform", tr->getHornoGlobalPosition() /*+ HornoVector3(10, 0, 0)*/,
-			HornoVector3(-90, 0, 0), HornoVector3(15, 15, 15));
+		ob->addComponent<Transform>("transform", tr->getHornoGlobalPosition(),
+			HornoVector3(-90, 0, 0), HornoVector3(1, 1, 1));
 
 		ob->addComponent<Mesh>("mesh", id);
 		ob->addComponent<RigidBody>("rigidbody", 2.0f, false, false, 0);
@@ -129,7 +129,7 @@ void El_Horno::PlayerInteract::deleteAliment(bool ceaseExistence)
 		ob->start();
 
 		//Lanza el objeto
-		ob->getComponent<RigidBody>("rigidbody")->applyForce(HornoVector3(100, 0, 0));
+		ob->getComponent<RigidBody>("rigidbody")->applyForce(HornoVector3(rand() % 1000, rand() % 1000, rand() % 1000));
 	}
 }
 
@@ -304,13 +304,12 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 					//Y cambio el carrito d tama�o
 					changeCartSize(entity);
 					changeCartSize(entity_->getChild("cart"));
-					std::cout << "Objeto correcto\n";
+					entity_->getChild("cart")->getComponent<Mesh>("mesh")->setActive(false);
 					//Audio //Meter objeto en el carro
 					entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/SoltarObjeto.mp3");
 				}
 				//Si te has equivocado...
 				else {
-					std::cout << "Objeto equivocado\n";
 					//Audio
 					entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/MalAlimento.mp3");
 				}
@@ -351,7 +350,7 @@ void El_Horno::PlayerInteract::manageCashRegister()
 
 void El_Horno::PlayerInteract::manageMeatTicket()
 {
-	if (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
+	if (!ticketTimerRunning_ && !meatObtainable_ && (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X))) {
 		meatTimer_->resetTimer();
 		ticketTimerRunning_ = true;
 		//Audio
