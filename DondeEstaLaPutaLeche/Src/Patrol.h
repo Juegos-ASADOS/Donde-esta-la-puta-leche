@@ -45,7 +45,8 @@ namespace El_Horno {
 
 		double timer = 0.0;
 
-		bool walking_ = false;
+		bool walking_ = false,
+			sleepThresh_;
 
 		int type_ = 0;
 		std::string idleName;
