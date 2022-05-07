@@ -56,7 +56,7 @@ void El_Horno::Patrol::start()
 	rb_ = entity_->getComponent<RigidBody>("rigidbody");
 	tr_ = entity_->getComponent<Transform>("transform");
 	anim_ = entity_->getComponent<AnimatorController>("animatorcontroller");
-
+	sleepThresh_ = true;
 
 	//Type 0 = man, 1 = vieja, 2 = vieja carro
 	if (type_ == 0)
@@ -78,6 +78,10 @@ void El_Horno::Patrol::start()
 
 void El_Horno::Patrol::update()
 {
+	if (sleepThresh_) {
+		rb_->setSleepingThresholds(0,0);
+		sleepThresh_ = false;
+	}
 	if (!positions_.empty()) {
 
 		if (isWaiting())
