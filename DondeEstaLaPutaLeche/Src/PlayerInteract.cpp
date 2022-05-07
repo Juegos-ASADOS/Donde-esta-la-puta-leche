@@ -50,6 +50,7 @@ void El_Horno::PlayerInteract::start()
 
 void El_Horno::PlayerInteract::update()
 {
+	cout << entity_->getChild("cart")->getComponent<Transform>("transform")->getHornoGlobalPosition().y_ << endl;
 	//Si pulsas la tecla R...
 	if (input_->getKeyDown(SDL_SCANCODE_R) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_B)) {
 		dropItem();
@@ -270,7 +271,8 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 				entity_->getChild("cart")->setActive(true);
 				SceneManager::getInstance()->getCurrentScene()->deleteEntity(triggerStay_->getParent()->getName());
 
-				entity_->getComponent<RigidBody>("rigidbody")->setScale(HornoVector3(0.3, 0.7, 1.3));
+				auto rb = entity_->getComponent<RigidBody>("rigidbody");
+				rb->setScale(HornoVector3(0.3, 0.7, 1.3));
 
 				int i = 0;
 				bool found = false;
@@ -283,7 +285,7 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 				}
 				triggerStay_ = nullptr;
 				//Habr� que ajustar esto para posicionar al carro justo agarrado de la mano del player
-				auto rb = entity_->getComponent<RigidBody>("rigidbody");
+				
 				rb->setDamping(0.5f, 0.5f);
 				auto pc = entity_->getComponent<PlayerController>("playercontroller");
 				pc->setSpeed(450);
@@ -302,6 +304,7 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 
 				//Si esta dentro de la lista...
 				if (GameManager::getInstance()->checkObject(idName)) {
+					//string = entity_->getChild("cart")->getC
 					//Y cambio el carrito d tama�o
 					changeCartSize(entity);
 					changeCartSize(entity_->getChild("cart"));
@@ -507,7 +510,7 @@ void El_Horno::PlayerInteract::changeCartSize(Entity* entity)
 	//Y metemos el nuevo
 	entity->addComponent<Mesh>("mesh", "Carrito_" + nCarrito);
 	entity->getComponent<Mesh>("mesh")->awake();
-	entity->getComponent<Mesh>("mesh")->start();
+	//entity->getComponent<Mesh>("mesh")->start();
 }
 
 void El_Horno::PlayerInteract::instanciateCart()
@@ -515,7 +518,9 @@ void El_Horno::PlayerInteract::instanciateCart()
 	//Carro hijo del player
 	Transform* tr = entity_->getChild("cart")->getComponent<Transform>("transform");
 	Entity* cart = SceneManager::getInstance()->getCurrentScene()->addEntity("cartInstance", "prueba");
-	cart->addComponent<Transform>("transform", OgreVectorToHorno(tr->getGlobalPosition()),
+	HornoVector3 pos = tr->getHornoGlobalPosition();
+	pos.y_ += 3;
+	cart->addComponent<Transform>("transform", pos,
 		HornoVector3(0, 0, 0), HornoVector3(0.93, 0.93, 0.93));
 	float p = GameManager::getInstance()->getProductCompletionPercentaje();
 	if (p == 100)
@@ -532,7 +537,7 @@ void El_Horno::PlayerInteract::instanciateCart()
 	cart->addComponent<RigidBody>("rigidbody", 100.0f, false, false, 0); //las amtes
 	cart->awake();
 	cart->start();
-	cart->getComponent<RigidBody>("rigidbody")->setScale(HornoVector3(1,0.2,1));
+	cart->getComponent<RigidBody>("rigidbody")->setScale(HornoVector3(1,0.4,1));
 	cart->getComponent<RigidBody>("rigidbody")->setAngularFactor(0);
 	//Trigger del carrito
 	Entity* trig = SceneManager::getInstance()->getCurrentScene()->addEntity("cartTriggerInstance", "prueba", cart);
