@@ -72,7 +72,7 @@ void El_Horno::PlayerInteract::update()
 		GameManager::getInstance()->setTicketTurno();
 
 		//Audio
-		entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/ComidaLista.mp3");
+		entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/ComidaLista.mp3",120.0f);
 	}
 
 	// Empieza a quedarse sin tiempo
@@ -95,7 +95,7 @@ void El_Horno::PlayerInteract::update()
 		cout << "timer pescao terminao\n";
 		fishTimerRunning_ = false;
 		//Audio
-		entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/ComidaLista.mp3");
+		entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/ComidaLista.mp3",120.0f);
 	}
 
 	processCollisionStay();
@@ -259,6 +259,8 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 			pc->setPlayerState(El_Horno::PLAYER_DEFAULT);
 			anim_->setAnimBool("AnyState", "Idle", true);
 			carryingCart_ = false;
+			//Audio
+			entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/SoltarObjeto.mp3", 70.0f);
 		}
 		else {
 			//Si no tiene nada en la mano...
@@ -290,7 +292,7 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 				carryingCart_ = true;
 				std::cout << "Coger carrito\n";
 				//Audio
-				//entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/Carrito.mp3");
+				entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/Objeto.mp3", 70.0f);
 			}
 			//Si lo que quiero es meter un objeto...
 			else if (!productLocked_) {
@@ -305,12 +307,12 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 					changeCartSize(entity_->getChild("cart"));
 					entity_->getChild("cart")->getComponent<Mesh>("mesh")->setActive(false);
 					//Audio //Meter objeto en el carro
-					entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/SoltarObjeto.mp3");
+					entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/SoltarObjeto.mp3",80.0f);
 				}
 				//Si te has equivocado...
 				else {
 					//Audio
-					entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/MalAlimento.mp3");
+					entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/MalAlimento.mp3",70.0f);
 				}
 				deleteAliment(true);
 
@@ -353,7 +355,7 @@ void El_Horno::PlayerInteract::manageMeatTicket()
 		meatTimer_->resetTimer();
 		ticketTimerRunning_ = true;
 		//Audio
-		entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/Ticket.mp3");
+		entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/Ticket.mp3",90.0f);
 
 		GameManager::getInstance()->setTicketIntro();
 	}
@@ -384,7 +386,7 @@ void El_Horno::PlayerInteract::manageFishCleaner()
 			pc->setPlayerState(El_Horno::PLAYER_DEFAULT);
 			anim_->setAnimBool("AnyState", "Idle", true);
 			//Audio
-			entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/CortarAlimento.mp3");
+			entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/CortarAlimento.mp3",80.0f);
 		}
 	}
 	else if (fishObtainable_ && handObject_ == nullptr) {
@@ -459,7 +461,7 @@ void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 	entity_->getComponent<RigidBody>("rigidbody")->setLinearVelocity(HornoVector3(0, 0, 0));
 
 	//Audio
-	entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/CogerObjerto.mp3");
+	entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/CogerObjeto.mp3",80.0f);
 }
 
 void El_Horno::PlayerInteract::managePuddle()
@@ -478,7 +480,7 @@ void El_Horno::PlayerInteract::dropItem()
 		pc->setPlayerState(El_Horno::PLAYER_DEFAULT);
 		anim_->setAnimBool("AnyState", "Idle", true);
 		//Audio
-		entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/SoltarObjeto.mp3");
+		entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/SoltarObjeto.mp3",80.0f);
 	}
 }
 

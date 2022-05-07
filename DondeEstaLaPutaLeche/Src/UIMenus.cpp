@@ -156,7 +156,7 @@ namespace El_Horno {
 		this->setActive(false);
 
 		AudioManager::getInstance()->stopMusic();
-		AudioManager::getInstance()->playSound("Musica/Nivel.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)), 50.0f, true);
+		AudioManager::getInstance()->playSound("Musica/Nivel.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)), 3.0f, true);
 
 		std::string a = "theEnd2";
 		LuaManager::getInstance()->pushString(a, "scene");
