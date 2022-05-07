@@ -512,7 +512,7 @@ void El_Horno::PlayerInteract::instanciateCart()
 	Transform* tr = entity_->getChild("cart")->getComponent<Transform>("transform");
 	Entity* cart = SceneManager::getInstance()->getCurrentScene()->addEntity("cartInstance", "prueba");
 	cart->addComponent<Transform>("transform", OgreVectorToHorno(tr->getGlobalPosition()),
-		HornoVector3(0, 0, 0), HornoVector3(1.2, 1.2, 1.2));
+		HornoVector3(0, 0, 0), HornoVector3(0.93, 0.93, 0.93));
 	float p = GameManager::getInstance()->getProductCompletionPercentaje();
 	if (p == 100)
 		cart->addComponent<Mesh>("mesh", "Carrito_4");
@@ -528,11 +528,11 @@ void El_Horno::PlayerInteract::instanciateCart()
 	cart->addComponent<RigidBody>("rigidbody", 100.0f, false, false, 0); //las amtes
 	cart->awake();
 	cart->start();
-	cart->getComponent<RigidBody>("rigidbody")->setScale(HornoVector3(0.3, 0.1, 0.3));
+	cart->getComponent<RigidBody>("rigidbody")->setScale(HornoVector3(1,0.2,1));
 	cart->getComponent<RigidBody>("rigidbody")->setAngularFactor(0);
 	//Trigger del carrito
 	Entity* trig = SceneManager::getInstance()->getCurrentScene()->addEntity("cartTriggerInstance", "prueba", cart);
-	trig->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(3.5, 3, 3.5));
+	trig->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(3.6, 3, 3.2));
 	trig->addComponent<RigidBody>("rigidbody", 1.0f, true, true, 0);
 	trig->addComponent<EntityId>("entityid", Type::CART);
 	trig->awake();
