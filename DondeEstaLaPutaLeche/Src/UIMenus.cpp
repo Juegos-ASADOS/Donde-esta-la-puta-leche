@@ -7,6 +7,8 @@
 #include <Entity.h>
 #include <ElHornoBase.h>
 #include "GameManager.h"
+#include "CameraComponent.h"
+
 
 #include "InputManager.h"
 #include "AudioManager.h"
@@ -68,6 +70,11 @@ namespace El_Horno {
 		helperFunction = std::bind(&UIMenus::vuelveOpcionesMenu, this, std::placeholders::_1);
 		UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal_Opciones", "Menu/BotonVolver", helperFunction);
 
+		helperFunction = std::bind(&UIMenus::resUp, this, std::placeholders::_1);
+		UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal_Opciones", "Menu/FlechaDer", helperFunction);
+		helperFunction = std::bind(&UIMenus::resDown, this, std::placeholders::_1);
+		UIManager::getInstance()->subscribeLayoutChildEvent("MenuPrincipal_Opciones", "Menu/FlechaIz", helperFunction);
+
 		//menu opciones desde la pausa
 
 		helperFunction = std::bind(&UIMenus::restaMusica, this, std::placeholders::_1);
@@ -80,6 +87,10 @@ namespace El_Horno {
 		UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/SumaEfectos", helperFunction);
 		helperFunction = std::bind(&UIMenus::vuelveOpcionesPausa, this, std::placeholders::_1);
 		UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/BotonVolver", helperFunction);
+		helperFunction = std::bind(&UIMenus::resUp, this, std::placeholders::_1);
+		UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/FlechaDer", helperFunction);
+		helperFunction = std::bind(&UIMenus::resDown, this, std::placeholders::_1);
+		UIManager::getInstance()->subscribeLayoutChildEvent("Pausa_Opciones", "Menu/FlechaIz", helperFunction);
 
 		//Pausa
 
@@ -283,6 +294,19 @@ namespace El_Horno {
 		std::string a = "inicio";
 		LuaManager::getInstance()->pushString(a, "scene");
 		LuaManager::getInstance()->callLuaFunction("loadNextScene");
+
+		return true;
+	}
+
+	bool UIMenus::resUp(const CEGUI::EventArgs& e) {
+
+		LuaManager::getInstance()->callLuaFunction("setResolutionUp");
+
+		return true;
+	}
+	bool UIMenus::resDown(const CEGUI::EventArgs& e) {
+
+		LuaManager::getInstance()->callLuaFunction("setResolutionDown");
 
 		return true;
 	}

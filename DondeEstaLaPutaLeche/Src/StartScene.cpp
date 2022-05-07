@@ -20,7 +20,6 @@
 #include <LuaManager.h>
 #include <SceneManager.h>
 #include <AudioManager.h>
-#include <PhysicsManager.h>
 #include <GameManager.h>
 #include "UIMenus.h"
 #include "UIGame.h"
@@ -29,9 +28,6 @@ namespace El_Horno {
 	void StartScene::init(std::string name)
 	{
 		name_ = name;
-		//testScene();
-		//menuPrincipal();
-		PhysicsManager::getInstance()->setDebug(true);
 		LuaManager::getInstance()->loadScene();
 		AudioManager::getInstance()->stopMusic();
 		AudioManager::getInstance()->playSound("Musica/Menu.mp3", HornoVectorToFmod(HornoVector3(0, 100, 0)), 50.0f, true);
@@ -39,11 +35,6 @@ namespace El_Horno {
 
 	void StartScene::testScene()
 	{
-		// GameManager
-	/*	Entity* a = addEntity("gamemanager", "prueba");
-		a->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(0, 0, 0));
-		a->addComponent<GameManager>("gamemanager");
-		a->setDontDestryOnLoad(true);*/
 
 		// Light
 		Entity* a = addEntity("light", "prueba");
