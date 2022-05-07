@@ -34,7 +34,7 @@ namespace El_Horno {
 		PhysicsManager::getInstance()->setDebug(true);
 		LuaManager::getInstance()->loadScene();
 		AudioManager::getInstance()->stopMusic();
-		AudioManager::getInstance()->playSound("Musica/Menu.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)), 50.0f, true);
+		AudioManager::getInstance()->playSound("Musica/Menu.mp3", HornoVectorToFmod(HornoVector3(0, 100, 0)), 50.0f, true);
 	}
 
 	void StartScene::testScene()
