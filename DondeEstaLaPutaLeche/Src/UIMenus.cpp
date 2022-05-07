@@ -177,7 +177,7 @@ namespace El_Horno {
 		//pues decirle a todo el cacharro que se salga no tiene mas
 
 		ElHornoBase::getInstance()->setExit();
-		hide("MenuPrincipal");
+		//hide("MenuPrincipal");
 		return true;
 
 	}
