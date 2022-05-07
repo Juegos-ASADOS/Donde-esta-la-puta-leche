@@ -359,7 +359,7 @@ void El_Horno::GameManager::resetList()
 		//std::string tick = "Tick_" + std::to_string(i);
 		//UIManager::getInstance()->setChildProperty("Nivel_Ingame", tick, "Image", "DondeTaLeche/Producto_Vacio");
 
-		UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Tick_" + std::to_string(i), "Visible", "false");
+		UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Tick_" + std::to_string(i + 1), "Visible", "false");
 
 	}
 
