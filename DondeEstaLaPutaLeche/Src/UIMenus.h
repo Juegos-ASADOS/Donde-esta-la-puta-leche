@@ -37,6 +37,8 @@ namespace El_Horno {
         bool volverCreditosButton(const CEGUI::EventArgs& e);
         bool volverVictoriaButton(const CEGUI::EventArgs& e);
         bool volverDerrotaButton(const CEGUI::EventArgs& e);
+        bool resUp(const CEGUI::EventArgs& e);
+        bool resDown(const CEGUI::EventArgs& e);
 
     private:
 
