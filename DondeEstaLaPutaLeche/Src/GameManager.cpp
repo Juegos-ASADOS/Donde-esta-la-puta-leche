@@ -210,7 +210,7 @@ void El_Horno::GameManager::update()
 		for (int i = 0; i < endingEggs_; i++) {
 			UIManager::getInstance()->subscribeLayoutChildVisibility("Victoria", "Ovo" + to_string(i + 1), true);
 		}
-		//win_ = false;
+		win_ = false;
 	}
 	if (input_->isKeyDown(SDL_SCANCODE_J)) {
 		win_ = true;
