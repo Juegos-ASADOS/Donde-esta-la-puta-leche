@@ -184,28 +184,24 @@ namespace El_Horno {
 
 	//menu opciones, para los dos salvo que sea el del opciones pausa
 	bool UIMenus::restaMusica(const CEGUI::EventArgs& e) {
-		LuaManager::getInstance()->callLuaFunction("setMusicDown");
-		std::cout << "resta musica\n";
+		LuaManager::getInstance()->callLuaFunction("setResolutionDown");
 		return true;
 	}
 
 	bool UIMenus::sumaMusica(const CEGUI::EventArgs& e) {
-		LuaManager::getInstance()->callLuaFunction("setMusicUp");
-		std::cout << "suma musica\n";
+		LuaManager::getInstance()->callLuaFunction("setResolutionUp");
 		return true;
 	}
 
 	bool UIMenus::restaEfectos(const CEGUI::EventArgs& e) {
 		LuaManager::getInstance()->callLuaFunction("setFxDown");
 		AudioManager::getInstance()->playSound("SFX/CogerObjeto.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)));
-		std::cout << "resta sonido efectos\n";
 		return true;
 	}
 
 	bool UIMenus::sumaEfectos(const CEGUI::EventArgs& e) {
 		LuaManager::getInstance()->callLuaFunction("setFxUp");
 		AudioManager::getInstance()->playSound("SFX/CogerObjeto.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)));
-		std::cout << "suma sonido efectos\n";
 		return true;
 	}
 
