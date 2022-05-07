@@ -7,6 +7,8 @@
 #include <Entity.h>
 #include <ElHornoBase.h>
 #include "GameManager.h"
+#include "CameraComponent.h"
+
 
 #include "InputManager.h"
 #include "AudioManager.h"
