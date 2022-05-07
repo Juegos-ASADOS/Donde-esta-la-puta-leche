@@ -184,12 +184,12 @@ namespace El_Horno {
 
 	//menu opciones, para los dos salvo que sea el del opciones pausa
 	bool UIMenus::restaMusica(const CEGUI::EventArgs& e) {
-		LuaManager::getInstance()->callLuaFunction("setResolutionDown");
+		LuaManager::getInstance()->callLuaFunction("setMusicDown");
 		return true;
 	}
 
 	bool UIMenus::sumaMusica(const CEGUI::EventArgs& e) {
-		LuaManager::getInstance()->callLuaFunction("setResolutionUp");
+		LuaManager::getInstance()->callLuaFunction("setMusicUp");
 		return true;
 	}
 
