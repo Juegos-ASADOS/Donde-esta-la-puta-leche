@@ -197,14 +197,14 @@ namespace El_Horno {
 
 	bool UIMenus::restaEfectos(const CEGUI::EventArgs& e) {
 		LuaManager::getInstance()->callLuaFunction("setFxDown");
-		AudioManager::getInstance()->playSound("SFX/CogerObjeto.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)), 50.0f, true);
+		AudioManager::getInstance()->playSound("SFX/CogerObjeto.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)));
 		std::cout << "resta sonido efectos\n";
 		return true;
 	}
 
 	bool UIMenus::sumaEfectos(const CEGUI::EventArgs& e) {
 		LuaManager::getInstance()->callLuaFunction("setFxUp");
-		AudioManager::getInstance()->playSound("SFX/CogerObjeto.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)), 50.0f, true);
+		AudioManager::getInstance()->playSound("SFX/CogerObjeto.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)));
 		std::cout << "suma sonido efectos\n";
 		return true;
 	}
