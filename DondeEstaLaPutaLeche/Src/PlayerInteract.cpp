@@ -494,8 +494,10 @@ void El_Horno::PlayerInteract::changeCartSize(Entity* entity)
 		nCarrito = "3";
 	else if (porcentaje >= 33)
 		nCarrito = "2";
-	else
+	else if (porcentaje > 0)
 		nCarrito = "1";
+	else
+		nCarrito = "0";
 
 	//Cambia a medio vacio
 		//Eliminamos el mesh

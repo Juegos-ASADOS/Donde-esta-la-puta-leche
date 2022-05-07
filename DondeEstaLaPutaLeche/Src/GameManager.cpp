@@ -211,10 +211,8 @@ void El_Horno::GameManager::update()
 			UIManager::getInstance()->subscribeLayoutChildVisibility("Victoria", "Ovo" + to_string(i + 1), true);
 		}
 		win_ = false;
-	}
-	if (input_->isKeyDown(SDL_SCANCODE_J)) {
-		win_ = true;
-		gameState_ = GameState::RUNNING;
+		productNum_ = maxProducts_;
+		paidFood = 0;
 	}
 	/*if (input_->isKeyDown(SDL_SCANCODE_K)) {
 		LuaManager::getInstance()->callLuaFunction("loadNextScene");
@@ -310,7 +308,7 @@ void El_Horno::GameManager::checkEnd()
 // la cantidad mostrada en la mesh
 const float El_Horno::GameManager::getProductCompletionPercentaje()
 {
-	return 100 - (((float)productNum_ - (float)paidFood) / (float)maxProducts_ * 100);
+	return 100 - (((float)productNum_ + (float)paidFood) / (float)maxProducts_ * 100);
 }
 
 void El_Horno::GameManager::paidFoodMum()
@@ -345,7 +343,7 @@ void El_Horno::GameManager::setList()
 void El_Horno::GameManager::resetList()
 {
 	// Recorremos el mapa de la lista
-	for (int i = 1; i < MAX_PRODUCTOS; i++)
+	for (int i = 1; i <= MAX_PRODUCTOS; i++)
 	{
 		// Poner imagen vacia
 		std::string name = "Producto_" + std::to_string(i);
@@ -359,7 +357,7 @@ void El_Horno::GameManager::resetList()
 		//std::string tick = "Tick_" + std::to_string(i);
 		//UIManager::getInstance()->setChildProperty("Nivel_Ingame", tick, "Image", "DondeTaLeche/Producto_Vacio");
 
-		UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Tick_" + std::to_string(i + 1), "Visible", "false");
+		UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Tick_" + std::to_string(i), "Visible", "false");
 	}
 
 }
