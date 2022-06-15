@@ -233,7 +233,7 @@ void El_Horno::GameManager::pauseUpdate()
 }
 
 // Establece los parametros iniciales de scene
-void El_Horno::GameManager::setLevel(float maxTime, std::map<std::string, int> list, int productNum)
+void El_Horno::GameManager::setLevel(float maxTime, std::unordered_map<std::string, int> list, int productNum)
 {
 	wrongProducts_ = 0;
 	maxTime_ = maxTime;

@@ -27,7 +27,7 @@ namespace El_Horno {
 		void update() override;
 		void pauseUpdate() override;
 
-		void setLevel(float maxTime, std::map<std::string, int> list, int proctNum);
+		void setLevel(float maxTime, std::unordered_map<std::string, int> list, int proctNum);
 
 		bool checkObject(std::string objectId);
 		void togglePaused();
@@ -35,7 +35,7 @@ namespace El_Horno {
 		inline const bool hasWon() { return win_; };
 		inline const int getWrongProductNumber() { return wrongProducts_; };
 		const float getProductCompletionPercentaje();
-		inline const std::map<std::string, int> getList() { return list_; };
+		inline const std::unordered_map<std::string, int> getList() { return list_; };
 
 		//Se llama cuando vas a darle la compra a la madre
 		void paidFoodMum();
@@ -54,7 +54,7 @@ namespace El_Horno {
 	protected:
 		const int MAX_PRODUCTOS = 6; //maximo numero de productos diferentes por lista (que no caben en la UI) de 1 a 6 no de 0 a 6
 		static GameManager* instance_;
-		std::map<std::string, int> list_;
+		std::unordered_map<std::string, int> list_;
 
 		GameState gameState_;
 		Entity* interfaz_;
