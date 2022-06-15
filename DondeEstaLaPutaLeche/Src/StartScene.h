@@ -8,10 +8,7 @@ namespace El_Horno {
 	class StartScene : public Scene
 	{
 	public:
-		//StartScene() : Scene() {};
 		virtual void init(std::string name) override;
-		void testScene();
-		void menuPrincipal();
 	};
 }
 
