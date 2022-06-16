@@ -333,8 +333,8 @@ void El_Horno::GameManager::setList()
 
 		// Poner la cantidad de ese producto
 		std::string cant = "Num_" + std::to_string(i);
-		if (product.second > 1)
-			UIManager::getInstance()->setChildProperty("Nivel_Ingame", cant, "Image", "DondeTaLeche/X" + std::to_string(product.second));
+		UIManager::getInstance()->setChildProperty("Nivel_Ingame", cant, "Image", "DondeTaLeche/X" + std::to_string(product.second));
+
 		i++;
 	}
 
