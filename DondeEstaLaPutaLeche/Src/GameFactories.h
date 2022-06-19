@@ -6,7 +6,7 @@
 #include "FactoryCreator.h"
 
 namespace El_Horno {
-	namespace Game {
+	namespace Donde_Esta_La_Puta_Leche {
 		inline void addFactories() {
 			FactoryCreator* creator = ElHornoBase::getInstance()->getFactoryCreator();
 

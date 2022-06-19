@@ -7,27 +7,29 @@
 #include "UIManager.h"
 
 namespace El_Horno {
-	class UIGame : public Component
-	{
-	public:
-		UIGame();
+	namespace Donde_Esta_La_Puta_Leche {
+		class UIGame : public Component
+		{
+		public:
+			UIGame();
 
-		void start() override;
-		void update() override;
+			void start() override;
+			void update() override;
 
-		void setTicketIntro();
-		void setTicketTurno();
-		void setTicketLimite();
-		void hideTicket();
-		void setList();
+			void setTicketIntro();
+			void setTicketTurno();
+			void setTicketLimite();
+			void hideTicket();
+			void setList();
 
-	private:
+		private:
 
-		void show(std::string menu);
-		void hide(std::string menu);
+			void show(std::string menu);
+			void hide(std::string menu);
 
-		Entity* menu = nullptr;
-	};
+			Entity* menu = nullptr;
+		};
+	}
 }
 #endif _UI_GAME_H
 

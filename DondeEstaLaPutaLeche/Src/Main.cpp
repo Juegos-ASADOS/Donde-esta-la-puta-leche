@@ -9,14 +9,14 @@ extern "C"
 {
 
 	_declspec(dllexport) void addGameFactories() {
-		El_Horno::Game::addFactories();
+		El_Horno::Donde_Esta_La_Puta_Leche::addFactories();
 	}
 
 	_declspec(dllexport) El_Horno::Scene* loadStartScene() {
-		El_Horno::StartScene* start = new El_Horno::StartScene();
+		El_Horno::Donde_Esta_La_Puta_Leche::StartScene* start = new El_Horno::Donde_Esta_La_Puta_Leche::StartScene();
 		El_Horno::SceneManager::getInstance()->setScene(start);
-		El_Horno::GameComponentPusher::pushGameComponents();
-		El_Horno::ScenePusher::pushScenes();
+		El_Horno::Donde_Esta_La_Puta_Leche::GameComponentPusher::pushGameComponents();
+		El_Horno::Donde_Esta_La_Puta_Leche::ScenePusher::pushScenes();
 		start->init("inicio");
 		//start->testScene();
 		return start;

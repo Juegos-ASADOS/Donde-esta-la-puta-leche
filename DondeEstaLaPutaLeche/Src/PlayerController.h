@@ -10,34 +10,36 @@ namespace El_Horno {
 	class Transform;
 	class InputManager;
 	class AnimatorController;
-	
-	enum PLayerState { PLAYER_DEFAULT, PLAYER_CART, PLAYER_PRODUCT };
+	namespace Donde_Esta_La_Puta_Leche {
 
-	class PlayerController : public Component
-	{
-	public:
-		PlayerController(float s) : speed_(s), maxForce_(100) {};
-		PlayerController() {};
+		enum PLayerState { PLAYER_DEFAULT, PLAYER_CART, PLAYER_PRODUCT };
 
-		void setParameters(std::vector<std::pair<std::string, std::string>> parameters) override;
-		void start() override;
-		void update() override;
-		inline void setSpeed(float s) { speed_ = s; };
-		inline void setSliding(bool sl) { sliding_ = sl; };
-		void setPlayerState(PLayerState s);
+		class PlayerController : public Component
+		{
+		public:
+			PlayerController(float s) : speed_(s), maxForce_(100) {};
+			PlayerController() {};
 
-	protected:
-		float speed_;
-		RigidBody* rb_;
-		Transform* tb_;
-		InputManager* input_;
-		int maxForce_,
-			offset_;
-		AnimatorController* anim_;
-		bool walking_;
-		bool sliding_ = false;
-		PLayerState pState_;
-	};
+			void setParameters(std::vector<std::pair<std::string, std::string>> parameters) override;
+			void start() override;
+			void update() override;
+			inline void setSpeed(float s) { speed_ = s; };
+			inline void setSliding(bool sl) { sliding_ = sl; };
+			void setPlayerState(PLayerState s);
+
+		protected:
+			float speed_;
+			RigidBody* rb_;
+			Transform* tb_;
+			InputManager* input_;
+			int maxForce_,
+				offset_;
+			El_Horno::AnimatorController* anim_;
+			bool walking_;
+			bool sliding_ = false;
+			PLayerState pState_;
+		};
+	}
 }
 #endif 
 

@@ -3,7 +3,8 @@
 #include "PlayerInteract.h"
 #include "Entity.h"
 
-void El_Horno::EntityId::setParameters(std::vector<std::pair<std::string, std::string>> parameters)
+using namespace El_Horno;
+void Donde_Esta_La_Puta_Leche::EntityId::setParameters(std::vector<std::pair<std::string, std::string>> parameters)
 {
 	for (int i = 0; i < parameters.size(); i++) {
 		if (parameters[i].first == "type") {
@@ -18,7 +19,7 @@ void El_Horno::EntityId::setParameters(std::vector<std::pair<std::string, std::s
 	}
 }
 
-bool El_Horno::EntityId::recieveEvent(Event* ev)
+bool Donde_Esta_La_Puta_Leche::EntityId::recieveEvent(Event* ev)
 {
 	//Procesa los eventos de entrada/salida en él, y actualiza la entidad trigger de PlayerInteract en caso de que sea el jugador
 	if (ev->ty_ == EventType::TriggerEnter || ev->ty_ == EventType::TriggerExit) {

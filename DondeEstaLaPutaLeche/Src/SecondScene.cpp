@@ -22,10 +22,10 @@
 #include <GameManager.h>
 #include <UIMenus.h>
 
-namespace El_Horno {
-	void SecondScene::init(std::string name)
-	{
-		name_ = name;
-		LuaManager::getInstance()->loadScene();
-	}
+using namespace El_Horno;
+
+void Donde_Esta_La_Puta_Leche::SecondScene::init(std::string name)
+{
+	name_ = name;
+	LuaManager::getInstance()->loadScene();
 }

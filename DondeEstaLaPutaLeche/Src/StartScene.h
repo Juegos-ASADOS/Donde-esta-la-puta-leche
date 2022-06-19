@@ -5,11 +5,13 @@
 #include <Scene.h>
 
 namespace El_Horno {
-	class StartScene : public Scene
-	{
-	public:
-		virtual void init(std::string name) override;
-	};
+	namespace Donde_Esta_La_Puta_Leche {
+		class StartScene : public Scene
+		{
+		public:
+			virtual void init(std::string name) override;
+		};
+	}
 }
 
 #endif 

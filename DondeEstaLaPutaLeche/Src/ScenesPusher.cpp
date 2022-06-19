@@ -3,7 +3,8 @@
 #include <SecondScene.h>
 #include <StartScene.h>
 
-void El_Horno::ScenePusher::pushScenes()
+using namespace El_Horno;
+void Donde_Esta_La_Puta_Leche::ScenePusher::pushScenes()
 {
 	SceneManager::getInstance()->allScenes.emplace("prueba", SceneManager::getInstance()->addScene<SecondScene>);
 	SceneManager::getInstance()->allScenes.emplace("theEnd2", SceneManager::getInstance()->addScene<SecondScene>);

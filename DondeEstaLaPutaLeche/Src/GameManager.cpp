@@ -18,40 +18,28 @@
 #include <sstream>
 
 using namespace El_Horno;
+using namespace Donde_Esta_La_Puta_Leche;
 
 GameManager* GameManager::instance_ = 0;
 
-El_Horno::GameManager::GameManager()
+GameManager::GameManager()
 {
 	LuaManager::getInstance()->readLuaScript("prefabs");
-	gameTimer_ = new Timer();
+	gameTimer_ = new El_Horno::Timer();
 	gameState_ = GameState::MAINMENU;
 }
 
-
-
-El_Horno::GameManager::~GameManager()
-
+GameManager::~GameManager()
 {
-
 	if (this == instance_) {
-
 		instance_ = nullptr;
-
 	}
-
 	else {
-
 		delete instance_;
-
 	}
-
-
 
 	if (gameTimer_ != nullptr)
-
 		delete gameTimer_; gameTimer_ = nullptr;
-
 }
 
 GameManager* GameManager::getInstance()
@@ -76,7 +64,7 @@ void GameManager::erase()
 	delete instance_;
 }
 
-void El_Horno::GameManager::setParameters(std::vector<std::pair<std::string, std::string>> parameters)
+void GameManager::setParameters(std::vector<std::pair<std::string, std::string>> parameters)
 {
 	for (int i = 0; i < parameters.size(); i++) {
 		if (parameters[i].first == "state") {
@@ -118,7 +106,7 @@ void El_Horno::GameManager::setParameters(std::vector<std::pair<std::string, std
 	}
 }
 
-void El_Horno::GameManager::start()
+void GameManager::start()
 {
 	if (setupInstance()) {
 
@@ -133,7 +121,7 @@ void El_Horno::GameManager::start()
 	}
 }
 
-void El_Horno::GameManager::update()
+void GameManager::update()
 {
 	if (gameState_ == GameState::RUNNING) {
 		if (tutorialShown_ == 3) {
@@ -150,7 +138,7 @@ void El_Horno::GameManager::update()
 			tutorialShown_--;
 		}
 
-	//actualizar la ui del reloj
+		//actualizar la ui del reloj
 
 		string var = "Nivel_Ingame";
 		LuaManager::getInstance()->pushString(var, "layout");
@@ -164,19 +152,8 @@ void El_Horno::GameManager::update()
 
 		//comprobacion del pause
 
-		if (input_->getKeyDown(SDL_SCANCODE_ESCAPE)) 
-			togglePaused();	
-		//AudioManager::getInstance()->SetChannel3dPosition(AudioManager::getInstance()->getMusicChannel(), SceneManager::getInstance()->getCurrentScene()->getEntity("camera")->getComponent<Transform>("transform")->getPosition())
-		/*if (tiempo == (maxTime_ / 3.0f*2))
-		{
-			AudioManager::getInstance()->stopMusic();
-			AudioManager::getInstance()->playSound("Musica/Nivel.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)), 50.0f, true);
-
-		}
-		else if (tiempo == maxTime_ / 3.0f) {
-			AudioManager::getInstance()->stopMusic();
-			AudioManager::getInstance()->playSound("Musica/Nivel.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)), 50.0f, true);
-		}*/
+		if (input_->getKeyDown(SDL_SCANCODE_ESCAPE))
+			togglePaused();
 	}
 
 
@@ -214,13 +191,9 @@ void El_Horno::GameManager::update()
 		productNum_ = maxProducts_;
 		paidFood = 0;
 	}
-	/*if (input_->isKeyDown(SDL_SCANCODE_K)) {
-		LuaManager::getInstance()->callLuaFunction("loadNextScene");
-		return;
-	}*/
 }
 
-void El_Horno::GameManager::pauseUpdate()
+void GameManager::pauseUpdate()
 {
 
 	//capaz no queremos ahcer esto pero idk
@@ -233,7 +206,7 @@ void El_Horno::GameManager::pauseUpdate()
 }
 
 // Establece los parametros iniciales de scene
-void El_Horno::GameManager::setLevel(float maxTime, std::unordered_map<std::string, int> list, int productNum)
+void GameManager::setLevel(float maxTime, std::unordered_map<std::string, int> list, int productNum)
 {
 	wrongProducts_ = 0;
 	maxTime_ = maxTime;
@@ -254,7 +227,7 @@ void El_Horno::GameManager::setLevel(float maxTime, std::unordered_map<std::stri
 
 // Busca la id en la lista, si est�, resta uno a second. Si no est�
 // o est� a 0 devuelve false y a�ade un producto erroneo
-bool El_Horno::GameManager::checkObject(std::string objectId)
+bool GameManager::checkObject(std::string objectId)
 {
 	auto it = list_.find(objectId);
 	if (it != list_.end() && it->second > 0) {
@@ -276,7 +249,7 @@ bool El_Horno::GameManager::checkObject(std::string objectId)
 // Activa o desactiva la pausa y el gameTimer
 // en consecuencia (IGUAL HAY QUE CAMBIAR ESTO
 // A QUE UTILICE EL DELTATIME)
-void El_Horno::GameManager::togglePaused()
+void GameManager::togglePaused()
 {
 	ElHornoBase::getInstance()->pause();
 	if (gameState_ == GameState::RUNNING) {
@@ -298,7 +271,7 @@ void El_Horno::GameManager::togglePaused()
 
 // Comprueba si est�n todos los objetos en el carro
 // para dar por valida la victoria
-void El_Horno::GameManager::checkEnd()
+void GameManager::checkEnd()
 {
 	if (productNum_ <= 0)
 		win_ = true;
@@ -306,12 +279,12 @@ void El_Horno::GameManager::checkEnd()
 
 // Comprueba el procentaje de productos en el carro para cambiar 
 // la cantidad mostrada en la mesh
-const float El_Horno::GameManager::getProductCompletionPercentaje()
+const float GameManager::getProductCompletionPercentaje()
 {
 	return 100 - (((float)productNum_ + (float)paidFood) / (float)maxProducts_ * 100);
 }
 
-void El_Horno::GameManager::paidFoodMum()
+void GameManager::paidFoodMum()
 {
 	//Todos los que hay - los que te faltan por comprar = los que has llevado a la madre
 	paidFood = maxProducts_ - productNum_;
@@ -321,7 +294,7 @@ void El_Horno::GameManager::paidFoodMum()
 // UI //
 // METODOS PARA MODIFICAR LA UI
 // UI //
-void El_Horno::GameManager::setList()
+void GameManager::setList()
 {
 	// Recorremos el mapa de la lista
 	int i = 1;
@@ -340,7 +313,7 @@ void El_Horno::GameManager::setList()
 
 }
 //Resetea todos los elementos de la lista a vacio
-void El_Horno::GameManager::resetList()
+void GameManager::resetList()
 {
 	// Recorremos el mapa de la lista
 	for (int i = 1; i <= MAX_PRODUCTOS; i++)
@@ -353,51 +326,47 @@ void El_Horno::GameManager::resetList()
 		std::string cant = "Num_" + std::to_string(i);
 		UIManager::getInstance()->setChildProperty("Nivel_Ingame", cant, "Image", "DondeTaLeche/Producto_Vacio");
 
-		// Poner la imagen vacia tick
-		//std::string tick = "Tick_" + std::to_string(i);
-		//UIManager::getInstance()->setChildProperty("Nivel_Ingame", tick, "Image", "DondeTaLeche/Producto_Vacio");
-
 		UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Tick_" + std::to_string(i), "Visible", "false");
 	}
 
 }
 
 // Sacamos el ticket de espera
-void El_Horno::GameManager::setTicketIntro()
+void GameManager::setTicketIntro()
 {
 	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Ticket_Espera", "Visible", "true");
 }
 
 // Tu turno
-void El_Horno::GameManager::setTicketTurno()
+void GameManager::setTicketTurno()
 {
 	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Ticket_Espera", "Visible", "false");
 	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Ticket", "Visible", "true");
 }
 
 // Tu turno
-void El_Horno::GameManager::setTicketLimite()
+void GameManager::setTicketLimite()
 {
 	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Ticket", "Visible", "false");
 	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Ticket_Paso", "Visible", "true");
 }
 
 // Esconder tickets
-void El_Horno::GameManager::hideTicket()
+void GameManager::hideTicket()
 {
 	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Ticket_Paso", "Visible", "false");
 	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Ticket", "Visible", "false");
 }
 
 // Se llama cuando hay que poner un tick en la lista, se le pasa el nombre y la pos en el mapa
-void El_Horno::GameManager::checkProductUI(std::string productId, int i)
+void GameManager::checkProductUI(std::string productId, int i)
 {
 	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Tick_" + std::to_string(i), "Visible", "true");
 }
 
 // Se usa para enseñar un tutorial
 // strings =  Inicio, Baldas, Fruta, Pescado, Carne 
-void El_Horno::GameManager::showTutorial(std::string name)
+void GameManager::showTutorial(std::string name)
 {
 	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Tutorial", "Visible", "true");
 	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Tutorial_" + name, "Visible", "true");
@@ -405,7 +374,7 @@ void El_Horno::GameManager::showTutorial(std::string name)
 }
 
 // Se usa para esconder el tutorial actual
-void El_Horno::GameManager::hideTutorial()
+void GameManager::hideTutorial()
 {
 	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Tutorial", "Visible", "false");
 	UIManager::getInstance()->setChildProperty("Nivel_Ingame", "Tutorial_" + actualTuto_, "Visible", "false");

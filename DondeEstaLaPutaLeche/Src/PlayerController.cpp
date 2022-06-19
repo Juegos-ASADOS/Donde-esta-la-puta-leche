@@ -7,8 +7,9 @@
 #include "ElHornoBase.h"
 #include "AnimatorController.h"
 #include <cmath>
+using namespace El_Horno;
 
-void El_Horno::PlayerController::setParameters(std::vector<std::pair<std::string, std::string>> parameters)
+void Donde_Esta_La_Puta_Leche::PlayerController::setParameters(std::vector<std::pair<std::string, std::string>> parameters)
 {
 	for (int i = 0; i < parameters.size(); i++) {
 		if (parameters[i].first == "speed") {
@@ -20,17 +21,17 @@ void El_Horno::PlayerController::setParameters(std::vector<std::pair<std::string
 	}
 }
 
-void El_Horno::PlayerController::start()
+void Donde_Esta_La_Puta_Leche::PlayerController::start()
 {
 	input_ = ElHornoBase::getInstance()->getInputManager();
 	anim_ = entity_->getComponent<AnimatorController>("animatorcontroller");
 	walking_ = false;
 	offset_ = 60;
-	pState_ = El_Horno::PLAYER_CART;
+	pState_ = PLAYER_CART;
 	tb_ = entity_->getComponent<Transform>("transform");
 }
 
-void El_Horno::PlayerController::update()
+void Donde_Esta_La_Puta_Leche::PlayerController::update()
 {
 	if (rb_ == nullptr) {
 		rb_ = entity_->getComponent<RigidBody>("rigidbody");
@@ -57,13 +58,13 @@ void El_Horno::PlayerController::update()
 		{
 			switch (pState_)
 			{
-			case El_Horno::PLAYER_DEFAULT:
+			case PLAYER_DEFAULT:
 				anim_->setAnimBool("Idle", "walk", true);
 				break;
-			case El_Horno::PLAYER_CART:
+			case PLAYER_CART:
 				anim_->setAnimBool("Idle_with_cart", "walk_with_cart", true);
 				break;
-			case El_Horno::PLAYER_PRODUCT:
+			case PLAYER_PRODUCT:
 				anim_->setAnimBool("Idle_with_product", "walk_with_product", true);
 				break;
 			default:
@@ -84,13 +85,13 @@ void El_Horno::PlayerController::update()
 		{
 			switch (pState_)
 			{
-			case El_Horno::PLAYER_DEFAULT:
+			case PLAYER_DEFAULT:
 				anim_->setAnimBool("walk", "Idle", true);
 				break;
-			case El_Horno::PLAYER_CART:
+			case PLAYER_CART:
 				anim_->setAnimBool("walk_with_cart", "Idle_with_cart", true);
 				break;
-			case El_Horno::PLAYER_PRODUCT:
+			case PLAYER_PRODUCT:
 				anim_->setAnimBool("walk_with_product", "Idle_with_product", true);
 				break;
 			default:
@@ -102,7 +103,7 @@ void El_Horno::PlayerController::update()
 	}
 }
 
-void El_Horno::PlayerController::setPlayerState(PLayerState s)
+void Donde_Esta_La_Puta_Leche::PlayerController::setPlayerState(PLayerState s)
 {
 	pState_ = s;
 	walking_ = false;

@@ -8,7 +8,8 @@
 #include "Mesh.h"
 #include <sstream>
 
-El_Horno::Patrol::Patrol(float tspeed, int type, const std::vector<PatrolPos>& pos)
+using namespace El_Horno;
+Donde_Esta_La_Puta_Leche::Patrol::Patrol(float tspeed, int type, const std::vector<PatrolPos>& pos)
 {
 	for (auto p : pos) {
 		positions_.push(p);
@@ -19,11 +20,11 @@ El_Horno::Patrol::Patrol(float tspeed, int type, const std::vector<PatrolPos>& p
 	type_ = type;
 }
 
-El_Horno::Patrol::Patrol()
+Donde_Esta_La_Puta_Leche::Patrol::Patrol()
 {
 }
 
-void El_Horno::Patrol::setParameters(std::vector<std::pair<std::string, std::string>> parameters)
+void Donde_Esta_La_Puta_Leche::Patrol::setParameters(std::vector<std::pair<std::string, std::string>> parameters)
 {
 	//ADAPTAR A PATROLPOS
 	for (int i = 0; i < parameters.size(); i++) {
@@ -51,7 +52,7 @@ void El_Horno::Patrol::setParameters(std::vector<std::pair<std::string, std::str
 	}
 }
 
-void El_Horno::Patrol::start()
+void Donde_Esta_La_Puta_Leche::Patrol::start()
 {
 	rb_ = entity_->getComponent<RigidBody>("rigidbody");
 	tr_ = entity_->getComponent<Transform>("transform");
@@ -76,7 +77,7 @@ void El_Horno::Patrol::start()
 	}
 }
 
-void El_Horno::Patrol::update()
+void Donde_Esta_La_Puta_Leche::Patrol::update()
 {
 	if (sleepThresh_) {
 		rb_->setSleepingThresholds(0,0);
@@ -130,27 +131,27 @@ void El_Horno::Patrol::update()
 	}
 }
 
-void El_Horno::Patrol::setSpeed(float s)
+void Donde_Esta_La_Puta_Leche::Patrol::setSpeed(float s)
 {
 	speed_ = s;
 }
 
-void El_Horno::Patrol::addPosition(const PatrolPos& pos)
+void Donde_Esta_La_Puta_Leche::Patrol::addPosition(const PatrolPos& pos)
 {
 	positions_.push(pos);
 }
 
-void El_Horno::Patrol::addPosition(const HornoVector3& pos, float time)
+void Donde_Esta_La_Puta_Leche::Patrol::addPosition(const HornoVector3& pos, float time)
 {
 	positions_.push({ pos, time });
 }
 
-void El_Horno::Patrol::addPosition(float x, float z, float time)
+void Donde_Esta_La_Puta_Leche::Patrol::addPosition(float x, float z, float time)
 {
 	positions_.push({ {x, 0, z}, time });
 }
 
-bool El_Horno::Patrol::isClose()
+bool Donde_Esta_La_Puta_Leche::Patrol::isClose()
 {
 	HornoVector3 diff = tr_->getHornoGlobalPosition() - positions_.front().pos;
 	diff.y_ = 0;
@@ -159,7 +160,7 @@ bool El_Horno::Patrol::isClose()
 	return magnitude <= minRange_;
 }
 
-bool El_Horno::Patrol::isWaiting()
+bool Donde_Esta_La_Puta_Leche::Patrol::isWaiting()
 {
 	if (timer > 0) {
 		timer -= ElHornoBase::getInstance()->getDeltaTime();

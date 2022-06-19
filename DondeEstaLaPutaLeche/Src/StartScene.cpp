@@ -24,12 +24,12 @@
 #include "UIMenus.h"
 #include "UIGame.h"
 
-namespace El_Horno {
-	void StartScene::init(std::string name)
-	{
-		name_ = name;
-		LuaManager::getInstance()->loadScene();
-		AudioManager::getInstance()->stopMusic();
-		AudioManager::getInstance()->playSound("Musica/Menu.mp3", HornoVectorToFmod(HornoVector3(0, 100, 0)), 50.0f, true);
-	}
+using namespace El_Horno;
+
+void Donde_Esta_La_Puta_Leche::StartScene::init(std::string name)
+{
+	name_ = name;
+	LuaManager::getInstance()->loadScene();
+	AudioManager::getInstance()->stopMusic();
+	AudioManager::getInstance()->playSound("Musica/Menu.mp3", HornoVectorToFmod(HornoVector3(0, 100, 0)), 50.0f, true);
 }

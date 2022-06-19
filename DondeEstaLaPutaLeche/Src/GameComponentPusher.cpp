@@ -20,9 +20,10 @@
 #include "GameManager.h"
 #include "UIMenus.h"
 #include "UIGame.h"
-//#include "CashRegister.h"
 
-void El_Horno::GameComponentPusher::pushGameComponents()
+using namespace El_Horno;
+
+void Donde_Esta_La_Puta_Leche::GameComponentPusher::pushGameComponents()
 {
 	SceneManager::getInstance()->possibleComponents.emplace("transform", &SceneManager::getInstance()->createComponent<Transform>);
 	SceneManager::getInstance()->possibleComponents.emplace("mesh", &SceneManager::getInstance()->createComponent<Mesh>);

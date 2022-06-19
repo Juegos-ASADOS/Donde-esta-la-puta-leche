@@ -20,14 +20,16 @@
 #include <Timer.h>
 #include <iostream>
 
-El_Horno::PlayerInteract::PlayerInteract() : carryingCart_(true), triggerStay_(nullptr), handObject_(nullptr), fishTimer_(nullptr),
+using namespace El_Horno;
+
+Donde_Esta_La_Puta_Leche::PlayerInteract::PlayerInteract() : carryingCart_(true), triggerStay_(nullptr), handObject_(nullptr), fishTimer_(nullptr),
 ticketTimerRunning_(false), fishTimerRunning_(false), productLocked_(false), meatTimer_(nullptr), maxTicketTime_(7), maxFishTime_(7),
 meatObtainable_(false), fishObtainable_(false), ticketExpirationTimer_(nullptr), ticketExpirationTimerRunning_(false), tutorialShown_(false),
 lowTimeTicket_(false), fishTut_(false), meatTut_(false), fruitTut_(false)
 {
 }
 
-El_Horno::PlayerInteract::~PlayerInteract()
+Donde_Esta_La_Puta_Leche::PlayerInteract::~PlayerInteract()
 {
 	delete fishTimer_; fishTimer_ = nullptr;
 	delete meatTimer_; meatTimer_ = nullptr;
@@ -35,20 +37,20 @@ El_Horno::PlayerInteract::~PlayerInteract()
 	GameManager::getInstance()->hideTicket();
 }
 
-void El_Horno::PlayerInteract::start()
+void Donde_Esta_La_Puta_Leche::PlayerInteract::start()
 {
 	//Cogemos el input manager
 	input_ = ElHornoBase::getInstance()->getInputManager();
-	meatTimer_ = new Timer();
-	fishTimer_ = new Timer();
-	ticketExpirationTimer_ = new Timer();
+	meatTimer_ = new El_Horno::Timer();
+	fishTimer_ = new El_Horno::Timer();
+	ticketExpirationTimer_ = new El_Horno::Timer();
 	anim_ = entity_->getComponent<AnimatorController>("animatorcontroller");
 	anim_->setAnimBool("AnyState", "Idle_with_cart", true);
 	//LuaManager::getInstance()->pushNumber(maxTicketTime_, "ticketTime");
 	//LuaManager::getInstance()->readLuaScript("shop");
 }
 
-void El_Horno::PlayerInteract::update()
+void Donde_Esta_La_Puta_Leche::PlayerInteract::update()
 {
 	cout << entity_->getChild("cart")->getComponent<Transform>("transform")->getHornoGlobalPosition().y_ << endl;
 	//Si pulsas la tecla R...
@@ -103,13 +105,13 @@ void El_Horno::PlayerInteract::update()
 	processCollisionExit();
 }
 
-std::string El_Horno::PlayerInteract::getHandObjectId()
+std::string Donde_Esta_La_Puta_Leche::PlayerInteract::getHandObjectId()
 {
 	return handObject_->getComponent<EntityId>("entityid")->getId();
 }
 
 //Eliminamos de la mano el objeto que tenga para a�adirlo al carrito
-void El_Horno::PlayerInteract::deleteAliment(bool ceaseExistence)
+void Donde_Esta_La_Puta_Leche::PlayerInteract::deleteAliment(bool ceaseExistence)
 {
 	std::string id = handObject_->getComponent<EntityId>("entityid")->getId();
 	entity_->getComponent<Mesh>("mesh")->detachObject(handObject_);
@@ -131,11 +133,11 @@ void El_Horno::PlayerInteract::deleteAliment(bool ceaseExistence)
 		ob->start();
 
 		//Lanza el objeto
-		ob->getComponent<RigidBody>("rigidbody")->applyForce(HornoVector3(rand() % 1000, rand() % 1000, rand() % 1000));
+		ob->getComponent<El_Horno::RigidBody>("rigidbody")->applyForce(HornoVector3(rand() % 1000, rand() % 1000, rand() % 1000));
 	}
 }
 
-void El_Horno::PlayerInteract::processCollisionStay()
+void Donde_Esta_La_Puta_Leche::PlayerInteract::processCollisionStay()
 {
 	// Coge Id de la entidad
 
@@ -149,27 +151,27 @@ void El_Horno::PlayerInteract::processCollisionStay()
 
 		switch (t)
 		{
-		case El_Horno::PRODUCT:
+		case PRODUCT:
 			break;
-		case El_Horno::ESTANTERY:
+		case ESTANTERY:
 			manageEstantery(idEntity);
 			break;
-		case El_Horno::CART:
+		case CART:
 			manageCart(triggerStay_->getParent());
 			break;
-		case El_Horno::CASHREGISTER:
+		case CASHREGISTER:
 			manageCashRegister();
 			break;
-		case El_Horno::MEATTICKET:
+		case MEATTICKET:
 			manageMeatTicket();
 			break;
-		case El_Horno::WHEIGHINGMACHINE:
+		case WHEIGHINGMACHINE:
 			manageWheighingMachine();
 			break;
-		case El_Horno::FISHCLEANER:
+		case FISHCLEANER:
 			manageFishCleaner();
 			break;
-		case El_Horno::MEATSTATION:
+		case MEATSTATION:
 			manageMeatStation();
 			break;
 		default:
@@ -178,7 +180,7 @@ void El_Horno::PlayerInteract::processCollisionStay()
 	}
 }
 
-void El_Horno::PlayerInteract::processCollisionExit()
+void Donde_Esta_La_Puta_Leche::PlayerInteract::processCollisionExit()
 {
 	if (triggerExit_ != nullptr) {
 		EntityId* idEntity = triggerExit_->getComponent<EntityId>("entityid");
@@ -187,8 +189,8 @@ void El_Horno::PlayerInteract::processCollisionExit()
 
 		switch (t)
 		{
-		case El_Horno::PUDDLE:
-			entity_->getComponent<RigidBody>("rigidbody")->setDamping(0.7f, 0.7f);
+		case PUDDLE:
+			entity_->getComponent<El_Horno::RigidBody>("rigidbody")->setDamping(0.7f, 0.7f);
 			entity_->getComponent<PlayerController>("playercontroller")->setSliding(false);
 			break;
 		default:
@@ -204,7 +206,7 @@ void El_Horno::PlayerInteract::processCollisionExit()
 	}
 }
 
-El_Horno::Entity* El_Horno::PlayerInteract::processTriggerPriority()
+El_Horno::Entity* Donde_Esta_La_Puta_Leche::PlayerInteract::processTriggerPriority()
 {
 	float minDist = -1;
 	Entity* nearestEnt = nullptr;
@@ -240,7 +242,7 @@ El_Horno::Entity* El_Horno::PlayerInteract::processTriggerPriority()
 	return nearestEnt;
 }
 
-void El_Horno::PlayerInteract::manageCart(Entity* entity)
+void Donde_Esta_La_Puta_Leche::PlayerInteract::manageCart(Entity* entity)
 {
 	//Si pulsas la tecla E...
 	if (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
@@ -252,12 +254,12 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 
 			//Dejo el carrito suelto
 			instanciateCart();
-			auto rb = entity_->getComponent<RigidBody>("rigidbody");
+			auto rb = entity_->getComponent<El_Horno::RigidBody>("rigidbody");
 			rb->setScale(HornoVector3(0.3, 0.7, 0.5));
 			rb->setDamping(1.0f, 1.0f);
 			auto pc = entity_->getComponent<PlayerController>("playercontroller");
 			pc->setSpeed(300);
-			pc->setPlayerState(El_Horno::PLAYER_DEFAULT);
+			pc->setPlayerState(PLAYER_DEFAULT);
 			anim_->setAnimBool("AnyState", "Idle", true);
 			carryingCart_ = false;
 			//Audio
@@ -271,7 +273,7 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 				entity_->getChild("cart")->setActive(true);
 				SceneManager::getInstance()->getCurrentScene()->deleteEntity(triggerStay_->getParent()->getName());
 
-				auto rb = entity_->getComponent<RigidBody>("rigidbody");
+				auto rb = entity_->getComponent<El_Horno::RigidBody>("rigidbody");
 				rb->setScale(HornoVector3(0.3, 0.7, 1.3));
 
 				int i = 0;
@@ -289,7 +291,7 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 				rb->setDamping(0.5f, 0.5f);
 				auto pc = entity_->getComponent<PlayerController>("playercontroller");
 				pc->setSpeed(450);
-				pc->setPlayerState(El_Horno::PLAYER_CART);
+				pc->setPlayerState(PLAYER_CART);
 				anim_->setAnimBool("AnyState", "Idle_with_cart", true);
 				carryingCart_ = true;
 				std::cout << "Coger carrito\n";
@@ -320,18 +322,14 @@ void El_Horno::PlayerInteract::manageCart(Entity* entity)
 				deleteAliment(true);
 
 				auto pc = entity_->getComponent<PlayerController>("playercontroller");
-				pc->setPlayerState(El_Horno::PLAYER_DEFAULT);
+				pc->setPlayerState(PLAYER_DEFAULT);
 				anim_->setAnimBool("AnyState", "Idle", true);
-			}
-			else {
-				//TODO Feedback (audio o UI) para indicar que hay que pesar/limpiar producto antes de poder meterlo al carro
-				//!Audio JBL apagar  
 			}
 		}
 	}
 }
 
-void El_Horno::PlayerInteract::manageCashRegister()
+void Donde_Esta_La_Puta_Leche::PlayerInteract::manageCashRegister()
 {
 	//Si pulsas la tecla E...
 	if (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X)) {
@@ -352,7 +350,7 @@ void El_Horno::PlayerInteract::manageCashRegister()
 	}
 }
 
-void El_Horno::PlayerInteract::manageMeatTicket()
+void Donde_Esta_La_Puta_Leche::PlayerInteract::manageMeatTicket()
 {
 	if (!ticketTimerRunning_ && !meatObtainable_ && (input_->getKeyDown(SDL_SCANCODE_E) || input_->isButtonDown(SDL_CONTROLLER_BUTTON_X))) {
 		meatTimer_->resetTimer();
@@ -364,7 +362,7 @@ void El_Horno::PlayerInteract::manageMeatTicket()
 	}
 }
 
-void El_Horno::PlayerInteract::manageWheighingMachine()
+void Donde_Esta_La_Puta_Leche::PlayerInteract::manageWheighingMachine()
 {
 	if (productLocked_ && handObject_ != nullptr && handObject_->getComponent<EntityId>("entityid")->getProdType() == ProductType::FRUIT) {
 
@@ -375,7 +373,7 @@ void El_Horno::PlayerInteract::manageWheighingMachine()
 	}
 }
 
-void El_Horno::PlayerInteract::manageFishCleaner()
+void Donde_Esta_La_Puta_Leche::PlayerInteract::manageFishCleaner()
 {
 	if (handObject_ != nullptr && handObject_->getComponent<EntityId>("entityid")->getProdType() == ProductType::FISH) {
 		// Si se presiona la E se inicia el timer de limpieza de pescado
@@ -386,7 +384,7 @@ void El_Horno::PlayerInteract::manageFishCleaner()
 			deleteAliment(true);
 
 			auto pc = entity_->getComponent<PlayerController>("playercontroller");
-			pc->setPlayerState(El_Horno::PLAYER_DEFAULT);
+			pc->setPlayerState(PLAYER_DEFAULT);
 			anim_->setAnimBool("AnyState", "Idle", true);
 			//Audio
 			entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/CortarAlimento.mp3",80.0f);
@@ -401,7 +399,7 @@ void El_Horno::PlayerInteract::manageFishCleaner()
 	}
 }
 
-void El_Horno::PlayerInteract::manageMeatStation()
+void Donde_Esta_La_Puta_Leche::PlayerInteract::manageMeatStation()
 {
 	if (meatObtainable_ && handObject_ == nullptr) {
 
@@ -420,7 +418,7 @@ void El_Horno::PlayerInteract::manageMeatStation()
 	}
 }
 
-void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
+void Donde_Esta_La_Puta_Leche::PlayerInteract::manageEstantery(EntityId* idEntity)
 {
 	//Si tiene alimento en la mano o el carro...
 	if (handObject_ != nullptr || carryingCart_)
@@ -433,7 +431,7 @@ void El_Horno::PlayerInteract::manageEstantery(EntityId* idEntity)
 	}
 }
 
-void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
+void Donde_Esta_La_Puta_Leche::PlayerInteract::createProduct(std::string id, ProductType pType)
 {
 	handObject_ = LuaManager::getInstance()->loadPrefab(id, true);
 	entity_->getComponent<Mesh>("mesh")->attachObject("Base_Productos", handObject_);
@@ -459,28 +457,28 @@ void El_Horno::PlayerInteract::createProduct(std::string id, ProductType pType)
 	}
 
 	auto pc = entity_->getComponent<PlayerController>("playercontroller");
-	pc->setPlayerState(El_Horno::PLAYER_PRODUCT);
+	pc->setPlayerState(PLAYER_PRODUCT);
 	anim_->setAnimBool("AnyState", "Idle_with_product", true);
-	entity_->getComponent<RigidBody>("rigidbody")->setLinearVelocity(HornoVector3(0, 0, 0));
+	entity_->getComponent<El_Horno::RigidBody>("rigidbody")->setLinearVelocity(HornoVector3(0, 0, 0));
 
 	//Audio
 	entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/CogerObjeto.mp3",80.0f);
 }
 
-void El_Horno::PlayerInteract::managePuddle()
+void Donde_Esta_La_Puta_Leche::PlayerInteract::managePuddle()
 {
-	entity_->getComponent<RigidBody>("rigidbody")->setDamping(0.05f, 0.05f);
+	entity_->getComponent<El_Horno::RigidBody>("rigidbody")->setDamping(0.05f, 0.05f);
 	entity_->getComponent<PlayerController>("playercontroller")->setSliding(true);
 }
 
-void El_Horno::PlayerInteract::dropItem()
+void Donde_Esta_La_Puta_Leche::PlayerInteract::dropItem()
 {
 	if (handObject_ != nullptr) {
 		deleteAliment(false);
 		productLocked_ = false;
 
 		auto pc = entity_->getComponent<PlayerController>("playercontroller");
-		pc->setPlayerState(El_Horno::PLAYER_DEFAULT);
+		pc->setPlayerState(PLAYER_DEFAULT);
 		anim_->setAnimBool("AnyState", "Idle", true);
 		//Audio
 		entity_->getComponent<AudioComponent>("audiocomponent")->playSound("SFX/SoltarObjeto.mp3",80.0f);
@@ -488,7 +486,7 @@ void El_Horno::PlayerInteract::dropItem()
 }
 
 //Cambia el mesh del carrito en funcion del porcentaje que tenga
-void El_Horno::PlayerInteract::changeCartSize(Entity* entity)
+void Donde_Esta_La_Puta_Leche::PlayerInteract::changeCartSize(Entity* entity)
 {
 	//Cambio el mesh por un carrito que pese m�s
 	string nCarrito;
@@ -513,7 +511,7 @@ void El_Horno::PlayerInteract::changeCartSize(Entity* entity)
 	//entity->getComponent<Mesh>("mesh")->start();
 }
 
-void El_Horno::PlayerInteract::instanciateCart()
+void Donde_Esta_La_Puta_Leche::PlayerInteract::instanciateCart()
 {
 	//Carro hijo del player
 	Transform* tr = entity_->getChild("cart")->getComponent<Transform>("transform");
@@ -537,8 +535,8 @@ void El_Horno::PlayerInteract::instanciateCart()
 	cart->addComponent<RigidBody>("rigidbody", 100.0f, false, false, 0); //las amtes
 	cart->awake();
 	cart->start();
-	cart->getComponent<RigidBody>("rigidbody")->setScale(HornoVector3(1,0.4,1));
-	cart->getComponent<RigidBody>("rigidbody")->setAngularFactor(0);
+	cart->getComponent<El_Horno::RigidBody>("rigidbody")->setScale(HornoVector3(1,0.4,1));
+	cart->getComponent<El_Horno::RigidBody>("rigidbody")->setAngularFactor(0);
 	//Trigger del carrito
 	Entity* trig = SceneManager::getInstance()->getCurrentScene()->addEntity("cartTriggerInstance", "prueba", cart);
 	trig->addComponent<Transform>("transform", HornoVector3(0, 0, 0), HornoVector3(0, 0, 0), HornoVector3(3.6, 3, 3.2));
@@ -549,12 +547,12 @@ void El_Horno::PlayerInteract::instanciateCart()
 	cart->getComponent<Transform>("transform")->setRotation(entity_->getComponent<Transform>("transform")->getRotation());
 }
 
-void El_Horno::PlayerInteract::imInCartRegister(bool imIn)
+void Donde_Esta_La_Puta_Leche::PlayerInteract::imInCartRegister(bool imIn)
 {
 	inCashRegister_ = imIn;
 }
 
-void El_Horno::PlayerInteract::setEstantery(Entity* e, bool enter)
+void Donde_Esta_La_Puta_Leche::PlayerInteract::setEstantery(Entity* e, bool enter)
 {
 	if (enter)
 		triggeredEntities_.push_back(e);
