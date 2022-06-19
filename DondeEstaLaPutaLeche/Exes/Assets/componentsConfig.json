@@ -1,0 +1,19 @@
+{
+    "components" : 
+        [
+            {
+                "type" : "transform",
+                "position" : [0,0,0],
+                "rotation" : [0,0,0],
+                "scale" : [1,1,1]
+            },
+            {
+                "type" : "camera"
+            },
+            {
+                "type": "mesh",
+                "mesh" : "cube.mesh"
+            }
+        ]
+    }
+}

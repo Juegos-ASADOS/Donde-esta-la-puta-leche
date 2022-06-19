@@ -1,15 +1,14 @@
 @echo off
 cls
-set ENGINE=.\Engine\ElHorno\Exes
+set ENGINE=%cd%\DondeEstaLaPutaLeche\Engine\ElHorno\Exes
+set GAME= %cd%\DondeEstaLaPutaLeche\Exes
 
 cd ./DondeEstaLaPutaLeche/Engine
-call ElHorno.bat
+call BuildEngine.bat
 cd ../..
 
-cd ./DondeEstaLaPutaLeche
+copy "%ENGINE%\*.exe" .\Exes 
+copy "%ENGINE%\*.dll" .\Exes 
+
 msbuild DondeEstaLaPutaLeche.sln /p:configuration=Debug
 msbuild DondeEstaLaPutaLeche.sln /p:configuration=Release
-
-XCOPY /y /s .\Exes\ElHornoGame.dll %ENGINE%
-XCOPY /y /s .\Exes\ElHornoGame_d.dll %ENGINE%
-pause
