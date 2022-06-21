@@ -3,7 +3,6 @@
 #include "InputManager.h"
 #include "LuaManager.h"
 #include "UIManager.h"
-#include "SecondScene.h"
 #include "SceneManager.h"
 #include "AudioManager.h"
 #include "Rigibody.h"
@@ -12,6 +11,7 @@
 #include "Timer.h"
 #include "UIMenus.h"
 #include "ElHornoBase.h"
+#include "Scene.h"
 #include <vector>
 #include <string>
 #include <iostream>

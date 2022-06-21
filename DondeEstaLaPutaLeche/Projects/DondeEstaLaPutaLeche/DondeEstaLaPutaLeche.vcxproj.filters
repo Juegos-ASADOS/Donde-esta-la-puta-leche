@@ -13,18 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Archivos de encabezado\Scenes">
-      <UniqueIdentifier>{0b01b75c-2fc0-48c4-9dda-b08da63fcb23}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Archivos de origen\Scenes">
-      <UniqueIdentifier>{159dca98-6f3d-407f-b606-fe7420160599}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Src\Main.cpp">
-      <Filter>Archivos de origen</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Src\StartScene.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Src\PlayerController.cpp">
@@ -48,9 +39,6 @@
     <ClCompile Include="..\..\Src\UIMenus.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Src\SecondScene.cpp">
-      <Filter>Archivos de origen\Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Src\ScenesPusher.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
@@ -59,9 +47,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Src\StartScene.h">
-      <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Src\GameFactories.h">
       <Filter>Archivos de encabezado</Filter>
     </ClInclude>
@@ -85,9 +70,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Src\UIMenus.h">
       <Filter>Archivos de encabezado</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Src\SecondScene.h">
-      <Filter>Archivos de encabezado\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Src\ScenesPusher.h">
       <Filter>Archivos de encabezado</Filter>
