@@ -117,6 +117,7 @@ void GameManager::start()
 			interfaz_->addComponent<UIMenus>("uimenus");
 			interfaz_->getComponent<UIMenus>("uimenus")->init();
 			interfaz_->setDontDestryOnLoad(true);
+			AudioManager::getInstance()->playSound("Musica/Menu.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)), 3.0f, true);
 		}
 	}
 }

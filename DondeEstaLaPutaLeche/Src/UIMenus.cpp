@@ -17,7 +17,6 @@
 using namespace El_Horno;
 
 bool click() {
-	std::cout << "CLICK GE EGCGI CKUCJ\n";
 	return true;
 }
 
@@ -234,6 +233,8 @@ bool Donde_Esta_La_Puta_Leche::UIMenus::salirPausaButton(const CEGUI::EventArgs&
 	//UIManager::getInstance()->hideMouseCursor();
 	hide("Pausa");
 	show("MenuPrincipal");
+	AudioManager::getInstance()->stopMusic();
+	AudioManager::getInstance()->playSound("Musica/Menu.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)), 3.0f, true);
 
 
 	std::string a = "inicio";
@@ -255,7 +256,8 @@ bool Donde_Esta_La_Puta_Leche::UIMenus::volverVictoriaButton(const CEGUI::EventA
 	hide("Victoria");
 	show("MenuPrincipal");
 	ElHornoBase::getInstance()->pause();
-
+	AudioManager::getInstance()->stopMusic();
+	AudioManager::getInstance()->playSound("Musica/Menu.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)), 3.0f, true);
 
 	std::string a = "inicio";
 	LuaManager::getInstance()->pushString(a, "scene");
@@ -269,7 +271,8 @@ bool Donde_Esta_La_Puta_Leche::UIMenus::volverDerrotaButton(const CEGUI::EventAr
 	hide("Derrota");
 	show("MenuPrincipal");
 	ElHornoBase::getInstance()->pause();
-
+	AudioManager::getInstance()->stopMusic();
+	AudioManager::getInstance()->playSound("Musica/Menu.mp3", HornoVectorToFmod(HornoVector3(0, 100, 450)), 3.0f, true);
 
 	std::string a = "inicio";
 	LuaManager::getInstance()->pushString(a, "scene");
